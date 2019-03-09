@@ -3,26 +3,39 @@ import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
-}
+	constructor() {
+		super();
 
-export default App;
+		this.state = {
+			view: "ALLGAMES"
+		};
+	}
+
+	displayView = () => {
+		if (this.state.view === "ALLGAMES") {
+			return (
+				<p>All game view</p>
+			);
+		} else {
+			return null;
+		}
+	}
+
+	render() {
+		return (
+			<div className="App">
+				<header className="App-header">
+					<img src={logo} className="App-logo" alt="logo" />
+					<p className="Header-Text">EPL Predictor</p>
+					<p className="Header-Text">Prediction Version: 1.0.0</p>
+					<p className="Header-Text">Website Version: 1.0.0</p>
+					<p className="Header-Text">Author: Mitch Stark</p>
+				</header>
+				{this.displayView()}
+			</div>
+			);
+		}
+	}
+	
+	export default App;
+	
