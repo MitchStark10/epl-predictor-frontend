@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import MainMenu from './MainMenu/MainMenu';
+import GameView from './GameView/GameView';
 
 class App extends Component {
 	constructor() {
@@ -19,7 +20,7 @@ class App extends Component {
 	displayView = () => {
 		if (this.state.view === "ALLGAMESVIEW") {
 			return (
-				<p>Game View - Under Construction</p>
+				<GameView />
 			);
 		} else if (this.state.view === "BLOGVIEW") {
 			return (
