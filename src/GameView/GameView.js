@@ -36,10 +36,28 @@ class GameView extends Component {
             });
     }
 
+    renderGames() {
+        var gameHtmlList = [];
+        console.log("Enter renderGames");
+        for (var i = 0; i < this.state.games.length; i++) {
+            let game = this.state.games[i];
+            console.log(JSON.stringify(game));
+            gameHtmlList.push((
+                <div classNam="gameInfo" id={i}>
+                    <p>{game["GameDate"]}: {game["HomeTeam"]} {game["HomeTeamScore"]} ({game["PredictedHomeTeamScore"]}) - {game["AwayTeamScore"]} ({game["PredictedAwayTeamScore"]}) {game["AwayTeam"]}</p>
+                </div>
+            ));
+        }
+
+        return gameHtmlList;
+    }
+
     render() {
-        //console.log("Rendering GameView: " + JSON.stringify(this.state.games));
         return (
-            <p>Game View - Under Construction</p>
+            <div className="GameView">
+                <p>Game View - Under Construction</p>
+                {this.renderGames()}
+            </div>
         );
     }
 }
