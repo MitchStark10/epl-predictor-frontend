@@ -6,8 +6,17 @@ class GameView extends Component {
         super();
 
         this.state = {
-            games: []
+            games: [],
+            predictionSuccessRate: {}
         };
+    }
+
+    isEmpty(obj) {
+        for(var key in obj) {
+            if(obj.hasOwnProperty(key))
+                return false;
+        }
+        return true;
     }
 
     componentDidMount() {
@@ -21,19 +30,47 @@ class GameView extends Component {
         if (this.state.games === []) {
             this.retrieveGames();
         }
+
+        if (this.isEmpty(this.state.predictionSuccessRate)) {
+            this.retrievePredictionSuccessRate();
+        }
     }
 
     retrieveGames = () => {
         console.log("Retrieving Games from: " + JSON.stringify(process.env.REACT_APP_API_HOST) + "/retrievAllGames");
         fetch(process.env.REACT_APP_API_HOST + "/retrieveAllGames")
-        .then(result=>result.json())
+        .then(result => result.json())
         .then(
             (games) => {
-                this.setState({games: games})
+                this.setState({games: games});
             },
             (error) => {
                 console.log("Error retrieving games: " + error);
-            });
+            }
+        );
+    }
+    
+    retrievePredictionSuccessRate = () => {
+        console.log("Retrieving prediction success rates: " + JSON.stringify(process.env.REACT_APP_API_HOST) + "/retrievePredictionSuccessRate");
+        fetch(process.env.REACT_APP_API_HOST + "/retrievePredictionSuccessRate")
+        .then(result => result.json())
+        .then(
+            (successRate) => {
+                this.setState({predictionSuccessRate: successRate});
+            },
+            (error) => {
+                console.error("Error retrieving prediction rates: " + error);
+            }
+        )
+    }
+
+    renderPredictionRate = () => {
+        return (
+            <div>
+                <h3>v1.0.0 Prediction Correct Goal Differential Success Rate: {this.state.predictionSuccessRate["SUCCESS_RATE"]}%</h3>
+                <h3>v1.0.0 Correct Game Outcome Prediction Success Rate: {this.state.predictionSuccessRate["CORRECT_GAME_OUTCOME_RATE"]}%</h3>
+            </div>
+        );
     }
 
     renderGames() {
@@ -73,6 +110,7 @@ class GameView extends Component {
         return (
             <div className="GameView">
                 <p>Game View - Under Construction</p>
+                {this.renderPredictionRate()}
                 {this.renderGames()}
             </div>
         );
