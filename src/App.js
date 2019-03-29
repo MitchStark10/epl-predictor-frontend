@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import MainMenu from './MainMenu/MainMenu';
-import GameView from './GameView/GameView';
+import AdminView from './AdminView/AdminView';
 
 class App extends Component {
 	constructor() {
 		super();
 
 		this.state = {
-			view: "ALLGAMESVIEW"
+			view: "PREDICTGAMESVIEW"
 		};
 	}
 
@@ -18,13 +18,13 @@ class App extends Component {
 	}
 
 	displayView = () => {
-		if (this.state.view === "ALLGAMESVIEW") {
+		if (this.state.view === "PREDICTGAMESVIEW") {
 			return (
-				<GameView />
+				<p>Game View - Under Construction</p>
 			);
-		} else if (this.state.view === "BLOGVIEW") {
+		} else if (this.state.view === "ADMINVIEW") {
 			return (
-				<p>Blog View - Under Construction</p>
+				<AdminView />
 			);
 		} else if (this.state.view === "ABOUTVIEW") {
 			return (
@@ -32,7 +32,7 @@ class App extends Component {
 			);
 		} else {
 			console.warn("Unknown view: " + this.state.view);
-			this.setState({view: "ALLGAMESVIEW"});
+			this.setState({view: "PREDICTGAMESVIEW"});
 			//TODO: Default to ALLGAMESVIEW
 			return null;
 		}
@@ -44,8 +44,7 @@ class App extends Component {
 				<header className="App-header">
 					<img src={logo} className="App-logo" alt="logo" />
 					<p className="Header-Text">EPL Predictor</p>
-					<p className="Header-Text">Prediction Version: 1.0.0</p>
-					<p className="Header-Text">Website Version: 1.0.0</p>
+					<p className="Header-Text">Version: 1.0.0</p>
 					<p className="Header-Text">Author: Mitch Stark</p>
 				</header>
 				<MainMenu changeToView={this.changeToView}/>
