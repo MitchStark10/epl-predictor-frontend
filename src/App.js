@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import MainMenu from './MainMenu/MainMenu';
 import AdminView from './AdminView/AdminView';
+import PredictGamesView from './PredictGames/PredictGames';
 
 class App extends Component {
 	constructor() {
@@ -20,7 +21,11 @@ class App extends Component {
 	displayView = () => {
 		if (this.state.view === "PREDICTGAMESVIEW") {
 			return (
-				<p>Game View - Under Construction</p>
+				<PredictGamesView />
+			);
+		} else if (this.state.view === "PASTPREDICTIONSVIEW") {
+			return (
+				<h1>Test past predictions view</h1> 
 			);
 		} else if (this.state.view === "ADMINVIEW") {
 			return (
@@ -28,7 +33,7 @@ class App extends Component {
 			);
 		} else if (this.state.view === "ABOUTVIEW") {
 			return (
-				<p>About View - Under Construction</p>
+				<h1>About View - Under Construction</h1>
 			);
 		} else {
 			console.warn("Unknown view: " + this.state.view);

@@ -11,6 +11,7 @@ class MainMenu extends Component {
     render() {
         return (
             <div className="Main-Menu-Buttons">
+                <button className="Main-Menu" id="PASTPREDICTIONSVIEW" onClick={this.handleButtonClick}>View Past Predictions</button>
                 <button className="Main-Menu" id="PREDICTGAMESVIEW" onClick={this.handleButtonClick}>Predict Games</button>
                 <button className="Main-Menu" id="ADMINVIEW" onClick={this.handleButtonClick}>Admin</button>
                 <button className="Main-Menu" id="ABOUTVIEW" onClick={this.handleButtonClick}>About</button>
