@@ -49,11 +49,26 @@ class PredictGamesView extends Component {
         this.props.changeToView(event.target.id);
     }
 
+    renderUpcomingGames = () => {
+        let jsxList = [];
+
+        for (var i = 0; i < this.state.upcomingGames.length; i++) {
+            let game = this.state.upcomingGames[i];
+            jsxList.push(
+                <div className="upcomingGame">
+                    <p>{game["HomeTeamName"]} vs. {game["AwayTeamName"]} - {game["GameDate"]}</p>
+                </div>
+            );
+        }
+
+        return jsxList;
+    }
+
     render() {
         return (
             <div className="PredictGamesView">
                 <h1>Testing Predict Games View</h1>
-                <p>{JSON.stringify(this.state.upcomingGames)}</p>
+                {this.renderUpcomingGames()}
             </div>
         );
     }
