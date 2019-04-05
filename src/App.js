@@ -4,13 +4,15 @@ import './App.css';
 import MainMenu from './MainMenu/MainMenu';
 import AdminView from './AdminView/AdminView';
 import PredictGamesView from './PredictGames/PredictGames';
+import LoginApp from './UserForms/LoginApp';
 
 class App extends Component {
 	constructor() {
 		super();
 
 		this.state = {
-			view: "PREDICTGAMESVIEW"
+			view: "PREDICTGAMESVIEW",
+			userToken: ""
 		};
 	}
 
@@ -18,8 +20,16 @@ class App extends Component {
 		this.setState({view: newViewName});
 	}
 
+	setLoggedIn = (userToken) => {
+		this.setState({userToken: userToken})
+	}
+
 	displayView = () => {
-		if (this.state.view === "PREDICTGAMESVIEW") {
+		if (this.state.userToken === "") {
+			return (
+				<LoginApp setLoggedIn={this.setLoggedIn} />
+			);
+		} else if (this.state.view === "PREDICTGAMESVIEW") {
 			return (
 				<PredictGamesView />
 			);
@@ -43,6 +53,16 @@ class App extends Component {
 		}
 	}
 
+	displayMenu = () => {
+		if (this.state.userToken !== "") {
+			return (
+				<MainMenu />
+			);
+		}
+
+		return null;
+	}
+
 	render() {
 		return (
 			<div className="App">
@@ -52,12 +72,13 @@ class App extends Component {
 					<p className="Header-Text">Version: 1.0.0</p>
 					<p className="Header-Text">Author: Mitch Stark</p>
 				</header>
-				<MainMenu changeToView={this.changeToView}/>
+				
 				{this.displayView()}
 			</div>
-			);
-		}
+		);
 	}
+		
+}
 	
-	export default App;
+export default App;
 	
