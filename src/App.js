@@ -56,7 +56,7 @@ class App extends Component {
 	displayMenu = () => {
 		if (this.state.userToken !== "") {
 			return (
-				<MainMenu />
+				<MainMenu changeToView={this.changeToView}/>
 			);
 		}
 
@@ -72,7 +72,7 @@ class App extends Component {
 					<p className="Header-Text">Version: 1.0.0</p>
 					<p className="Header-Text">Author: Mitch Stark</p>
 				</header>
-				
+				{this.displayMenu()}
 				{this.displayView()}
 			</div>
 		);

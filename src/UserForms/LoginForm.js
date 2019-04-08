@@ -20,7 +20,7 @@ class LoginForm extends Component {
     }
 
     login() {
-        let endpoint = "/login";
+        let endpoint = "/auth/login";
         let url = process.env.REACT_APP_API_HOST + endpoint;
 
         $.post(url, this.state)

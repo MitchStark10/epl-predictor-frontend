@@ -22,7 +22,7 @@ class NewUserForm extends React.Component {
     createNewUser() {
         if (this.state.password === this.state.confirmedPassword) {
             //send to server
-            let endpoint = "/newUser";
+            let endpoint = "/auth/newUser";
             let url = process.env.REACT_APP_API_HOST + endpoint;
 
             console.log("testing: " + JSON.stringify(this.state));
