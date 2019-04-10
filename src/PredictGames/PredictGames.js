@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import $ from 'jquery';
 
 class PredictGamesView extends Component {
 
@@ -44,9 +45,29 @@ class PredictGamesView extends Component {
         );
     };
 
-    handleButtonClick = (event) => {
+    handleMenuButtonClick = (event) => {
         console.log("Clicked Main Menu Button: " + event.target.id);
         this.props.changeToView(event.target.id);
+    }
+
+    handlePredictionButtonClick = (event) => {
+        console.log("Clicked Prediction Button: " + event.target.id + " - " + event.target.value);
+        let endpoint = "/predictions/addOrUpdatePrediction";
+        let url = process.env.REACT_APP_API_HOST + endpoint;
+
+        let postData = {
+            username: this.props.userToken,
+            gameId: event.target.id,
+            winningTeam: event.target.value
+        }
+
+        $.post(url, postData)
+        .done((response) => {
+            console.log(response);
+        })
+        .fail((error) => {
+            this.setState({statusMessage: "Unable to predict game: " + error.responseText});
+        });
     }
 
     renderUpcomingGames = () => {
@@ -54,9 +75,36 @@ class PredictGamesView extends Component {
 
         for (var i = 0; i < this.state.upcomingGames.length; i++) {
             let game = this.state.upcomingGames[i];
+
+            let gameDate = new Date(game["GameDate"]);
+            var day = gameDate.getDate();
+            var monthIndex = gameDate.getMonth();
+            var year = gameDate.getFullYear();
+
             jsxList.push(
-                <div className="upcomingGame">
-                    <p>{game["HomeTeamName"]} vs. {game["AwayTeamName"]} - {game["GameDate"]}</p>
+                <div className="upcomingGame" key={game["GameId"]}>
+                    <h3>{monthIndex}/{day}/{year}</h3>
+
+                    <button 
+                    id={game["GameId"]}
+                    onClick={this.handlePredictionButtonClick}
+                    value={game["HomeTeamName"]}>
+                        {game["HomeTeamName"]}
+                    </button>
+
+                    <button 
+                    id={game["GameId"]} 
+                    onClick={this.handlePredictionButtonClick}
+                    value="Tie">
+                            Tie
+                    </button>
+
+                    <button 
+                    id={game["GameId"]} 
+                    onClick={this.handlePredictionButtonClick}
+                    value={game["AwayTeamName"]}>
+                        {game["AwayTeamName"]}
+                    </button>
                 </div>
             );
         }
@@ -67,7 +115,7 @@ class PredictGamesView extends Component {
     render() {
         return (
             <div className="PredictGamesView">
-                <h1>Testing Predict Games View</h1>
+                <h1>Click on a team for each game to submit your predictions!</h1>
                 {this.renderUpcomingGames()}
             </div>
         );

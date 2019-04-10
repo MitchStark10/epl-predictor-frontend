@@ -31,7 +31,7 @@ class App extends Component {
 			);
 		} else if (this.state.view === "PREDICTGAMESVIEW") {
 			return (
-				<PredictGamesView />
+				<PredictGamesView userToken={this.state.userToken}/>
 			);
 		} else if (this.state.view === "PASTPREDICTIONSVIEW") {
 			return (
