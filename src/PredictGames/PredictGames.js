@@ -8,20 +8,26 @@ class PredictGamesView extends Component {
 
         this.state = {
             upcomingGames: [],
-            errorMessage: ""
+            upcomingPredictions: [],
+            predictedId: -1,
+            errorMessage: "",
+            needsPredictionRefresh: true
         };
     }
 
     componentDidMount() {
         console.log("componeentDidMount");
         this.retrieveGames();
+        this.retrievePredictions();
     }
 
     componentDidUpdate() {
-        console.log("componentDidUpdate");
-
-        if (this.state.games === []) {
+        if (this.state.upcomingGames.length === 0) {
             this.retrieveGames();
+        }
+
+        if (this.state.needsPredictionRefresh) {
+            this.retrievePredictions();
         }
     }
 
@@ -31,8 +37,6 @@ class PredictGamesView extends Component {
         .then( result => result.json() )
         .then(
             (upcomingGames) => {
-                console.log("Upcoming games: " + JSON.stringify(upcomingGames));
-
                 if (upcomingGames["errorMsg"]) {
                     this.setState({errorMessage: upcomingGames["errorMsg"]});
                 } else {
@@ -44,6 +48,30 @@ class PredictGamesView extends Component {
             }
         );
     };
+
+    retrievePredictions = () => {
+        console.log("Retrieving Predictions from: " + process.env.REACT_APP_API_HOST + "/predictions/upcomingPredictions/" + this.props.userToken);
+        fetch(process.env.REACT_APP_API_HOST + "/predictions/upcomingPredictions/" + this.props.userToken)
+        .then ( result => result.json() )
+        .then(
+            (upcomingPredictions) => {
+                console.log("Upcoming predictions: " + JSON.stringify(upcomingPredictions));
+
+                if (upcomingPredictions["errorMsg"]) {
+                    this.setState({errorMessage: upcomingPredictions["errorMsg"], needsPredictionRefresh: false});
+                } else {
+                    this.setState({
+                        upcomingPredictions: upcomingPredictions, 
+                        needsPredictionRefresh: false}
+                    );
+                }
+            },
+            (error) => {
+                console.log("Error retrieving predictions: " + error);
+                this.setState({needsPredictionRefresh: false});
+            }
+        );
+    }
 
     handleMenuButtonClick = (event) => {
         console.log("Clicked Main Menu Button: " + event.target.id);
@@ -63,10 +91,10 @@ class PredictGamesView extends Component {
 
         $.post(url, postData)
         .done((response) => {
-            console.log(response);
+            this.setState({needsPredictionRefresh: true});
         })
         .fail((error) => {
-            this.setState({statusMessage: "Unable to predict game: " + error.responseText});
+            this.setState({errorMessage: "Unable to predict game: " + error.responseText});
         });
     }
 
@@ -78,7 +106,7 @@ class PredictGamesView extends Component {
 
             let gameDate = new Date(game["GameDate"]);
             var day = gameDate.getDate();
-            var monthIndex = gameDate.getMonth();
+            var monthIndex = gameDate.getMonth() + 1;
             var year = gameDate.getFullYear();
 
             jsxList.push(
@@ -105,11 +133,24 @@ class PredictGamesView extends Component {
                     value={game["AwayTeamName"]}>
                         {game["AwayTeamName"]}
                     </button>
+                    {this.renderPrediction(game["GameId"])}
                 </div>
             );
         }
 
         return jsxList;
+    }
+
+    renderPrediction = (gameId) => {
+        for (var i = 0; i < this.state.upcomingPredictions.length; i++) {
+            let prediction = this.state.upcomingPredictions[i];
+
+            if (prediction["GameId"] === gameId) {
+                return "Predicted Winner: " + prediction["WinningTeam"];
+            }
+        }
+
+        return "Predicted Winner: (Not Yet Predicted)";
     }
 
     render() {
