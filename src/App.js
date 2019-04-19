@@ -57,7 +57,7 @@ class App extends Component {
 	displayMenu = () => {
 		if (this.state.userToken !== "") {
 			return (
-				<MainMenu changeToView={this.changeToView}/>
+				<MainMenu changeToView={this.changeToView} userToken={this.state.userToken}/>
 			);
 		}
 
