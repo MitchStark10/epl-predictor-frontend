@@ -11,7 +11,8 @@ class PredictGamesView extends Component {
             upcomingPredictions: [],
             predictedId: -1,
             errorMessage: "",
-            needsPredictionRefresh: true
+            needsPredictionRefresh: true,
+            needsGameRefresh: true
         };
     }
 
@@ -22,7 +23,7 @@ class PredictGamesView extends Component {
     }
 
     componentDidUpdate() {
-        if (this.state.upcomingGames.length === 0) {
+        if (this.state.needsGameRefresh) {
             this.retrieveGames();
         }
 
@@ -38,9 +39,9 @@ class PredictGamesView extends Component {
         .then(
             (upcomingGames) => {
                 if (upcomingGames["errorMsg"]) {
-                    this.setState({errorMessage: upcomingGames["errorMsg"]});
+                    this.setState({errorMessage: upcomingGames["errorMsg"], needsGameRefresh: false});
                 } else {
-                    this.setState({upcomingGames: upcomingGames});
+                    this.setState({upcomingGames: upcomingGames, needsGameRefresh: false});
                 }
             },
             (error) => {
@@ -71,11 +72,6 @@ class PredictGamesView extends Component {
                 this.setState({needsPredictionRefresh: false});
             }
         );
-    }
-
-    handleMenuButtonClick = (event) => {
-        console.log("Clicked Main Menu Button: " + event.target.id);
-        this.props.changeToView(event.target.id);
     }
 
     handlePredictionButtonClick = (event) => {

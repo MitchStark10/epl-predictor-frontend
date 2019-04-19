@@ -4,6 +4,7 @@ import './App.css';
 import MainMenu from './MainMenu/MainMenu';
 import AdminView from './AdminView/AdminView';
 import PredictGamesView from './PredictGames/PredictGames';
+import PreviousPredictionsView from './PastPredictions/PastPredictionsView';
 import LoginApp from './UserForms/LoginApp';
 
 class App extends Component {
@@ -35,7 +36,7 @@ class App extends Component {
 			);
 		} else if (this.state.view === "PASTPREDICTIONSVIEW") {
 			return (
-				<h1>Test past predictions view</h1> 
+				<PreviousPredictionsView userToken={this.state.userToken}/>
 			);
 		} else if (this.state.view === "ADMINVIEW") {
 			return (
