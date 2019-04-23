@@ -1,6 +1,7 @@
 import React from 'react';
 import NewUserForm from './NewUserForm';
 import LoginForm from './LoginForm';
+import './Login.css'
 
 class LoginApp extends React.Component {
     constructor(props) {
@@ -8,7 +9,7 @@ class LoginApp extends React.Component {
 
         this.LOGIN_FORM = "login";
         this.NEW_USER_FORM = "newUser";
-        this.CREATE_NEW_USER_TEXT = "Create New User";
+        this.CREATE_NEW_USER_TEXT = "NEW USER";
         this.LOGIN_WITH_EXISTING_ACCOUNT_TEXT = "Login With Existing Account Text";
 
         this.state = {
@@ -40,9 +41,9 @@ class LoginApp extends React.Component {
     render() {
         return (
             <div id="loginApp">
-                <button id="toggleFormButton" onClick={this.toggleForm.bind(this)}>{this.state.buttonText}</button>
-                <br />
+                <h1>Login to EPL Predictor</h1>
                 {this.getForm()}
+                <button id="toggleFormButton" onClick={this.toggleForm.bind(this)}>{this.state.buttonText}</button>
             </div>
         );
         

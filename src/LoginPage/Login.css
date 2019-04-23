@@ -1,0 +1,23 @@
+input[type="text"], input[type="password"] {
+    min-width: 100px;
+    max-width: 300px;
+    padding: 5px 8px;
+    margin: 0px auto;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 0px;
+    box-sizing: border-box;
+}
+  
+#loginApp {
+    margin: 5px auto;
+    padding: 10px;
+    border-style: none;
+    border-radius: 1px;
+    box-sizing: border-box;
+    width: fit-content;
+}
+
+button {
+    min-width: 200px;
+}

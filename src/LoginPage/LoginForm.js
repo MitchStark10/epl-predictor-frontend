@@ -35,14 +35,18 @@ class LoginForm extends Component {
     render() {
         return (
             <div id="loginForm">
+                <p>{this.state.statusMessage}</p>
+
                 <label htmlFor="username">Username: </label>
                 <input type="text" id="username" value={this.state.username} onChange={this.handleTextChange.bind(this)}/><br />
 
                 <label htmlFor="password">Password: </label>
-                <input type="password" id="password" value={this.state.password} onChange={this.handleTextChange.bind(this)}/><br />
+                <input type="password" id="password" value={this.state.password} onChange={this.handleTextChange.bind(this)}/>
+                <br />
+                <br />
+                <br />
 
-                <button id="login" onClick={this.login.bind(this)}>Login</button>
-                <p>{this.state.statusMessage}</p>
+                <button id="login" onClick={this.login.bind(this)}>LOGIN</button>
             </div>
         );
     }

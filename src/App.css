@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  background-color: lightslategrey;
+  background-color: lightgrey;
   min-height: 100vh;
 }
 
@@ -29,6 +29,19 @@
   color: white;
   padding: 0;
   margin: 0px;
+}
+
+button {
+  background-color: rgb(1, 78, 243);
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-size: 22px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 10px;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 @keyframes App-logo-spin {

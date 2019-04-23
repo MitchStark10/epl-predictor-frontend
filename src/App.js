@@ -5,7 +5,7 @@ import MainMenu from './MainMenu/MainMenu';
 import AdminView from './AdminView/AdminView';
 import PredictGamesView from './PredictGames/PredictGames';
 import PreviousPredictionsView from './PastPredictions/PastPredictionsView';
-import LoginApp from './UserForms/LoginApp';
+import LoginApp from './LoginPage/LoginApp';
 
 class App extends Component {
 	constructor() {
