@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
+import './PredictGames.css';
 
 class PredictGamesView extends Component {
 
@@ -106,8 +107,8 @@ class PredictGamesView extends Component {
             var year = gameDate.getFullYear();
 
             jsxList.push(
-                <div className="upcomingGame" key={game["GameId"]}>
-                    <h3>{monthIndex}/{day}/{year}</h3>
+                <div className="UpcomingGame" key={game["GameId"]}>
+                    <h3>{monthIndex}/{day}/{year} - {game["Competition"]}</h3>
 
                     <button 
                     id={game["GameId"]}
@@ -129,6 +130,7 @@ class PredictGamesView extends Component {
                     value={game["AwayTeamName"]}>
                         {game["AwayTeamName"]}
                     </button>
+                    <br />
                     {this.renderPrediction(game["GameId"])}
                 </div>
             );
@@ -142,7 +144,7 @@ class PredictGamesView extends Component {
             let prediction = this.state.upcomingPredictions[i];
 
             if (prediction["GameId"] === gameId) {
-                return "Predicted Winner: " + prediction["WinningTeam"];
+                return <h3>"Predicted Winner: " + prediction["WinningTeam"]</h3>;
             }
         }
 

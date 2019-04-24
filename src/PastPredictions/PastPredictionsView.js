@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import $ from 'jquery';
+import './PastPredictionsView.css';
 
 class PastPredictionsView extends Component {
 
@@ -32,6 +32,36 @@ class PastPredictionsView extends Component {
         }
     }
 
+    determineColor = (homeScore, awayScore, homeTeam, awayTeam, prediction) => {
+        if (prediction === null 
+                || homeScore === null
+                || awayScore === null
+                || homeScore === ""
+                || awayScore === "") {
+                    
+            return "black";
+        }
+
+        let predictedWinner = prediction["WinningTeam"];
+        let actualWinner;
+
+        if (homeScore === awayScore) {
+            actualWinner = "Tie";
+        } else if (homeScore > awayScore) {
+            actualWinner = homeTeam;
+        } else {
+            actualWinner = awayTeam;
+        }
+
+        console.log(predictedWinner + " - " + actualWinner);
+
+        if (predictedWinner === actualWinner) {
+            return "green";
+        } else {
+            return "red";
+        }
+    }
+
     retrieveGames = () => {
         console.log("Retrieving Games from: " + process.env.REACT_APP_API_HOST + "/games/retrieveAllPastGames");
         fetch(process.env.REACT_APP_API_HOST + "/games/retrieveAllPastGames")
@@ -49,6 +79,18 @@ class PastPredictionsView extends Component {
             }
         );
     };
+
+    findPredictionByGameId = (gameId) => {
+        for (var i = 0; i < this.state.pastPredictions.length; i++) {
+            let prediction = this.state.pastPredictions[i];
+
+            if (prediction["GameId"] === gameId) {
+                return prediction;
+            }
+        }
+
+        return null;
+    }
 
     retrievePredictions = () => {
         console.log("Retrieving Predictions from: " + process.env.REACT_APP_API_HOST + "/predictions/previousPredictions/" + this.props.userToken);
@@ -77,19 +119,29 @@ class PastPredictionsView extends Component {
         console.log("Past games: " + JSON.stringify(this.state.pastGames));
         for (var i = 0; i < this.state.pastGames.length; i++) {
             let game = this.state.pastGames[i];
+            let prediction = this.findPredictionByGameId(game["GameId"]);
 
             let gameDate = new Date(game["GameDate"]);
             var day = gameDate.getDate();
             var monthIndex = gameDate.getMonth() + 1;
             var year = gameDate.getFullYear();
 
-            jsxList.push(
-                <div className="pastGame" key={game["GameId"]}>
-                    <h3>{monthIndex}/{day}/{year}</h3>
 
-                    <p id={game["GameId"]}>
-                    {game["HomeTeamName"]} {game["HomeTeamScore"]} vs. {game["AwayTeamScore"]} {game["AwayTeamName"]} - {this.renderPrediction(game["GameId"])}
-                    </p>
+            let style = {
+                "border-color": this.determineColor(
+                        game["HomeTeamScore"], 
+                        game["AwayTeamScore"], 
+                        game["HomeTeamName"],
+                        game["AwayTeamName"],
+                        prediction)
+            }
+
+            jsxList.push(
+                <div className="PastGame" key={game["GameId"]} style={style}>
+                    <h2>{monthIndex}/{day}/{year} - {game["Competition"]}</h2>
+                    <h3>{this.renderPrediction(prediction)}</h3>
+                    <p>{game["HomeTeamName"]}: {game["HomeTeamScore"]}</p>
+                    <p>{game["AwayTeamName"]}: {game["AwayTeamScore"]}</p>
                 </div>
             );
         }
@@ -97,22 +149,18 @@ class PastPredictionsView extends Component {
         return jsxList;
     }
 
-    renderPrediction = (gameId) => {
-        for (var i = 0; i < this.state.pastPredictions.length; i++) {
-            let prediction = this.state.pastPredictions[i];
-
-            if (prediction["GameId"] === gameId) {
-                return "Predicted Winner: " + prediction["WinningTeam"];
-            }
+    renderPrediction = (prediction) => {
+        if (prediction === null) {
+            return "Prediction Not Made";
         }
 
-        return "Prediction Not Made";
+        return "Predicted Winner: " + prediction["WinningTeam"];
     }
 
     render() {
         return (
             <div className="PastPredictionsView">
-                <h1>Click on a team for each game to submit your predictions!</h1>
+                <h1>View Your Past Predictions!</h1>
                 {this.renderPastGames()}
             </div>
         );
