@@ -49,7 +49,7 @@ class EditGame extends React.Component {
 
     render() {
         return (
-            <div className="game" key={this.props.game["GameId"]}>
+            <div className="EditSingleGame" key={this.props.game["GameId"]}>
                 <label htmlFor="homeTeamName">Home Team Name: </label>
                 <input type="text" id="homeTeamName" value={this.state["homeTeamName"]} onChange={this.handleTextChange}/><br />
 

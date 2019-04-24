@@ -50,7 +50,7 @@ class EditGames extends Component {
             let game = this.state.games[i];
 
             jsxList.push(
-                <div id="editGameContainer">
+                <div class="EditGameContainer">
                     <EditGame game={game} />
                     <br />
                 </div>
@@ -62,7 +62,7 @@ class EditGames extends Component {
 
     render() {
         return (
-            <div id="EditGames">
+            <div className="EditGames">
                 <p id="statusMessage">{this.state.statusMessage}</p>
                 {this.renderGames()}
             </div>
