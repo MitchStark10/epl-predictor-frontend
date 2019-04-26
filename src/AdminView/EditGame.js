@@ -72,7 +72,7 @@ class EditGame extends React.Component {
                     <option value="MLS">MLS</option>
                 </select><br />
 
-                <button id="updateGame" onClick={this.submitEdits}>Submit Edits</button>
+                <button id="updateGame" onClick={this.submitEdits}>SUBMIT EDITS</button>
             </div>
         );
     }

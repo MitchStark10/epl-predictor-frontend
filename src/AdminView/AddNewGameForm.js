@@ -54,7 +54,7 @@ class AddNewGameForm extends Component {
                     <option value="MLS">MLS</option>
                 </select><br />
 
-                <button id="addNewGame" onClick={this.submitGame}>Add New Game</button>
+                <button id="addNewGame" onClick={this.submitGame}>ADD NEW GAME</button>
                 <p id="statusMessage">{this.state.statusMessage}</p>
             </div>
         );

@@ -113,6 +113,33 @@ class PastPredictionsView extends Component {
         );
     }
 
+    renderStats = () => {
+        var correctPredictionCount = 0;
+        var totalPredictionCount = 0;
+
+        for (var i = 0; i < this.state.pastGames.length; i++) {
+            let game = this.state.pastGames[i];
+            let prediction = this.findPredictionByGameId(game["GameId"]);
+
+            let color = this.determineColor(game["HomeTeamScore"], game["AwayTeamScore"], game["HomeTeamName"], game["AwayTeamName"], prediction);
+
+            if (color === "green") {
+                correctPredictionCount++;
+                totalPredictionCount++;
+            } else if (color === "red") {
+                totalPredictionCount++;
+            }
+        }
+
+        return (
+            <div className="statBox">
+                <h2>Prediction Success Rate: {correctPredictionCount / totalPredictionCount * 100}%</h2>
+                <h3>Total Predictions: {totalPredictionCount}</h3>
+                <h3>Correct Predictions: {correctPredictionCount}</h3>
+            </div>
+        );
+    }
+
     renderPastGames = () => {
         let jsxList = [];
 
@@ -161,6 +188,7 @@ class PastPredictionsView extends Component {
         return (
             <div className="PastPredictionsView">
                 <h1>View Your Past Predictions!</h1>
+                {this.renderStats()}
                 {this.renderPastGames()}
             </div>
         );

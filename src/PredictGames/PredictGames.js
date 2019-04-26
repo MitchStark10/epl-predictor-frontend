@@ -144,11 +144,15 @@ class PredictGamesView extends Component {
             let prediction = this.state.upcomingPredictions[i];
 
             if (prediction["GameId"] === gameId) {
-                return <h3>"Predicted Winner: " + prediction["WinningTeam"]</h3>;
+                return (
+                    <h3>Predicted Winner: {prediction["WinningTeam"]}</h3>
+                );
             }
         }
 
-        return "Predicted Winner: (Not Yet Predicted)";
+        return (
+            <h3>Predicted Winner: (Not Yet Predicted)</h3>
+        );
     }
 
     render() {

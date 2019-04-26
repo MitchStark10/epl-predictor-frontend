@@ -51,7 +51,7 @@ class NewUserForm extends React.Component {
                 <label for="confirmedPassword">Confrim Password: </label>
                 <input type="password" id="confirmedPassword" value={this.state.confirmedPassword} onChange={this.handleTextChange.bind(this)}/><br />
 
-                <button id="createNewUser" onClick={this.createNewUser.bind(this)}>Create New User</button>
+                <button id="createNewUser" onClick={this.createNewUser.bind(this)}>CREATE NEW USER</button>
                 <p>{this.state.statusMessage}</p>
             </div>
         )

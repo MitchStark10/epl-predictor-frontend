@@ -41,7 +41,7 @@ class MainMenu extends Component {
     renderAdminView = () => {
         if (this.state.isAdmin) {
             return (
-                <button className="Main-Menu" id="ADMINVIEW" onClick={this.handleButtonClick}>Admin</button>
+                <button className="Main-Menu" id="ADMINVIEW" onClick={this.handleButtonClick}>ADMIN</button>
             )
         }
 
@@ -51,10 +51,10 @@ class MainMenu extends Component {
     render() {
         return (
             <div className="Main-Menu-Buttons">
-                <button className="Main-Menu" id="PASTPREDICTIONSVIEW" onClick={this.handleButtonClick}>View Past Predictions</button>
-                <button className="Main-Menu" id="PREDICTGAMESVIEW" onClick={this.handleButtonClick}>Predict Games</button>
+                <button className="Main-Menu" id="PASTPREDICTIONSVIEW" onClick={this.handleButtonClick}>RESULTS</button>
+                <button className="Main-Menu" id="PREDICTGAMESVIEW" onClick={this.handleButtonClick}>PREDICT GAMES</button>
                 {this.renderAdminView()}
-                <button className="Main-Menu" id="ABOUTVIEW" onClick={this.handleButtonClick}>About</button>
+                <button className="Main-Menu" id="ABOUTVIEW" onClick={this.handleButtonClick}>ABOUT</button>
             </div>
         );
     }
