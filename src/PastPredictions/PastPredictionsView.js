@@ -131,9 +131,17 @@ class PastPredictionsView extends Component {
             }
         }
 
+        var predictionSuccessRate;
+        
+        if (totalPredictionCount > 0) {
+            predictionSuccessRate = (correctPredictionCount / totalPredictionCount * 100).toFixed(2);
+        } else {
+            predictionSuccessRate = "--";
+        }
+
         return (
             <div className="statBox">
-                <h2>Prediction Success Rate: {(correctPredictionCount / totalPredictionCount * 100).toFixed(2)}%</h2>
+                <h2>Prediction Success Rate: {predictionSuccessRate}%</h2>
                 <h3>Total Predictions: {totalPredictionCount}</h3>
                 <h3>Correct Predictions: {correctPredictionCount}</h3>
             </div>

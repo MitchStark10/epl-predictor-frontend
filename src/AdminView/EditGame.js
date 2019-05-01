@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 
-class EditGame extends React.Component {
+class EditGame extends Component {
 
     constructor(props) {
         super();
