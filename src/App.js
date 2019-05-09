@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import logo from './soccerball.png';
 import './App.css';
 import MainMenu from './MainMenu/MainMenu';
 import AdminView from './AdminView/AdminView';
@@ -44,7 +44,11 @@ class App extends Component {
 			);
 		} else if (this.state.view === "ABOUTVIEW") {
 			return (
-				<h1>About View - Under Construction</h1>
+				<div>
+					<h1>About View - Under Construction</h1>
+					<p>Version: 1.0.0</p>
+					<p>Author: Mitch Stark</p>
+				</div>
 			);
 		} else {
 			console.warn("Unknown view: " + this.state.view);
@@ -70,8 +74,6 @@ class App extends Component {
 				<header className="App-header">
 					<img src={logo} className="App-logo" alt="logo" />
 					<p className="Header-Text">EPL Predictor</p>
-					<p className="Header-Text">Version: 1.0.0</p>
-					<p className="Header-Text">Author: Mitch Stark</p>
 				</header>
 				{this.displayMenu()}
 				{this.displayView()}
