@@ -1,0 +1,7 @@
+table, th, td {
+    margin: 5px auto;
+    padding: 10px;
+    border-style: solid;
+    border-radius: 1px;
+    width: fit-content;
+}

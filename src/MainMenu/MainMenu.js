@@ -53,6 +53,7 @@ class MainMenu extends Component {
             <div className="Main-Menu-Buttons">
                 <button className="Main-Menu" id="PASTPREDICTIONSVIEW" onClick={this.handleButtonClick}>RESULTS</button>
                 <button className="Main-Menu" id="PREDICTGAMESVIEW" onClick={this.handleButtonClick}>PREDICT GAMES</button>
+                <button className="Main-Menu" id="LEADERBOARDSVIEW" onClick={this.handleButtonClick}>LEADERBOARD</button>
                 {this.renderAdminView()}
                 <button className="Main-Menu" id="ABOUTVIEW" onClick={this.handleButtonClick}>ABOUT</button>
             </div>

@@ -6,6 +6,7 @@ import AdminView from './AdminView/AdminView';
 import PredictGamesView from './PredictGames/PredictGames';
 import PreviousPredictionsView from './PastPredictions/PastPredictionsView';
 import LoginApp from './LoginPage/LoginApp';
+import LeaderboardsView from './Leaderboards/LeaderboardsView';
 
 class App extends Component {
 	constructor() {
@@ -41,6 +42,10 @@ class App extends Component {
 		} else if (this.state.view === "ADMINVIEW") {
 			return (
 				<AdminView />
+			);
+		} else if (this.state.view === "LEADERBOARDSVIEW") {
+			return (
+				<LeaderboardsView />
 			);
 		} else if (this.state.view === "ABOUTVIEW") {
 			return (
