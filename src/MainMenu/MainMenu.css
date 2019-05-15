@@ -1,0 +1,11 @@
+.Main-Menu-Buttons {
+    background: black;
+}
+
+.MainMenuHeader {
+    display: inline;
+    margin: auto;
+    margin-right: 5vw;
+    color: white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}

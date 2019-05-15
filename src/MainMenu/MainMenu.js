@@ -51,6 +51,7 @@ class MainMenu extends Component {
     render() {
         return (
             <div className="Main-Menu-Buttons">
+                <h1 className="MainMenuHeader">ScoreMaster</h1>
                 <button className="Main-Menu" id="PASTPREDICTIONSVIEW" onClick={this.handleButtonClick}>RESULTS</button>
                 <button className="Main-Menu" id="PREDICTGAMESVIEW" onClick={this.handleButtonClick}>PREDICT GAMES</button>
                 <button className="Main-Menu" id="LEADERBOARDSVIEW" onClick={this.handleButtonClick}>LEADERBOARD</button>
