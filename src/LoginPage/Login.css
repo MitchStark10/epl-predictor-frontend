@@ -1,11 +1,12 @@
 input[type="text"], input[type="password"] {
-    min-width: 100px;
-    max-width: 300px;
+    height: 30px;
+    font-size: 16px;
+    width: 100%;
     padding: 5px 8px;
-    margin: 0px auto;
+    margin: 5px auto;
     display: inline-block;
     border: 1px solid #ccc;
-    border-radius: 0px;
+    border-radius: 10px;
     box-sizing: border-box;
 }
   
@@ -16,6 +17,9 @@ input[type="text"], input[type="password"] {
     border-radius: 1px;
     box-sizing: border-box;
     width: fit-content;
+    min-width: 33vw;
+    background-color: grey;
+    border-radius: 15px;
 }
 
 button {

@@ -41,7 +41,7 @@ class LoginApp extends React.Component {
     render() {
         return (
             <div id="loginApp">
-                <h1>Login to EPL Predictor</h1>
+                <h1>Login</h1>
                 {this.getForm()}
                 <button id="toggleFormButton" onClick={this.toggleForm.bind(this)}>{this.state.buttonText}</button>
             </div>

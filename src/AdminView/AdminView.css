@@ -1,4 +1,4 @@
-.EditSingleGame {
+.EditSingleGame, #newGameForm {
     margin: 5px auto;
     border-style: solid;
     border-radius: 10px;

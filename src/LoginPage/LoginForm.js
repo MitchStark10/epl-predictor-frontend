@@ -36,15 +36,8 @@ class LoginForm extends Component {
         return (
             <div id="loginForm">
                 <p>{this.state.statusMessage}</p>
-
-                <label htmlFor="username">Username: </label>
-                <input type="text" id="username" value={this.state.username} onChange={this.handleTextChange.bind(this)}/><br />
-
-                <label htmlFor="password">Password: </label>
-                <input type="password" id="password" value={this.state.password} onChange={this.handleTextChange.bind(this)}/>
-                <br />
-                <br />
-                <br />
+                <input type="text" id="username" value={this.state.username} placeholder="Username goes here" onChange={this.handleTextChange.bind(this)}/><br />
+                <input type="password" id="password" value={this.state.password} placeholder="Password goes here" onChange={this.handleTextChange.bind(this)}/>
 
                 <button id="login" onClick={this.login.bind(this)}>LOGIN</button>
             </div>
