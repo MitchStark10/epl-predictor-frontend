@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import $ from 'jquery';
+import Cookies from 'js-cookie';
 
 class LoginForm extends Component {
 
@@ -11,12 +12,34 @@ class LoginForm extends Component {
             password: "",
             statusMessage: "",
         };
+
+        this.loginWithCookies();
     }
 
     handleTextChange(e) {
         let newStateObj = {};
         newStateObj[e.target.id] = e.target.value;
         this.setState(newStateObj);
+    }
+
+    loginWithCookies() {
+        let endpoint = "/auth/login";
+        let url = process.env.REACT_APP_API_HOST + endpoint;
+
+        $.ajaxSetup({
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
+            }
+        });
+
+        $.post(url)
+        .done((response) => {
+            this.props.setLoggedIn(Cookies.get('SMLU'));
+        })
+        .fail((error) => {
+            console.log("Error during cookie login: " + error.responseText);
+        });
     }
 
     login() {
