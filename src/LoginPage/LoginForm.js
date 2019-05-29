@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import $ from 'jquery';
-import Cookies from 'js-cookie';
 
 class LoginForm extends Component {
 
@@ -36,8 +35,8 @@ class LoginForm extends Component {
 
         $.post(url)
         .done((response) => {
-            console.log("Setting logged in with cookies: " + Cookies.get('SMLU'));
-            this.props.setLoggedIn(Cookies.get('SMLU'));
+            console.log("Setting logged in with cookies: " + response["username"]);
+            this.props.setLoggedIn(response["username"]);
         })
         .fail((error) => {
             console.log("Error during cookie login: " + error.responseText);
