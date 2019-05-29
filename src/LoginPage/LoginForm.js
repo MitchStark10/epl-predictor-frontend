@@ -23,6 +23,7 @@ class LoginForm extends Component {
     }
 
     loginWithCookies() {
+        console.log("Attempting login with cookies");
         let endpoint = "/auth/login";
         let url = process.env.REACT_APP_API_HOST + endpoint;
 
@@ -41,6 +42,8 @@ class LoginForm extends Component {
         .fail((error) => {
             console.log("Error during cookie login: " + error.responseText);
         });
+
+        console.log("Exiting login with cookies method");
     }
 
     login() {
