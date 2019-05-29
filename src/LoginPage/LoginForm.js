@@ -35,6 +35,7 @@ class LoginForm extends Component {
 
         $.post(url)
         .done((response) => {
+            console.log("Setting logged in with cookies: " + Cookies.get('SMLU'));
             this.props.setLoggedIn(Cookies.get('SMLU'));
         })
         .fail((error) => {

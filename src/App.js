@@ -60,7 +60,6 @@ class App extends Component {
 					withCredentials: true
 				}
 			});
-			console.log("Donezo for real");
 			$.post(process.env.REACT_APP_API_HOST + "/auth/logout")
 			.done((data) => {
 				window.location.reload();
