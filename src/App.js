@@ -7,6 +7,8 @@ import PredictGamesView from './PredictGames/PredictGames';
 import PreviousPredictionsView from './PastPredictions/PastPredictionsView';
 import LoginApp from './LoginPage/LoginApp';
 import LeaderboardsView from './Leaderboards/LeaderboardsView';
+import AboutView from './AboutView/AboutView';
+import $ from 'jquery';
 
 class App extends Component {
 	constructor() {
@@ -49,12 +51,23 @@ class App extends Component {
 			);
 		} else if (this.state.view === "ABOUTVIEW") {
 			return (
-				<div>
-					<h1>About View - Under Construction</h1>
-					<p>Version: 1.0.0</p>
-					<p>Author: Mitch Stark</p>
-				</div>
+				<AboutView />
 			);
+		} else if (this.state.view === "LOGOUT") {
+			$.ajaxSetup({
+				crossDomain: true,
+				xhrFields: {
+					withCredentials: true
+				}
+			});
+			console.log("Donezo for real");
+			$.post(process.env.REACT_APP_API_HOST + "/auth/logout")
+			.done((data) => {
+				window.location.reload();
+			})
+			.fail((error) => {
+				window.location.reload();
+			})
 		} else {
 			console.warn("Unknown view: " + this.state.view);
 			this.setState({view: "PREDICTGAMESVIEW"});
@@ -73,13 +86,23 @@ class App extends Component {
 		return null;
 	}
 
+	displayHeader = () => {
+		if (this.state.userToken === "") {
+			return (
+				<header className="App-header">
+					<img src={logo} className="App-logo" alt="logo" />
+					<p className="Header-Text">ScoreMaster</p>
+				</header>
+			);
+		}
+
+		return null;
+	}
+
 	render() {
 		return (
 			<div className="App">
-				<header className="App-header">
-					<img src={logo} className="App-logo" alt="logo" />
-					<p className="Header-Text">EPL Predictor</p>
-				</header>
+				{this.displayHeader()}
 				{this.displayMenu()}
 				{this.displayView()}
 			</div>
