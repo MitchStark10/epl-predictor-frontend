@@ -22,6 +22,10 @@ INSERT INTO USER (Username, Password, eMail)
 VALUES (?, ?, ?)
 `;
 
+const UPDATE_SESSION_COOKIE_SQL =`
+UPDATE USER SET SessionCookie = ? WHERE Username = ?
+`;
+
 const GET_STATUS_SQL = `
 SELECT Status
 FROM USER
@@ -30,13 +34,16 @@ WHERE Username = ?
 
 app.post('/login', async (req, res) => {
     try {
-        if (req.headers.cookie !== undefined) {
-            console.log("Attempting to login with cookies: " + req.headers.cookie["SMLU"]);
-            let cookieParams = [req.headers.cookie["SMLU"], req.headers.cookie["SMLC"]];
+        console.log("here");
+        if (req.cookies !== undefined) {
+            console.log("Attempting to login with cookies: " + JSON.stringify(req.cookies));
+            let username = req.cookies["SMLU"];
+            let cookieParams = [req.cookies["SMLU"], req.cookies["SMLC"]];
             let loginWithCookieQuery = mysql.format(LOGIN_WITH_COOKIE_SQL, cookieParams);
             let cookieLoginResponse = await QueryRunner.runQuery(loginWithCookieQuery);
-            if (cookieLoginResponse[0]["USER_COUNT"] == 0) {
-                res.status(200).json("Successfully logged in");
+            if (cookieLoginResponse[0]["USER_COUNT"] !== 0) {
+                console.log("test here: " + req.cookies["SMLU"]);
+                res.status(200).json({username: req.cookies["SMLU"]});
                 return;
             }
         }
@@ -59,9 +66,13 @@ app.post('/login', async (req, res) => {
 
         if (bcrypt.compareSync(req.body["password"], userLoginResponse["Password"])) {
             let sessionCookie = PasswordHasher.hashPassword(req.body["username"] + req.body["password"] + new Date());
-            res.cookie('SMLU', req.body["username"]);
-            res.cookie('SMLC', sessionCookie);
-            res.status(200).json("Successfully logged in");
+            let insertSessionCookieParams = [sessionCookie, req.body["username"]];
+            let insertSessionCookieSql = mysql.format(UPDATE_SESSION_COOKIE_SQL, insertSessionCookieParams);
+            let cookieMetadata = { httpOnly: true }
+            QueryRunner.runQuery(insertSessionCookieSql);
+            res.cookie('SMLU', req.body["username"], cookieMetadata);
+            res.cookie('SMLC', sessionCookie, cookieMetadata);
+            res.status(200).json({username: req.body["username"]});
         } else {
             console.warn("Password did not match for user: " + req.body["username"]);
             res.status(401).json("Username or Password did not match");
@@ -76,6 +87,7 @@ app.post('/login', async (req, res) => {
 app.post('/logout', async (req, res) => {
     res.clearCookie('SMLU');
     res.clearCookie('SMLC');
+    res.status(200).json('Logout completed');
 });
 
 app.post('/newUser', async (req, res) => {

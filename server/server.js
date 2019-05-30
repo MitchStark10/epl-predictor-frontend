@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const routes = require('./routes');
 
 app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://localhost:5000");
+    res.header("Access-Control-Allow-Origin", process.env.CORS_ACCEPT_HOST);
     res.header('Access-Control-Allow-Credentials', 'true');
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse application/json
 app.use(bodyParser.json());
+app.use(cookieParser());
 app.use(routes);
 
 //Retrieve All Games and return as JSON Array
