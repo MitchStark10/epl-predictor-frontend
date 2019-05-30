@@ -2,7 +2,6 @@
   "name": "predictor-web-frontend",
   "version": "1.0.3",
   "private": true,
-  "proxy": "http://localhost:8080",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "concurrently": "^4.1.0",
