@@ -2,6 +2,7 @@
   "name": "predictor-web-frontend",
   "version": "1.0.3",
   "private": true,
+  "proxy": "http://localhost:8080/",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "concurrently": "^4.1.0",
@@ -17,7 +18,7 @@
   "scripts": {
     "build": "react-scripts build",
     "heroku-postbuild": "npm run build",
-    "start": "node ./server/server.js",
+    "start": "NODE_ENV=\"production\" node ./server/server.js",
     "dev": "concurrently --kill-others \"npm:webapp\" \"npm:server\"",
     "webapp": "react-scripts start",
     "server": "node ./server/server.js",

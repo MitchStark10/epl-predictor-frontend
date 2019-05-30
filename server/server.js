@@ -26,7 +26,7 @@ app.get('/retrievePredictionSuccessRate', (req, res) => {
     PredictionSuccessRateService.retrievePredictionRates(res);
 })
 
-if (process.env.SCOREMASTER_ENV === "PROD") {
+if (process.env.NODE_ENV === "production") {
     app.use("/", express.static(path.join(__dirname, "../build/")));
 }
 
