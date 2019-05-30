@@ -3,7 +3,11 @@
   "version": "1.0.3",
   "private": true,
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "concurrently": "^4.1.0",
+    "cookie-parser": "^1.4.4",
     "jquery": "^3.4.1",
+    "mysql": "^2.17.1",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-scripts": "2.1.8",
@@ -12,8 +16,9 @@
   "scripts": {
     "build": "react-scripts build",
     "heroku-postbuild": "npm run build",
-    "start": "serve -s build",
-    "dev": "react-scripts start",
+    "start": "concurrently --kill-others \"serve -s build\" \"npm:server\" ",
+    "dev": "concurrently --kill-others \"npm:webapp\" \"npm:server\"",
+    "webapp": "react-scripts start",
     "server": "node ./server/server.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
