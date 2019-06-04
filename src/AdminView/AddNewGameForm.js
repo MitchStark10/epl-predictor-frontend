@@ -48,8 +48,10 @@ class AddNewGameForm extends Component {
                 <label htmlFor="competition">Competition: </label>
                 <select id="competition" onChange={this.handleTextChange.bind(this)}>
                     <option value="English Premier League">English Premier League</option>
+                    <option value="La Liga">La Liga</option>
                     <option value="Champions League">Champions League</option>
                     <option value="MLS">MLS</option>
+                    <option value="International">International</option>
                 </select><br />
 
                 <button id="addNewGame" onClick={this.submitGame}>ADD NEW GAME</button>

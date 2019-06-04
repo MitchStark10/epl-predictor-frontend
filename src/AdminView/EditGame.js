@@ -60,8 +60,10 @@ class EditGame extends Component {
                 <label htmlFor="Competition">Competition: </label>
                 <select id="competition" value={this.state["competition"]} onChange={this.handleTextChange}>
                     <option value="English Premier League">English Premier League</option>
+                    <option value="La Liga">La Liga</option>
                     <option value="Champions League">Champions League</option>
                     <option value="MLS">MLS</option>
+                    <option value="International">International</option>
                 </select><br />
 
                 <button id="updateGame" onClick={this.submitEdits}>SUBMIT EDITS</button>
