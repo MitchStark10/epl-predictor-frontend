@@ -34,7 +34,6 @@ WHERE Username = ?
 
 app.post('/login', async (req, res) => {
     try {
-        console.log("here");
         if (req.cookies !== undefined) {
             console.log("Attempting to login with cookies: " + JSON.stringify(req.cookies));
             let username = req.cookies["SMLU"];
@@ -42,7 +41,6 @@ app.post('/login', async (req, res) => {
             let loginWithCookieQuery = mysql.format(LOGIN_WITH_COOKIE_SQL, cookieParams);
             let cookieLoginResponse = await QueryRunner.runQuery(loginWithCookieQuery);
             if (cookieLoginResponse[0]["USER_COUNT"] !== 0) {
-                console.log("test here: " + req.cookies["SMLU"]);
                 res.status(200).json({username: req.cookies["SMLU"]});
                 return;
             }

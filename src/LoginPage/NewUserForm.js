@@ -25,8 +25,6 @@ class NewUserForm extends React.Component {
             let endpoint = "/auth/newUser";
             let url = process.env.REACT_APP_API_HOST + endpoint;
 
-            console.log("testing: " + JSON.stringify(this.state));
-
             $.post(url, this.state)
             .done((response) => {
                 this.props.setLoggedIn(this.state.username);

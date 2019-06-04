@@ -12,19 +12,14 @@ class MainMenu extends Component {
     }
 
     componentDidMount() {
-        console.log("componeentDidMount");
         this.retrieveIsAdmin();
     }
 
     retrieveIsAdmin() {
-        console.log("Admin view test: " + this.state.userToken)
-
         let getUserStatusUrl = process.env.REACT_APP_API_HOST + "/auth/getUserStatus";
         $.post(getUserStatusUrl, this.state)
         .done((statusResponse) => {
-            console.log(statusResponse["Status"] === "admin");
             if (statusResponse["Status"] === "admin") {
-                console.log("here");
                 this.setState({isAdmin: true});
             }
         })
@@ -34,7 +29,6 @@ class MainMenu extends Component {
     }
 
     handleButtonClick = (event) => {
-        console.log("Clicked Main Menu Button: " + event.target.id);
         this.props.changeToView(event.target.id);
     }
 
