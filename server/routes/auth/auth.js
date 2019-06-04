@@ -63,10 +63,10 @@ app.post('/login', async (req, res) => {
         let userLoginResponse = userLoginResponseArray[0];
 
         if (bcrypt.compareSync(req.body["password"], userLoginResponse["Password"])) {
-            let sessionCookie = PasswordHasher.hashPassword(req.body["username"] + req.body["password"] + new Date());
+            let sessionCookie = PasswordHasher.hashPassword(req.body["username"] + req.body["password"]);
             let insertSessionCookieParams = [sessionCookie, req.body["username"]];
             let insertSessionCookieSql = mysql.format(UPDATE_SESSION_COOKIE_SQL, insertSessionCookieParams);
-            let cookieMetadata = { httpOnly: true }
+            let cookieMetadata = { httpOnly: true, sameSite: 'lax' }
             QueryRunner.runQuery(insertSessionCookieSql);
             res.cookie('SMLU', req.body["username"], cookieMetadata);
             res.cookie('SMLC', sessionCookie, cookieMetadata);

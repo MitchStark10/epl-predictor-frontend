@@ -2,12 +2,14 @@
   "name": "predictor-web-frontend",
   "version": "1.0.3",
   "private": true,
+  "proxy": "http://localhost:8080/",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "concurrently": "^4.1.0",
     "cookie-parser": "^1.4.4",
     "jquery": "^3.4.1",
     "mysql": "^2.17.1",
+    "path": "^0.12.7",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-scripts": "2.1.8",
@@ -16,7 +18,7 @@
   "scripts": {
     "build": "react-scripts build",
     "heroku-postbuild": "npm run build",
-    "start": "concurrently --kill-others \"serve -s build\" \"npm:server\" ",
+    "start": "NODE_ENV=\"production\" node ./server/server.js",
     "dev": "concurrently --kill-others \"npm:webapp\" \"npm:server\"",
     "webapp": "react-scripts start",
     "server": "node ./server/server.js",
