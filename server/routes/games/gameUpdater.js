@@ -41,8 +41,6 @@ let checkIfPredictionTeamNamesNeedToUpdate = async (req) => {
     let params = [req.params["gameId"]];
     let retrieveTeamNamesQuery = mysql.format(SELECT_TEAM_NAMES, params);
 
-    console.log("testing: " + retrieveTeamNamesQuery);
-
     let teamNameResponse = await QueryRunner.runQuery(retrieveTeamNamesQuery);
     let homeTeamName = teamNameResponse[0]["HomeTeamName"];         
     let awayTeamName = teamNameResponse[0]["AwayTeamName"];

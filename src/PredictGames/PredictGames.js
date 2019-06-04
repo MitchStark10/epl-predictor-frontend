@@ -18,7 +18,6 @@ class PredictGamesView extends Component {
     }
 
     componentDidMount() {
-        console.log("componeentDidMount");
         this.retrieveGames();
         this.retrievePredictions();
     }
@@ -34,7 +33,6 @@ class PredictGamesView extends Component {
     }
 
     retrieveGames = () => {
-        console.log("Retrieving Games from: " + process.env.REACT_APP_API_HOST + "/games/retrievAllUpcomingGames");
         fetch(process.env.REACT_APP_API_HOST + "/games/retrieveAllUpcomingGames")
         .then( result => result.json() )
         .then(
@@ -52,13 +50,10 @@ class PredictGamesView extends Component {
     };
 
     retrievePredictions = () => {
-        console.log("Retrieving Predictions from: " + process.env.REACT_APP_API_HOST + "/predictions/upcomingPredictions/" + this.props.userToken);
         fetch(process.env.REACT_APP_API_HOST + "/predictions/upcomingPredictions/" + this.props.userToken)
         .then ( result => result.json() )
         .then(
             (upcomingPredictions) => {
-                console.log("Upcoming predictions: " + JSON.stringify(upcomingPredictions));
-
                 if (upcomingPredictions["errorMsg"]) {
                     this.setState({errorMessage: upcomingPredictions["errorMsg"], needsPredictionRefresh: false});
                 } else {
@@ -76,7 +71,6 @@ class PredictGamesView extends Component {
     }
 
     handlePredictionButtonClick = (event) => {
-        console.log("Clicked Prediction Button: " + event.target.id + " - " + event.target.value);
         let endpoint = "/predictions/addOrUpdatePrediction";
         let url = process.env.REACT_APP_API_HOST + endpoint;
 

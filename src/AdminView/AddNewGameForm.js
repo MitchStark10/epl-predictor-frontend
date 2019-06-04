@@ -22,8 +22,6 @@ class AddNewGameForm extends Component {
     }
 
     submitGame = () => {
-        console.log(JSON.stringify(this.state));
-
         let url = process.env.REACT_APP_API_HOST + "/admin/addNewGame";
 
         $.post(url, this.state)

@@ -17,7 +17,6 @@ class PastPredictionsView extends Component {
     }
 
     componentDidMount() {
-        console.log("componeentDidMount");
         this.retrieveGames();
         this.retrievePredictions();
     }
@@ -53,8 +52,6 @@ class PastPredictionsView extends Component {
             actualWinner = awayTeam;
         }
 
-        console.log(predictedWinner + " - " + actualWinner);
-
         if (predictedWinner === actualWinner) {
             return "green";
         } else {
@@ -63,7 +60,6 @@ class PastPredictionsView extends Component {
     }
 
     retrieveGames = () => {
-        console.log("Retrieving Games from: " + process.env.REACT_APP_API_HOST + "/games/retrieveAllPastGames");
         fetch(process.env.REACT_APP_API_HOST + "/games/retrieveAllPastGames")
         .then( result => result.json() )
         .then(
@@ -93,13 +89,10 @@ class PastPredictionsView extends Component {
     }
 
     retrievePredictions = () => {
-        console.log("Retrieving Predictions from: " + process.env.REACT_APP_API_HOST + "/predictions/previousPredictions/" + this.props.userToken);
         fetch(process.env.REACT_APP_API_HOST + "/predictions/previousPredictions/" + this.props.userToken)
         .then ( result => result.json() )
         .then(
             (previousPredictions) => {
-                console.log("Past predictions: " + JSON.stringify(previousPredictions));
-
                 if (previousPredictions["errorMsg"]) {
                     this.setState({errorMessage: previousPredictions["errorMsg"], needsPredictionRefresh: false});
                 } else {
@@ -151,7 +144,6 @@ class PastPredictionsView extends Component {
     renderPastGames = () => {
         let jsxList = [];
 
-        console.log("Past games: " + JSON.stringify(this.state.pastGames));
         for (var i = 0; i < this.state.pastGames.length; i++) {
             let game = this.state.pastGames[i];
             let prediction = this.findPredictionByGameId(game["GameId"]);

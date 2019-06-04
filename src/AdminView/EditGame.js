@@ -5,7 +5,6 @@ class EditGame extends Component {
 
     constructor(props) {
         super();
-        console.log("test: " + JSON.stringify(props));
         this.state = {
             "homeTeamName": props.game["HomeTeamName"],
             "homeTeamScore": props.game["HomeTeamScore"],
@@ -37,7 +36,6 @@ class EditGame extends Component {
 
     formatDate = (date) => {
         let dateAloneString = date.toString().substring(0, 10)
-        console.log("test first: " + dateAloneString);
         return dateAloneString;
     }
 

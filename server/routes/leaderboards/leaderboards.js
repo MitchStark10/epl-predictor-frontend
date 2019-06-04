@@ -51,8 +51,6 @@ processPredictions = (predictionList, username) => {
         let homeTeamScore = parseInt(prediction["HomeTeamScore"]);
         let awayTeamScore = parseInt(prediction["AwayTeamScore"]);
 
-        console.log("Test: " + homeTeamScore + " - " + awayTeamScore + " - " + predictedWinner);
-
         if ((homeTeamScore === awayTeamScore && predictedWinner === "Tie")
             || (homeTeamScore > awayTeamScore && predictedWinner === prediction["HomeTeamName"])
             || (awayTeamScore > homeTeamScore && predictedWinner === prediction["AwayTeamName"])) {

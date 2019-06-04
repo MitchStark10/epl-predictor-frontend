@@ -24,7 +24,6 @@ class LeaderboardsView extends Component {
     }
 
     retrieveLeaderboardStats() {
-        console.log("Retrieving Leaderboards from: " + process.env.REACT_APP_API_HOST + "/leaderboards/");
         fetch(process.env.REACT_APP_API_HOST + "/leaderboards/")
         .then( result => result.json() )
         .then(
@@ -42,7 +41,6 @@ class LeaderboardsView extends Component {
     }
 
     renderLeaderboardStats() {
-        console.log(JSON.stringify(this.state.leaderboardStats));
         return (
             <div id="leaderboardStats">
                 <table>

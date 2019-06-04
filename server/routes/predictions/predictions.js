@@ -79,7 +79,6 @@ app.post('/addOrUpdatePrediction', async (req, res) => {
     let updateParams = [req.body["winningTeam"], req.body["username"], req.body["gameId"]];
 
     if (await predictionAlreadyExists(retrievePreviousPredictionParams)) {
-        console.log("here");
         updatePrediction(updateParams, res);
     } else {
         insertNewPrediction(insertParams, res);

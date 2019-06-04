@@ -14,7 +14,6 @@ class EditGames extends Component {
     }
 
     componentDidMount() {
-        console.log("componeentDidMount");
         this.retrieveGames();
     }
 
@@ -25,7 +24,6 @@ class EditGames extends Component {
     }
 
     retrieveGames = () => {
-        console.log("Retrieving Games from: " + process.env.REACT_APP_API_HOST + "/games/retrievAllGames");
         fetch(process.env.REACT_APP_API_HOST + "/games/retrieveAllGames")
         .then( result => result.json() )
         .then(
@@ -33,7 +31,6 @@ class EditGames extends Component {
                 if (previousGames["errorMsg"]) {
                     this.setState({errorMessage: previousGames["errorMsg"], needsGameRefresh: false});
                 } else {
-                    console.log("previous games: "+ JSON.stringify(previousGames));
                     this.setState({games: previousGames, needsGameRefresh: false});
                 }
             },
