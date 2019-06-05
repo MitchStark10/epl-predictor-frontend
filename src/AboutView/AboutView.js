@@ -6,7 +6,7 @@ class AboutView extends Component {
         return (
             <div>
                 <h1>About ScoreMaster</h1>
-                <h4>Version: 1.0.3</h4>
+                <h4>Version: 1.0.4</h4>
                 <h4>Author: Mitch Stark</h4>
                 <p className="AboutParagraph">
                     Welcome to ScoreMaster! This web app was created to help keep track of 
