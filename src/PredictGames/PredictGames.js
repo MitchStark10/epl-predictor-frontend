@@ -104,21 +104,21 @@ class PredictGamesView extends Component {
                 <div className="UpcomingGame" key={game["GameId"]}>
                     <h3>{monthIndex}/{day}/{year} - {game["Competition"]}</h3>
 
-                    <button 
+                    <button className="SM-Button"
                     id={game["GameId"]}
                     onClick={this.handlePredictionButtonClick}
                     value={game["HomeTeamName"]}>
                         {game["HomeTeamName"]}
                     </button>
 
-                    <button 
+                    <button className="SM-Button"
                     id={game["GameId"]} 
                     onClick={this.handlePredictionButtonClick}
                     value="Tie">
                             Tie
                     </button>
 
-                    <button 
+                    <button className="SM-Button"
                     id={game["GameId"]} 
                     onClick={this.handlePredictionButtonClick}
                     value={game["AwayTeamName"]}>

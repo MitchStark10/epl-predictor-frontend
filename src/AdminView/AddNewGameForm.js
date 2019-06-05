@@ -36,17 +36,10 @@ class AddNewGameForm extends Component {
     render() {
         return (
             <div id="newGameForm">
-                <label htmlFor="homeTeamName">Home Team Name: </label>
-                <input type="text" id="homeTeamName" value={this.state.homeTeamName} onChange={this.handleTextChange.bind(this)}/><br />
-
-                <label htmlFor="awayTeamName">Away Team Name: </label>
-                <input type="text" id="awayTeamName" value={this.state.awayTeamName} onChange={this.handleTextChange.bind(this)}/><br />
-
-                <label htmlFor="gameDate">Game Date: </label>
-                <input type="date" id="gameDate" value={this.state.gameDate} onChange={this.handleTextChange.bind(this)}/><br />
-
-                <label htmlFor="competition">Competition: </label>
-                <select id="competition" onChange={this.handleTextChange.bind(this)}>
+                <input type="text" id="homeTeamName" placeholder="Home Team Name" value={this.state.homeTeamName} onChange={this.handleTextChange.bind(this)}/><br />
+                <input type="text" id="awayTeamName" placeholder="Away Team Name" value={this.state.awayTeamName} onChange={this.handleTextChange.bind(this)}/><br />
+                <input type="date" id="gameDate" placeholder="Game Date" value={this.state.gameDate} onChange={this.handleTextChange.bind(this)}/><br />
+                <select id="competition" placeholder="Competition" onChange={this.handleTextChange.bind(this)}>
                     <option value="English Premier League">English Premier League</option>
                     <option value="La Liga">La Liga</option>
                     <option value="Champions League">Champions League</option>
@@ -54,7 +47,7 @@ class AddNewGameForm extends Component {
                     <option value="International">International</option>
                 </select><br />
 
-                <button id="addNewGame" onClick={this.submitGame}>ADD NEW GAME</button>
+                <button className="SM-Button"id="addNewGame" onClick={this.submitGame}>ADD NEW GAME</button>
                 <p id="statusMessage">{this.state.statusMessage}</p>
             </div>
         );

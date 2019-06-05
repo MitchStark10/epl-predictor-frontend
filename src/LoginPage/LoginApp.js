@@ -10,7 +10,7 @@ class LoginApp extends React.Component {
         this.LOGIN_FORM = "login";
         this.NEW_USER_FORM = "newUser";
         this.CREATE_NEW_USER_TEXT = "NEW USER";
-        this.LOGIN_WITH_EXISTING_ACCOUNT_TEXT = "Login With Existing Account Text";
+        this.LOGIN_WITH_EXISTING_ACCOUNT_TEXT = "Login With Existing Account";
 
         this.state = {
             form: this.LOGIN_FORM,
@@ -43,7 +43,7 @@ class LoginApp extends React.Component {
             <div id="loginApp">
                 <h1>Login</h1>
                 {this.getForm()}
-                <button id="toggleFormButton" onClick={this.toggleForm.bind(this)}>{this.state.buttonText}</button>
+                <button className="SM-Button" id="toggleFormButton" onClick={this.toggleForm.bind(this)}>{this.state.buttonText}</button>
             </div>
         );
         

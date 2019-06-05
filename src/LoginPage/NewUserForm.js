@@ -40,16 +40,10 @@ class NewUserForm extends React.Component {
     render() {
         return (
             <div id="newUserForm">
-                <label for="username">Username: </label>
-                <input type="text" id="username" value={this.state.username} onChange={this.handleTextChange.bind(this)}/><br />
-
-                <label for="password">Password: </label>
-                <input type="password" id="password" value={this.state.password} onChange={this.handleTextChange.bind(this)}/><br />
-
-                <label for="confirmedPassword">Confrim Password: </label>
-                <input type="password" id="confirmedPassword" value={this.state.confirmedPassword} onChange={this.handleTextChange.bind(this)}/><br />
-
-                <button id="createNewUser" onClick={this.createNewUser.bind(this)}>CREATE NEW USER</button>
+                <input type="text" id="username" placeholder="Username" value={this.state.username} onChange={this.handleTextChange.bind(this)}/><br />
+                <input type="password" id="password" placeholder="Password" value={this.state.password} onChange={this.handleTextChange.bind(this)}/><br />
+                <input type="password" id="confirmedPassword" placeholder="Confirm Password" value={this.state.confirmedPassword} onChange={this.handleTextChange.bind(this)}/><br />
+                <button className="SM-Button" id="createNewUser" onClick={this.createNewUser.bind(this)}>CREATE NEW USER</button>
                 <p>{this.state.statusMessage}</p>
             </div>
         )

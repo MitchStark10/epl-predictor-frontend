@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
+import { slide as Menu } from "react-burger-menu";
 import './MainMenu.css'
 
 class MainMenu extends Component {
@@ -35,7 +36,7 @@ class MainMenu extends Component {
     renderAdminView = () => {
         if (this.state.isAdmin) {
             return (
-                <button className="Main-Menu" id="ADMINVIEW" onClick={this.handleButtonClick}>ADMIN</button>
+                <button className="SM-Button" id="ADMINVIEW" onClick={this.handleButtonClick}>ADMIN</button>
             )
         }
 
@@ -43,15 +44,18 @@ class MainMenu extends Component {
     }
 
     render() {
+        //TODO: Move the header, it does not belong in the MainMenu class
         return (
-            <div className="Main-Menu-Buttons">
+            <div className="HeaderBar">
                 <h1 className="MainMenuHeader">ScoreMaster</h1>
-                {this.renderAdminView()}
-                <button className="Main-Menu" id="PASTPREDICTIONSVIEW" onClick={this.handleButtonClick}>RESULTS</button>
-                <button className="Main-Menu" id="PREDICTGAMESVIEW" onClick={this.handleButtonClick}>PREDICT GAMES</button>
-                <button className="Main-Menu" id="LEADERBOARDSVIEW" onClick={this.handleButtonClick}>LEADERBOARD</button>
-                <button className="Main-Menu" id="LOGOUT" onClick={this.handleButtonClick}>LOGOUT</button>
-                <button className="Main-Menu" id="ABOUTVIEW" onClick={this.handleButtonClick}>ABOUT</button>
+                <Menu pageWrapId={"page-wrap"} outerContainerId={"App"}>
+                    <button className="SM-Button" id="PREDICTGAMESVIEW" onClick={this.handleButtonClick}>PREDICT GAMES</button>
+                    <button className="SM-Button" id="PASTPREDICTIONSVIEW" onClick={this.handleButtonClick}>RESULTS</button>
+                    <button className="SM-Button" id="LEADERBOARDSVIEW" onClick={this.handleButtonClick}>LEADERBOARD</button>
+                    <button className="SM-Button" id="ABOUTVIEW" onClick={this.handleButtonClick}>ABOUT</button>
+                    {this.renderAdminView()}
+                    <button className="SM-Button" id="LOGOUT" onClick={this.handleButtonClick}>LOGOUT</button>
+                </Menu>
             </div>
         );
     }

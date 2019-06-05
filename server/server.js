@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const path = require("path");
 const routes = require('./routes');
 
-// parse application/x-www-form-urlencoded
+// parse application/x-www-9form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse application/json

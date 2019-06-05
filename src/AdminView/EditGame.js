@@ -42,23 +42,12 @@ class EditGame extends Component {
     render() {
         return (
             <div className="EditSingleGame" key={this.props.game["GameId"]}>
-                <label htmlFor="homeTeamName">Home Team Name: </label>
-                <input type="text" id="homeTeamName" value={this.state["homeTeamName"]} onChange={this.handleTextChange}/><br />
-
-                <label htmlFor="homeTeamScore">Home Team Score: </label>
-                <input type="text" id="homeTeamScore" value={this.state["homeTeamScore"]} onChange={this.handleTextChange}/><br />
-
-                <label htmlFor="awayTeamName">Away Team Name: </label>
-                <input type="text" id="awayTeamName" value={this.state["awayTeamName"]} onChange={this.handleTextChange}/><br />
-
-                <label htmlFor="awayTeamScore">Away Team Score: </label>
-                <input type="text" id="awayTeamScore" value={this.state["awayTeamScore"]} onChange={this.handleTextChange}/><br />
-
-                <label htmlFor="gameDate">Game Date: </label>
-                <input type="date" id="gameDate" value={this.formatDate(this.state["gameDate"])} onChange={this.handleTextChange}/><br />
-
-                <label htmlFor="Competition">Competition: </label>
-                <select id="competition" value={this.state["competition"]} onChange={this.handleTextChange}>
+                <input type="text" id="homeTeamName" placeholder="Home Team Name" value={this.state["homeTeamName"]} onChange={this.handleTextChange}/><br />
+                <input type="int" id="homeTeamScore" placeholder="Home Team Score" value={this.state["homeTeamScore"]} onChange={this.handleTextChange}/><br />
+                <input type="text" id="awayTeamName" placeholder="Away Team Name" value={this.state["awayTeamName"]} onChange={this.handleTextChange}/><br />
+                <input type="int" id="awayTeamScore" placeholder="Away Team Score" value={this.state["awayTeamScore"]} onChange={this.handleTextChange}/><br />
+                <input type="date" id="gameDate" placeholder="Game Date" value={this.formatDate(this.state["gameDate"])} onChange={this.handleTextChange}/><br />
+                <select id="competition" placeholder="Competition" value={this.state["competition"]} onChange={this.handleTextChange}>
                     <option value="English Premier League">English Premier League</option>
                     <option value="La Liga">La Liga</option>
                     <option value="Champions League">Champions League</option>
