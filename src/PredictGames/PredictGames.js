@@ -33,7 +33,7 @@ class PredictGamesView extends Component {
     }
 
     retrieveGames = () => {
-        fetch(process.env.REACT_APP_API_HOST + "/games/retrieveAllUpcomingGames")
+        fetch("/games/retrieveAllUpcomingGames")
         .then( result => result.json() )
         .then(
             (upcomingGames) => {
@@ -50,7 +50,7 @@ class PredictGamesView extends Component {
     };
 
     retrievePredictions = () => {
-        fetch(process.env.REACT_APP_API_HOST + "/predictions/upcomingPredictions/" + this.props.userToken)
+        fetch("/predictions/upcomingPredictions/" + this.props.userToken)
         .then ( result => result.json() )
         .then(
             (upcomingPredictions) => {
@@ -71,8 +71,7 @@ class PredictGamesView extends Component {
     }
 
     handlePredictionButtonClick = (event) => {
-        let endpoint = "/predictions/addOrUpdatePrediction";
-        let url = process.env.REACT_APP_API_HOST + endpoint;
+        let url = "/predictions/addOrUpdatePrediction";
 
         let postData = {
             username: this.props.userToken,

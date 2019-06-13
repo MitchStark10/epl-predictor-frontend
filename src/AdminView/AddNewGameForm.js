@@ -22,7 +22,7 @@ class AddNewGameForm extends Component {
     }
 
     submitGame = () => {
-        let url = process.env.REACT_APP_API_HOST + "/admin/addNewGame";
+        let url = "/admin/addNewGame";
 
         $.post(url, this.state)
         .done((response) => {

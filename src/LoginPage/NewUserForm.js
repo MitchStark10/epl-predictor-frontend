@@ -22,8 +22,7 @@ class NewUserForm extends React.Component {
     createNewUser() {
         if (this.state.password === this.state.confirmedPassword) {
             //send to server
-            let endpoint = "/auth/newUser";
-            let url = process.env.REACT_APP_API_HOST + endpoint;
+            let url = "/auth/newUser";
 
             $.post(url, this.state)
             .done((response) => {

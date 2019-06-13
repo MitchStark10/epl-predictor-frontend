@@ -24,7 +24,7 @@ class EditGames extends Component {
     }
 
     retrieveGames = () => {
-        fetch(process.env.REACT_APP_API_HOST + "/games/retrieveAllGames")
+        fetch("/games/retrieveAllGames")
         .then( result => result.json() )
         .then(
             (previousGames) => {

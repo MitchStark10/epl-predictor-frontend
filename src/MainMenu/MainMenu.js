@@ -17,7 +17,7 @@ class MainMenu extends Component {
     }
 
     retrieveIsAdmin() {
-        let getUserStatusUrl = process.env.REACT_APP_API_HOST + "/auth/getUserStatus";
+        let getUserStatusUrl = "/auth/getUserStatus";
         $.post(getUserStatusUrl, this.state)
         .done((statusResponse) => {
             if (statusResponse["Status"] === "admin") {

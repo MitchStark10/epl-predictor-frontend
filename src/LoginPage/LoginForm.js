@@ -22,15 +22,7 @@ class LoginForm extends Component {
     }
 
     loginWithCookies() {
-        let endpoint = "/auth/login";
-        let url = process.env.REACT_APP_API_HOST + endpoint;
-
-        $.ajaxSetup({
-            crossDomain: true,
-            xhrFields: {
-                withCredentials: true
-            }
-        });
+        let url = "/auth/login";
 
         $.post(url)
         .done((response) => {
@@ -42,8 +34,7 @@ class LoginForm extends Component {
     }
 
     login() {
-        let endpoint = "/auth/login";
-        let url = process.env.REACT_APP_API_HOST + endpoint;
+        let url = "/auth/login";
 
         $.post(url, this.state)
         .done((response) => {

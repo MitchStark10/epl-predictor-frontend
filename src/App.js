@@ -54,13 +54,7 @@ class App extends Component {
 				<AboutView />
 			);
 		} else if (this.state.view === "LOGOUT") {
-			$.ajaxSetup({
-				crossDomain: true,
-				xhrFields: {
-					withCredentials: true
-				}
-			});
-			$.post(process.env.REACT_APP_API_HOST + "/auth/logout")
+			$.post("/auth/logout")
 			.done((data) => {
 				window.location.reload();
 			})
