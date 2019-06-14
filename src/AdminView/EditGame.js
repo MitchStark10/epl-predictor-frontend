@@ -5,6 +5,7 @@ class EditGame extends Component {
 
     constructor(props) {
         super();
+
         this.state = {
             "homeTeamName": props.game["HomeTeamName"],
             "homeTeamScore": props.game["HomeTeamScore"],
@@ -14,6 +15,12 @@ class EditGame extends Component {
             "competition": props.game["Competition"],
             "statusMessage": ""
         };
+
+        for (const key of Object.keys(this.state)) {
+            if (this.state[key] === null) {
+                this.state[key] = "";
+            }
+        }
     }
 
     submitEdits = () => {

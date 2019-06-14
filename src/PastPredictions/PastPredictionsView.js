@@ -155,7 +155,7 @@ class PastPredictionsView extends Component {
 
 
             let style = {
-                "border-color": this.determineColor(
+                "borderColor": this.determineColor(
                         game["HomeTeamScore"], 
                         game["AwayTeamScore"], 
                         game["HomeTeamName"],

@@ -48,7 +48,7 @@ class MainMenu extends Component {
         return (
             <div className="HeaderBar">
                 <h1 className="MainMenuHeader">ScoreMaster</h1>
-                <Menu pageWrapId={"page-wrap"} outerContainerId={"App"}>
+                <Menu pageWrapId={"page-wrap"} outerContainerId={"App"} isOpen={ false }>
                     <button className="SM-Button" id="PREDICTGAMESVIEW" onClick={this.handleButtonClick}>PREDICT GAMES</button>
                     <button className="SM-Button" id="PASTPREDICTIONSVIEW" onClick={this.handleButtonClick}>RESULTS</button>
                     <button className="SM-Button" id="LEADERBOARDSVIEW" onClick={this.handleButtonClick}>LEADERBOARD</button>
