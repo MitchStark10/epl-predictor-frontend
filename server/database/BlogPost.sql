@@ -1,0 +1,7 @@
+CREATE TABLE BLOG_POST(
+    PostId INT PRIMARY KEY AUTO_INCREMENT,
+    PostData BLOB,
+    ViewCount INT,
+    Username VARCHAR(30),
+    FOREIGN KEY (Username) REFERENCES USER(Username)
+);
