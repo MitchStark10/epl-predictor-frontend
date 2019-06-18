@@ -1,7 +1,9 @@
+DROP TABLE BLOG_POST;
 CREATE TABLE BLOG_POST(
     PostId INT PRIMARY KEY AUTO_INCREMENT,
-    PostData BLOB,
+    PostTitle VARCHAR(50) NOT NULL,
+    PostData BLOB NOT NULL,
     ViewCount INT,
-    Username VARCHAR(30),
+    Username VARCHAR(30) NOT NULL,
     FOREIGN KEY (Username) REFERENCES USER(Username)
 );
