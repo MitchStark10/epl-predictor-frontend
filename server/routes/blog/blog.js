@@ -3,13 +3,20 @@ const QueryRunner = require('../../service/QueryRunner').buildQueryRunner();
 const mysql = require('mysql');
 
 const INSERT_NEW_BLOG_POST_SQL = `
-INSERT INTO BLOG_POST(PostTitle, PostData, ViewCount, Username)
-VALUES (?, ?, 0, ?)
+INSERT INTO BLOG_POST(PostTitle, PostData, ViewCount, Username, GameId, BlogPostType)
+VALUES (?, ?, 0, ?, ?, ?)
+`;
+
+const ADD_LIKE_SQL = `
+INSERT INTO BLOG_POST_LIKE(PostId, Username)
+VALUES (?, ?)
 `;
 
 const RETRIEVE_BLOG_POST_HEADERS_SQL = `
 SELECT PostId, PostTitle, Username
 FROM BLOG_POST
+WHERE BlogPostType = ?
+    AND GameId = ?
 `;
 
 const RETRIEVE_BLOG_POST_SQL = `
@@ -37,7 +44,7 @@ app.post('/addNewBlogPost', async (req, res) => {
     console.log("Entered add new blog post");
 
     try {
-        let params = [req.body.blogPostTitle, req.body.blogPostData, req.body.username];
+        let params = [req.body.blogPostTitle, req.body.blogPostData, req.body.username, req.body.gameId, req.body.blogPostType];
         let insertBlogPostSql = mysql.format(INSERT_NEW_BLOG_POST_SQL, params);
         await QueryRunner.runQuery(insertBlogPostSql);
         res.status(200).json("Successfully added new blog post")
@@ -61,16 +68,33 @@ app.post('/updateBlogPost', async (req, res) => {
         console.log(error);
         res.status(500).json("Unable to edit blog post");
     }
-
     
     console.log("Exiting updateBlogPost");
 });
 
-app.get('/retrieveAllBlogPostHeaders', async (req, res) => {
+app.post('/likeBlogPost', async (req, res) => {
+    console.log("Entering likeBlogPost/");
+
+    try {
+        let params = [req.body.blogPostId, req.body.username];
+        let insertLikeSql = mysql.format(ADD_LIKE_SQL, params);
+        await QueryRunner.runQuery(insertLikeSql);
+        res.status(200).json("Successfully liked blog post");
+    } catch (error) {
+        console.log(error);
+        res.status(500).json("Unable to like post");
+    }
+
+    console.log("Exiting likeBlogPost");
+});
+
+app.get('/retrieveAllBlogPostHeaders/:blogPostType/:blogPostGameId', async (req, res) => {
     console.log("Entering retrieveAllBlogPostHeaders");
 
     try {
-        let blogResults = await QueryRunner.runQuery(RETRIEVE_BLOG_POST_HEADERS_SQL);
+        let params = [req.params.blogPostType, req.params.blogPostGameId];
+        let retrieveQuery = mysql.format(RETRIEVE_BLOG_POST_HEADERS_SQL, params)
+        let blogResults = await QueryRunner.runQuery(retrieveQuery);
         res.status(200).json(blogResults);
     } catch (error) {
         console.log(error);
