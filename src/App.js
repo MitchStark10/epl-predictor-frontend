@@ -1,108 +1,73 @@
 import React, { Component } from 'react';
-import logo from './soccerball.png';
-import './App.css';
-import MainMenu from './MainMenu/MainMenu';
-import AdminView from './AdminView/AdminView';
-import PredictGamesView from './PredictGames/PredictGames';
-import PreviousPredictionsView from './PastPredictions/PastPredictionsView';
-import LoginApp from './LoginPage/LoginApp';
-import LeaderboardsView from './Leaderboards/LeaderboardsView';
-import AboutView from './AboutView/AboutView';
+import { BrowserRouter, Route } from 'react-router-dom';
+import AppContainer from './AppContainer';
 import $ from 'jquery';
 
 class App extends Component {
-	constructor() {
-		super();
+    constructor() {
+        super();
+        this.state = {
+            userToken: "",
+            useLoginPage: false
+        };
+    }
 
-		this.state = {
-			view: "PREDICTGAMESVIEW",
-			userToken: ""
-		};
-	}
+    setLoggedIn = (userToken) => {
+        this.setState({userToken: userToken});
+    }
 
-	changeToView = (newViewName) => {
-		this.setState({view: newViewName});
-	}
+    componentDidMount() {
+        let url = "/auth/login";
 
-	setLoggedIn = (userToken) => {
-		this.setState({userToken: userToken})
-	}
+        $.post(url)
+        .done((response) => {
+            this.setState({userToken: response["username"]});
+        })
+        .fail((error) => {
+            console.log("Error during cookie login: " + error.responseText);
+            this.setState({useLoginPage: true})
+        });
+    }
 
-	displayView = () => {
-		if (this.state.userToken === "") {
-			return (
-				<LoginApp setLoggedIn={this.setLoggedIn} />
-			);
-		} else if (this.state.view === "PREDICTGAMESVIEW") {
-			return (
-				<PredictGamesView userToken={this.state.userToken}/>
-			);
-		} else if (this.state.view === "PASTPREDICTIONSVIEW") {
-			return (
-				<PreviousPredictionsView userToken={this.state.userToken}/>
-			);
-		} else if (this.state.view === "ADMINVIEW") {
-			return (
-				<AdminView />
-			);
-		} else if (this.state.view === "LEADERBOARDSVIEW") {
-			return (
-				<LeaderboardsView />
-			);
-		} else if (this.state.view === "ABOUTVIEW") {
-			return (
-				<AboutView />
-			);
-		} else if (this.state.view === "LOGOUT") {
-			$.post("/auth/logout")
-			.done((data) => {
-				window.location.reload();
-			})
-			.fail((error) => {
-				window.location.reload();
-			})
-		} else {
-			console.warn("Unknown view: " + this.state.view);
-			this.setState({view: "PREDICTGAMESVIEW"});
-			//TODO: Default to ALLGAMESVIEW
-			return null;
-		}
-	}
+    renderAppContainer = (viewName) => {
+        return <AppContainer userToken={this.state.userToken} view={viewName} />
+    }
 
-	displayMenu = () => {
-		if (this.state.userToken !== "") {
-			return (
-				<MainMenu changeToView={this.changeToView} userToken={this.state.userToken}/>
-			);
-		}
+    logout = () => {
+        $.post("/auth/logout")
+        .done((data) => {
+            this.setState({userToken: ""});
+        })
+        .fail((error) => {
+            console.log(error);
+            this.setState({userToken: ""});
+        })
+        return this.renderAppContainer("LOGOUT");
+    }
 
-		return null;
-	}
+    render() {
+        if (this.state.userToken === "") {
+            if (this.state.useLoginPage) {
+                return <AppContainer view="LOGINVIEW" setLoggedIn={this.setLoggedIn}/>
+            } else {
+                //TODO: Fix this
+                return null;
+            }
+            
+        }
 
-	displayHeader = () => {
-		if (this.state.userToken === "") {
-			return (
-				<header className="App-header">
-					<img src={logo} className="App-logo" alt="logo" />
-					<p className="Header-Text">ScoreMaster</p>
-				</header>
-			);
-		}
-
-		return null;
-	}
-
-	render() {
-		return (
-			<div className="App">
-				{this.displayHeader()}
-				{this.displayMenu()}
-				{this.displayView()}
-			</div>
-		);
-	}
-		
+        return (
+            <BrowserRouter>
+                <Route path="/predictGames" render={() => this.renderAppContainer("PREDICTGAMESVIEW")}/>
+                <Route path="/results" render={() => this.renderAppContainer("PASTPREDICTIONSVIEW")} />
+                <Route path="/admin" render={() => this.renderAppContainer("ADMINVIEW")} />
+                <Route path="/leaderboard" render={() => this.renderAppContainer("LEADERBOARDSVIEW")} />
+                <Route path="/about" render={() => this.renderAppContainer("ABOUTVIEW")} />
+                <Route path="/logout" render={() => this.logout()} />
+                <Route exact path="/" render={() => this.renderAppContainer("PREDICTGAMESVIEW")} />
+            </BrowserRouter>
+        );
+    }
 }
-	
+
 export default App;
-	

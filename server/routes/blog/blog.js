@@ -72,7 +72,7 @@ app.post('/updateBlogPost', async (req, res) => {
     console.log("Exiting updateBlogPost");
 });
 
-app.post('/likeBlogPost', async (req, res) => {
+app.post('/likeBlogPost', async (req, rexs) => {
     console.log("Entering likeBlogPost/");
 
     try {

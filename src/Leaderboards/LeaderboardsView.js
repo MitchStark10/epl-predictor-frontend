@@ -19,7 +19,7 @@ class LeaderboardsView extends Component {
 
     componentDidUpdate() {
         if (this.state.needsLeaderboardsRefresh) {
-            this.needsLeaderboardsRefresh();
+            this.retrieveLeaderboardStats();
         }
     }
 
