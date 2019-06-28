@@ -137,7 +137,7 @@ class PredictGamesView extends Component {
                     id={game["GameId"]}
                     onClick={this.handleBlogButtonClick}
                     value={"/posts/predictions/" + game["GameId"]}>
-                        View Predictions
+                        View Other Predictions
                     </button>
                 </div>
             );
