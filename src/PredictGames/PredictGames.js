@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import './PredictGames.css';
+import { Redirect } from 'react-router-dom';
 
 class PredictGamesView extends Component {
 
@@ -13,7 +14,8 @@ class PredictGamesView extends Component {
             predictedId: -1,
             errorMessage: "",
             needsPredictionRefresh: true,
-            needsGameRefresh: true
+            needsGameRefresh: true,
+            redirectUrl: ""
         };
     }
 
@@ -40,7 +42,7 @@ class PredictGamesView extends Component {
                 if (upcomingGames["errorMsg"]) {
                     this.setState({errorMessage: upcomingGames["errorMsg"], needsGameRefresh: false});
                 } else {
-                    this.setState({upcomingGames: upcomingGames, needsGameRefresh: false});
+                    this.setState({upcomingGames: upcomingGames, needsGameRefresh: false, redirectUrl: ""});
                 }
             },
             (error) => {
@@ -59,7 +61,8 @@ class PredictGamesView extends Component {
                 } else {
                     this.setState({
                         upcomingPredictions: upcomingPredictions, 
-                        needsPredictionRefresh: false}
+                        needsPredictionRefresh: false,
+                        redirectUrl: ""}
                     );
                 }
             },
@@ -86,6 +89,10 @@ class PredictGamesView extends Component {
         .fail((error) => {
             this.setState({errorMessage: "Unable to predict game: " + error.responseText});
         });
+    }
+
+    handleBlogButtonClick = (event) => {
+        this.setState({redirectUrl: event.target.value});
     }
 
     renderUpcomingGames = () => {
@@ -125,6 +132,13 @@ class PredictGamesView extends Component {
                     </button>
                     <br />
                     {this.renderPrediction(game["GameId"])}
+
+                    <button className="PredictionsButton"
+                    id={game["GameId"]}
+                    onClick={this.handleBlogButtonClick}
+                    value={"/posts/predictions/" + game["GameId"]}>
+                        View Predictions
+                    </button>
                 </div>
             );
         }
@@ -149,6 +163,10 @@ class PredictGamesView extends Component {
     }
 
     render() {
+        if (this.state.redirectUrl !== "") {
+            return <Redirect to={this.state.redirectUrl} />
+        }
+
         return (
             <div className="PredictGamesView">
                 <h1>Click on a team for each game to submit your predictions!</h1>
