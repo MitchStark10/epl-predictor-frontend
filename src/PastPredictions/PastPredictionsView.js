@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './PastPredictionsView.css';
+import { Redirect } from 'react-router-dom';
 
 class PastPredictionsView extends Component {
 
@@ -12,7 +13,8 @@ class PastPredictionsView extends Component {
             predictedId: -1,
             errorMessage: "",
             needsPredictionRefresh: true,
-            needsGameRefresh: true
+            needsGameRefresh: true,
+            redirectUrl: ""
         };
     }
 
@@ -169,6 +171,20 @@ class PastPredictionsView extends Component {
                     <h3>{this.renderPrediction(prediction)}</h3>
                     <p>{game["HomeTeamName"]}: {game["HomeTeamScore"]}</p>
                     <p>{game["AwayTeamName"]}: {game["AwayTeamScore"]}</p>
+
+                    <button className="PredictionsButton"
+                        id={game["GameId"]}
+                        onClick={this.handleBlogButtonClick}
+                        value={"/posts/predictions/" + game["GameId"]}>
+                            View Predictions
+                    </button>
+
+                    <button className="AnalysisButton"
+                        id={game["GameId"]}
+                        onClick={this.handleBlogButtonClick}
+                        value={"/posts/analysis/" + game["GameId"]}>
+                            View Game Analysis
+                    </button>
                 </div>
             );
         }
@@ -184,7 +200,15 @@ class PastPredictionsView extends Component {
         return "Predicted Winner: " + prediction["WinningTeam"];
     }
 
+    handleBlogButtonClick = (event) => {
+        this.setState({redirectUrl: event.target.value});
+    }
+
     render() {
+        if (this.state.redirectUrl !== "") {
+            return <Redirect to={this.state.redirectUrl} />
+        }
+
         return (
             <div className="PastPredictionsView">
                 <h1>View Your Past Predictions!</h1>

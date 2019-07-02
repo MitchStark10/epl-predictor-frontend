@@ -29,8 +29,9 @@ class App extends Component {
         });
     }
 
-    renderAppContainer = (viewName) => {
-        return <AppContainer userToken={this.state.userToken} view={viewName} />
+    renderAppContainer = (viewName, props) => {
+        console.log(JSON.stringify(props));
+        return <AppContainer userToken={this.state.userToken} match={props.match} view={viewName} />
     }
 
     logout = () => {
@@ -50,7 +51,6 @@ class App extends Component {
             if (this.state.useLoginPage) {
                 return <AppContainer view="LOGINVIEW" setLoggedIn={this.setLoggedIn}/>
             } else {
-                //TODO: Fix this
                 return null;
             }
             
@@ -63,6 +63,7 @@ class App extends Component {
                 <Route path="/admin" render={() => this.renderAppContainer("ADMINVIEW")} />
                 <Route path="/leaderboard" render={() => this.renderAppContainer("LEADERBOARDSVIEW")} />
                 <Route path="/about" render={() => this.renderAppContainer("ABOUTVIEW")} />
+                <Route path="/posts/predictions/:gameId" render={(props) => this.renderAppContainer("PREDICTIONPOSTSVIEW", props)} />
                 <Route path="/logout" render={() => this.logout()} />
                 <Route exact path="/" render={() => this.renderAppContainer("PREDICTGAMESVIEW")} />
             </BrowserRouter>
