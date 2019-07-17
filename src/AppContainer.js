@@ -8,9 +8,9 @@ import PreviousPredictionsView from './PastPredictions/PastPredictionsView';
 import LoginApp from './LoginPage/LoginApp';
 import LeaderboardsView from './Leaderboards/LeaderboardsView';
 import AboutView from './AboutView/AboutView';
-import $ from 'jquery';
 import { Redirect } from 'react-router-dom';
 import PredictionPostsView from './BlogPosts/PredictionPostsView';
+import AddBlogPostView from './BlogPosts/AddBlogPostView';
 
 class AppContainer extends Component {
 	constructor() {
@@ -22,6 +22,7 @@ class AppContainer extends Component {
 	}
 
 	displayView = () => {
+		console.log(this.props.view);
 		if (this.props.view === "LOGINVIEW") {
 			return (
 				<div>
@@ -69,15 +70,20 @@ class AppContainer extends Component {
 				</div>
 			);
 		} else if (this.props.view === "PREDICTIONPOSTSVIEW") {
-			console.log("Test here");
-			console.log(JSON.stringify(this.props.match));
 			return (
 				<div className={this.props.view}>	
 					<MainMenu userToken={this.props.userToken}/>
 					<PredictionPostsView gameId={this.props.match.params.gameId}/>
 				</div>
 			);
-		}else if (this.props.view === "LOGOUT") {
+		} else if (this.props.view === "ADDPREDICTIONPOSTVIEW") {
+			return (
+				<div className={this.props.view}>	
+					<MainMenu userToken={this.props.userToken}/>
+					<AddBlogPostView userToken={this.props.userToken} gameId={this.props.match.params.gameId}/>
+				</div>
+			);
+		} else if (this.props.view === "LOGOUT") {
 			this.setState({redirectUrl: "/"});
 			
 		} else {
@@ -87,7 +93,6 @@ class AppContainer extends Component {
 	}
 
 	render() {
-		
 		if (this.state.redirectUrl !== "") {
 			return <Redirect to={this.state.redirectUrl} />
 		}
