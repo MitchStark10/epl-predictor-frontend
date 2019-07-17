@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import $ from 'jquery';
 
 class AddBlogPostView extends Component {
@@ -39,6 +40,10 @@ class AddBlogPostView extends Component {
     }
 
     render() {
+        if (this.state.redirectUrl !== "") {
+            return <Redirect to={this.state.redirectUrl} />;
+        }
+
         return (
             <div id="PostForm">
                 <input type="text" id="postTitle" placeholder="Post Title" value={this.state.postTitle} onChange={this.handleTextChange} />

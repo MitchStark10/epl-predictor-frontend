@@ -19,14 +19,14 @@ class PredictionPostsView extends Component {
     componentDidMount() {
         console.log("Prediction Posts view component did mount: " + this.props.gameId);
 
-        fetch("/retrieveAllBlogPostHeaders/PREDICTION/" + this.props.gameId)
+        fetch("/blog/retrieveAllBlogPostHeaders/PREDICTION/" + this.props.gameId)
         .then( result => result.json() )
         .then(
             (predictionPosts) => {
                 if (predictionPosts["errorMsg"]) {
                     this.setState({errorMessage: predictionPosts["errorMsg"], needsGameRefresh: false});
                 } else {
-                    this.setState({predictinPosts: predictionPosts, needsPostsRefresh: false});
+                    this.setState({predictionPosts: predictionPosts, needsPostsRefresh: false});
                 }
             },
             (error) => {
@@ -39,9 +39,8 @@ class PredictionPostsView extends Component {
 
     renderPredictionPostHeaders = () => {
         let postHeaders = [];
-
-        for (let predictionPost in this.state.predictionPosts) {
-            postHeaders.push(<PostHeader predictionPost={predictionPost} />);
+        for (let predictionPost of this.state.predictionPosts) {
+            postHeaders.push(<PostHeader key={predictionPost.PostId} predictionPost={predictionPost} />);
         }
 
         return postHeaders;
@@ -61,8 +60,8 @@ class PredictionPostsView extends Component {
         return (
             <div id="PredictionPostsView">
                 <h1>Predictions for game {this.props.gameId}</h1>
-                {this.renderPredictionPostHeaders()}
                 <button onClick={this.addNewPredictionClick}>Add New Prediction</button>
+                {this.renderPredictionPostHeaders()}
             </div>
         );
         
