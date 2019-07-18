@@ -11,6 +11,7 @@ import AboutView from './AboutView/AboutView';
 import { Redirect } from 'react-router-dom';
 import PredictionPostsView from './BlogPosts/PredictionPostsView';
 import AddBlogPostView from './BlogPosts/AddBlogPostView';
+import BlogPostView from './BlogPosts/BlogPostView';
 
 class AppContainer extends Component {
 	constructor() {
@@ -83,6 +84,13 @@ class AppContainer extends Component {
 					<AddBlogPostView userToken={this.props.userToken} gameId={this.props.match.params.gameId}/>
 				</div>
 			);
+		} else if (this.props.view === "BLOGPOSTVIEW") {
+			return (
+				<div className={this.props.view}>
+					<MainMenu userToken={this.props.userToken} />
+					<BlogPostView userToken={this.userToken} postId={this.props.match.params.postId} />
+				</div>
+			)
 		} else if (this.props.view === "LOGOUT") {
 			this.setState({redirectUrl: "/"});
 			

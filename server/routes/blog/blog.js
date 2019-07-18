@@ -111,7 +111,7 @@ app.get('/retrieveBlogPost/:blogPostId', async (req, res) => {
         let params = [req.params.blogPostId];
         let retrieveBlogQuery = mysql.format(RETRIEVE_BLOG_POST_SQL, params);
         let blogPostData = await QueryRunner.runQuery(retrieveBlogQuery);
-        res.status(200).json(blogPostData);
+        res.status(200).json(blogPostData[0]);
     } catch (error) {
         console.log(error);
         res.status(500).json("Unable to retrieve blog post");

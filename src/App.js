@@ -70,6 +70,7 @@ class App extends Component {
                 <Route path="/leaderboard" render={() => this.renderAppContainer("LEADERBOARDSVIEW")} />
                 <Route path="/about" render={() => this.renderAppContainer("ABOUTVIEW")} />
                 <Route path="/posts/predictions/:gameId" render={(props) => this.renderAppContainer("PREDICTIONPOSTSVIEW", props)} />
+                <Route path="/posts/:postId" render={(props) => this.renderAppContainer("BLOGPOSTVIEW", props)} />
                 <Route path="/addPrediction/:gameId" render={(props) => this.renderAppContainer("ADDPREDICTIONPOSTVIEW", props)} />
                 <Route path="/logout" render={() => this.logout()} />
                 <Route exact path="/" render={() => this.renderAppContainer("PREDICTGAMESVIEW")} />

@@ -21,8 +21,7 @@ class PostHeader extends Component {
         if (this.state.redirectUrl !== "") {
             return <Redirect to={this.state.redirectUrl} />;
         }
-
-        console.log(JSON.stringify(this.props));
+        
         return (
             <div className="PostHeader" onClick={this.redirectToPost} key={this.props.predictionPost.PostId}>
                 <h1>{this.props.predictionPost.PostTitle}</h1>
