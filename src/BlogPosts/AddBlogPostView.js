@@ -21,12 +21,20 @@ class AddBlogPostView extends Component {
             "blogPostData": this.state.postContent,
             "username": this.props.userToken,
             "gameId": this.props.gameId,
-            "blogPostType": "PREDICTION"
+            "blogPostType": this.props.postType
         }
 
         $.post("/blog/addNewBlogPost", postData)
         .done((response) => {
-            this.setState({redirectUrl: "/posts/predictions/" + this.props.gameId});
+            if (this.props.postType === "PREDICTION") {
+                this.setState({redirectUrl: "/posts/predictions/" + this.props.gameId});
+            } else if (this.props.postType === "ANALYSIS") {
+                this.setState({redirectUrl: "/posts/analysis/" + this.props.gameId});
+            } else {
+                console.error("Unknown post type: " + this.props.postType);
+                this.setState({errorMessage: "Unknown post type: " + this.props.postType});
+            }
+            
         })
         .fail((error) => {
             this.setState({errorMessage: "Unable to add new game: " + error.responseText});

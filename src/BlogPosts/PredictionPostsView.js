@@ -19,7 +19,7 @@ class PredictionPostsView extends Component {
     componentDidMount() {
         console.log("Prediction Posts view component did mount: " + this.props.gameId);
 
-        fetch("/blog/retrieveAllBlogPostHeaders/PREDICTION/" + this.props.gameId)
+        fetch("/blog/retrieveAllBlogPostHeaders/" + this.props.postType + "/" + this.props.gameId)
         .then( result => result.json() )
         .then(
             (predictionPosts) => {
@@ -47,7 +47,13 @@ class PredictionPostsView extends Component {
     }
 
     addNewPredictionClick = () => {
-        this.setState({redirectUrl: "/addPrediction/" + this.props.gameId});
+        if (this.props.postType === "PREDICTION") {
+            this.setState({redirectUrl: "/addPrediction/" + this.props.gameId});
+        } else if (this.props.postType === "ANALYSIS") {
+            this.setState({redirectUrl: "/addAnalysis/" + this.props.gameId});
+        } else {
+            console.error("Unknown post type: " + this.props.postType);
+        }
     }
 
     render() {
@@ -60,7 +66,7 @@ class PredictionPostsView extends Component {
         return (
             <div id="PredictionPostsView">
                 <h1>Predictions for game {this.props.gameId}</h1>
-                <button onClick={this.addNewPredictionClick}>Add New Prediction</button>
+                <button onClick={this.addNewPredictionClick}>ADD NEW {this.props.postType}</button>
                 {this.renderPredictionPostHeaders()}
             </div>
         );

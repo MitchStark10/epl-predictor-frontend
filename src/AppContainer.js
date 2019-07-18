@@ -74,14 +74,29 @@ class AppContainer extends Component {
 			return (
 				<div className={this.props.view}>	
 					<MainMenu userToken={this.props.userToken}/>
-					<PredictionPostsView gameId={this.props.match.params.gameId}/>
+					<PredictionPostsView postType="PREDICTION" gameId={this.props.match.params.gameId}/>
 				</div>
 			);
 		} else if (this.props.view === "ADDPREDICTIONPOSTVIEW") {
 			return (
 				<div className={this.props.view}>	
 					<MainMenu userToken={this.props.userToken}/>
-					<AddBlogPostView userToken={this.props.userToken} gameId={this.props.match.params.gameId}/>
+					<AddBlogPostView userToken={this.props.userToken} postType="PREDICTION" gameId={this.props.match.params.gameId} />
+				</div>
+			);
+		} else if (this.props.view === "ADDANALYSISVIEW") {
+			console.log("here");
+			return (
+				<div className={this.props.view}>
+					<MainMenu userToken={this.props.userToken} />
+					<AddBlogPostView userToken={this.props.userToken} postType="ANALYSIS" gameId={this.props.match.params.gameId} />
+				</div>
+			);
+		} else if (this.props.view === "ANALYSISVIEW") {
+			return (
+				<div className={this.props.view}>
+					<MainMenu userToken={this.props.userToken} />
+					<PredictionPostsView postType="ANALYSIS" gameId={this.props.match.params.gameId}/>
 				</div>
 			);
 		} else if (this.props.view === "BLOGPOSTVIEW") {

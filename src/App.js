@@ -64,15 +64,17 @@ class App extends Component {
 
         return (
             <BrowserRouter>
-                <Route path="/predictGames" render={() => this.renderAppContainer("PREDICTGAMESVIEW")}/>
-                <Route path="/results" render={() => this.renderAppContainer("PASTPREDICTIONSVIEW")} />
-                <Route path="/admin" render={() => this.renderAppContainer("ADMINVIEW")} />
-                <Route path="/leaderboard" render={() => this.renderAppContainer("LEADERBOARDSVIEW")} />
-                <Route path="/about" render={() => this.renderAppContainer("ABOUTVIEW")} />
-                <Route path="/posts/predictions/:gameId" render={(props) => this.renderAppContainer("PREDICTIONPOSTSVIEW", props)} />
-                <Route path="/posts/:postId" render={(props) => this.renderAppContainer("BLOGPOSTVIEW", props)} />
-                <Route path="/addPrediction/:gameId" render={(props) => this.renderAppContainer("ADDPREDICTIONPOSTVIEW", props)} />
-                <Route path="/logout" render={() => this.logout()} />
+                <Route exact path="/predictGames" render={() => this.renderAppContainer("PREDICTGAMESVIEW")}/>
+                <Route exact path="/results" render={() => this.renderAppContainer("PASTPREDICTIONSVIEW")} />
+                <Route exact path="/admin" render={() => this.renderAppContainer("ADMINVIEW")} />
+                <Route exact path="/leaderboard" render={() => this.renderAppContainer("LEADERBOARDSVIEW")} />
+                <Route exact path="/about" render={() => this.renderAppContainer("ABOUTVIEW")} />
+                <Route exact path="/posts/predictions/:gameId" render={(props) => this.renderAppContainer("PREDICTIONPOSTSVIEW", props)} />
+                <Route exact path="/posts/analysis/:gameId" render={(props) => this.renderAppContainer("ANALYSISVIEW", props)} />
+                <Route exact path="/posts/:postId" render={(props) => this.renderAppContainer("BLOGPOSTVIEW", props)} />
+                <Route exact path="/addPrediction/:gameId" render={(props) => this.renderAppContainer("ADDPREDICTIONPOSTVIEW", props)} />
+                <Route exact path="/addAnalysis/:gameId" render={(props) => this.renderAppContainer("ADDANALYSISVIEW", props)} />
+                <Route exact path="/logout" render={() => this.logout()} />
                 <Route exact path="/" render={() => this.renderAppContainer("PREDICTGAMESVIEW")} />
             </BrowserRouter>
         );
