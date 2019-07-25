@@ -36,6 +36,12 @@ SET PostTitle = ?,
 WHERE PostId = ?
 `;
 
+const ADD_BLOG_POST_VIEW_SQL = `
+UPDATE BLOG_POST
+SET ViewCount = ViewCount + 1
+WHERE PostId = ?
+`;
+
 const DELETE_BLOG_POST_SQL = `
 DELETE FROM BLOG_POST WHERE PostId = ?
 `;
@@ -111,6 +117,9 @@ app.get('/retrieveBlogPost/:blogPostId', async (req, res) => {
         let params = [req.params.blogPostId];
         let retrieveBlogQuery = mysql.format(RETRIEVE_BLOG_POST_SQL, params);
         let blogPostData = await QueryRunner.runQuery(retrieveBlogQuery);
+
+        let addViewSql = mysql.format(ADD_BLOG_POST_VIEW_SQL, params)
+        QueryRunner.runQuery(addViewSql);
         res.status(200).json(blogPostData[0]);
     } catch (error) {
         console.log(error);

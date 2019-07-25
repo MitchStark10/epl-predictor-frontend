@@ -46,6 +46,7 @@ class LeaderboardsView extends Component {
                 <table>
                     <tbody>
                         <tr>
+                            <th>Place</th>
                             <th>Username</th>
                             <th>Correct Prediction Rate</th>
                             <th>Total Prediction Count</th>
@@ -54,6 +55,7 @@ class LeaderboardsView extends Component {
                         </tr>
                         {this.state.leaderboardStats.map((userStats, index) => {
                             return (<tr key={index}>
+                                <td>{userStats["place"]}</td>
                                 <td>{userStats["username"]}</td>
                                 <td>{userStats["correctPredictionRate"]}</td>
                                 <td>{userStats["totalPredictionCount"]}</td>

@@ -28,7 +28,7 @@ app.get('/', async (req, res) => {
         let predictionsQuery = mysql.format(RETRIEVE_ALL_PREDICTIONS_BY_USER, username);
         let predictionList = await QueryRunner.runQuery(predictionsQuery);
         
-        leaderboardStatsList.push(processPredictions(predictionList, username));
+        leaderboardStatsList.push(processPredictions(predictionList, username, i));
     }
 
     leaderboardStatsList = leaderboardStatsList.sort(function(a, b) {
@@ -38,7 +38,7 @@ app.get('/', async (req, res) => {
     res.status(200).json(leaderboardStatsList);
 });
 
-processPredictions = (predictionList, username) => {
+processPredictions = (predictionList, username, place) => {
     var correctPredictionsCount = 0;
     let totalPredictionsCount = predictionList.length;
     var streakSymbol = "";
@@ -76,6 +76,7 @@ processPredictions = (predictionList, username) => {
         "correctPredictionCount": correctPredictionsCount,
         "totalPredictionCount": totalPredictionsCount,
         "streak": streakSymbol + streakCount,
-        "correctPredictionRate": ((correctPredictionsCount / totalPredictionsCount) * 100).toFixed(2)
+        "correctPredictionRate": ((correctPredictionsCount / totalPredictionsCount) * 100).toFixed(2),
+        "place": place
     };
 }
