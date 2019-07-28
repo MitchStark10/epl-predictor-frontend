@@ -22,7 +22,7 @@ class NewUserForm extends React.Component {
     createNewUser() {
         if (this.state.password === this.state.confirmedPassword) {
             //send to server
-            let url = "/auth/newUser";
+            let url = "/api/auth/newUser";
 
             $.post(url, this.state)
             .done((response) => {

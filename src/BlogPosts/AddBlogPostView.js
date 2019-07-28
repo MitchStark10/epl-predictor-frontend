@@ -24,7 +24,7 @@ class AddBlogPostView extends Component {
             "blogPostType": this.props.postType
         }
 
-        $.post("/blog/addNewBlogPost", postData)
+        $.post("/api/blog/addNewBlogPost", postData)
         .done((response) => {
             if (this.props.postType === "PREDICTION") {
                 this.setState({redirectUrl: "/posts/predictions/" + this.props.gameId});

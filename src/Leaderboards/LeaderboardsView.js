@@ -24,7 +24,7 @@ class LeaderboardsView extends Component {
     }
 
     retrieveLeaderboardStats() {
-        fetch("/leaderboards/")
+        fetch("/api/leaderboards/")
         .then( result => result.json() )
         .then(
             (leaderboardStats) => {

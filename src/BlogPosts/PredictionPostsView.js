@@ -19,7 +19,7 @@ class PredictionPostsView extends Component {
     componentDidMount() {
         console.log("Prediction Posts view component did mount: " + this.props.gameId);
 
-        fetch("/blog/retrieveAllBlogPostHeaders/" + this.props.postType + "/" + this.props.gameId)
+        fetch("/api/blog/retrieveAllBlogPostHeaders/" + this.props.postType + "/" + this.props.gameId)
         .then( result => result.json() )
         .then(
             (predictionPosts) => {
