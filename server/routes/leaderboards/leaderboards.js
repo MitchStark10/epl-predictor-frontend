@@ -28,7 +28,7 @@ app.get('/', async (req, res) => {
         let predictionsQuery = mysql.format(RETRIEVE_ALL_PREDICTIONS_BY_USER, username);
         let predictionList = await QueryRunner.runQuery(predictionsQuery);
         
-        leaderboardStatsList.push(processPredictions(predictionList, username, i));
+        leaderboardStatsList.push(processPredictions(predictionList, username, i + 1));
     }
 
     leaderboardStatsList = leaderboardStatsList.sort(function(a, b) {
