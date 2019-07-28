@@ -18,6 +18,12 @@ class MainMenu extends Component {
         this.retrieveIsAdmin();
     }
 
+    componentDidUpdate() {
+        if (this.state.redirectUrl !== "") {
+            this.setState({redirectUrl: ""});
+        }
+    }
+
     retrieveIsAdmin() {
         let getUserStatusUrl = "/auth/getUserStatus";
         $.post(getUserStatusUrl, this.state)
