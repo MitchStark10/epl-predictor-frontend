@@ -12,9 +12,10 @@ WHERE Username = ?
 
 const LOGIN_WITH_COOKIE_SQL = `
 SELECT COUNT(*) AS USER_COUNT
-FROM USER
+FROM SESSION_COOKIE
 WHERE Username = ?
     AND SessionCookie = ?
+    AND Device = ?
 `;
 
 const NEW_USER_SQL = `
@@ -23,7 +24,10 @@ VALUES (?, ?, ?)
 `;
 
 const UPDATE_SESSION_COOKIE_SQL =`
-UPDATE USER SET SessionCookie = ? WHERE Username = ?
+INSERT INTO SESSION_COOKIE(SessionCookie, Device, Username)
+VALUES (?, ?, ?)
+ON DUPLICATE KEY UPDATE 
+SessionCookie = ?
 `;
 
 const GET_STATUS_SQL = `
@@ -34,10 +38,10 @@ WHERE Username = ?
 
 app.post('/login', async (req, res) => {
     try {
+        console.log("Logging in with device: " + JSON.stringify(req.device));
         if (req.cookies !== undefined) {
             console.log("Attempting to login with cookies: " + JSON.stringify(req.cookies));
-            let username = req.cookies["SMLU"];
-            let cookieParams = [req.cookies["SMLU"], req.cookies["SMLC"]];
+            let cookieParams = [req.cookies["SMLU"], req.cookies["SMLC"], req.device.type.toUpperCase()];
             let loginWithCookieQuery = mysql.format(LOGIN_WITH_COOKIE_SQL, cookieParams);
             let cookieLoginResponse = await QueryRunner.runQuery(loginWithCookieQuery);
             if (cookieLoginResponse[0]["USER_COUNT"] !== 0) {
@@ -64,7 +68,7 @@ app.post('/login', async (req, res) => {
 
         if (bcrypt.compareSync(req.body["password"], userLoginResponse["Password"])) {
             let sessionCookie = PasswordHasher.hashPassword(req.body["username"] + req.body["password"]);
-            let insertSessionCookieParams = [sessionCookie, req.body["username"]];
+            let insertSessionCookieParams = [sessionCookie, req.device.type.toUpperCase(), req.body["username"], sessionCookie];
             let insertSessionCookieSql = mysql.format(UPDATE_SESSION_COOKIE_SQL, insertSessionCookieParams);
             let cookieMetadata = { httpOnly: true, sameSite: 'lax' }
             QueryRunner.runQuery(insertSessionCookieSql);

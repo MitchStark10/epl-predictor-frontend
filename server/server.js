@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const path = require("path");
 const routes = require('./routes');
+const device = require('express-device');
 
 // parse application/x-www-9form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -11,6 +12,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(device.capture());
 
 
 //Retrieve All Games and return as JSON Array
