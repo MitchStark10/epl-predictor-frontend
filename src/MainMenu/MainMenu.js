@@ -39,6 +39,9 @@ class MainMenu extends Component {
     }
 
     handleButtonClick = (event) => {
+        console.log("About to add")
+        this.props.urlBackHistoryList.push(this.props.currentUrl);
+        console.log("Done adding: " + JSON.stringify(this.props.urlBackHistoryList));
         this.setState({redirectUrl: event.target.id});
     }
 
@@ -52,7 +55,24 @@ class MainMenu extends Component {
         return null;
     }
 
+    goBack = () => {
+        console.log("Attempting to go back a page: " + JSON.stringify(this.props.urlBackHistoryList));
+        if (this.props.urlBackHistoryList.length > 0) {
+            this.props.urlForwardHistoryList.push(this.props.currentUrl);
+            this.setState({redirectUrl: this.props.urlBackHistoryList.pop()});
+        }
+    }
+
+    goForward = () => {
+        console.log("Attempting to go forward a page: " + JSON.stringify(this.props.urlForwardHistoryList));
+        if (this.props.urlForwardHistoryList.length > 0) {
+            this.props.urlBackHistoryList.push(this.props.currentUrl);
+            this.setState({redirectUrl: this.props.urlForwardHistoryList.pop()});
+        }
+    }
+
     render() {
+        console.log("Testing during rendering: " + JSON.stringify(this.props.urlBackHistoryList));
         if (this.state.redirectUrl !== "") {
             return <Redirect to={this.state.redirectUrl} />
         }
@@ -69,6 +89,8 @@ class MainMenu extends Component {
                     {this.renderAdminView()}
                     <button className="SM-Button" id="/logout" onClick={this.handleButtonClick}>LOGOUT</button>
                 </Menu>
+                <button className="BackButton" onClick={this.goBack}>BACK</button>
+                <button className="ForwardButton" onClick={this.goForward}>FORWARD</button>
             </div>
         );
     }

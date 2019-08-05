@@ -22,6 +22,11 @@ class AppContainer extends Component {
 		};
 	}
 
+	createDefaultMainMenu = () => {
+		return <MainMenu userToken={this.props.userToken} currentUrl={this.props.currentUrl} urlBackHistoryList={this.props.urlBackHistoryList} urlForwardHistoryList={this.props.urlForwardHistoryList}/>;
+	}
+
+
 	displayView = () => {
 		console.log(this.props.view);
 		if (this.props.view === "LOGINVIEW") {
@@ -37,7 +42,7 @@ class AppContainer extends Component {
 		} else if (this.props.view === "PREDICTGAMESVIEW") {
 			return (
 				<div className={this.props.view}>
-					<MainMenu userToken={this.props.userToken}/>
+					{this.createDefaultMainMenu()}
 					<PredictGamesView userToken={this.props.userToken}/>
 				</div>		
 			);
@@ -45,42 +50,42 @@ class AppContainer extends Component {
 			console.log("returning past predictons view")
 			return (
 				<div className={this.props.view}>
-					<MainMenu userToken={this.props.userToken}/>
+					{this.createDefaultMainMenu()}
 					<PreviousPredictionsView userToken={this.props.userToken}/>
 				</div>
 			);
 		} else if (this.props.view === "ADMINVIEW") {
 			return (
 				<div className={this.props.view}>
-					<MainMenu userToken={this.props.userToken}/>
+					{this.createDefaultMainMenu()}
 					<AdminView />
 				</div>
 			);
 		} else if (this.props.view === "LEADERBOARDSVIEW") {
 			return (
 				<div className={this.props.view}>
-					<MainMenu userToken={this.props.userToken}/>
+					{this.createDefaultMainMenu()}
 					<LeaderboardsView />
 				</div>
 			);
 		} else if (this.props.view === "ABOUTVIEW") {
 			return (
 				<div className={this.props.view}>
-					<MainMenu userToken={this.props.userToken}/>
+					{this.createDefaultMainMenu()}
 					<AboutView />
 				</div>
 			);
 		} else if (this.props.view === "PREDICTIONPOSTSVIEW") {
 			return (
 				<div className={this.props.view}>	
-					<MainMenu userToken={this.props.userToken}/>
+					{this.createDefaultMainMenu()}
 					<PredictionPostsView postType="PREDICTION" gameId={this.props.match.params.gameId}/>
 				</div>
 			);
 		} else if (this.props.view === "ADDPREDICTIONPOSTVIEW") {
 			return (
 				<div className={this.props.view}>	
-					<MainMenu userToken={this.props.userToken}/>
+					{this.createDefaultMainMenu()}
 					<AddBlogPostView userToken={this.props.userToken} postType="PREDICTION" gameId={this.props.match.params.gameId} />
 				</div>
 			);
@@ -88,21 +93,21 @@ class AppContainer extends Component {
 			console.log("here");
 			return (
 				<div className={this.props.view}>
-					<MainMenu userToken={this.props.userToken} />
+					{this.createDefaultMainMenu()}
 					<AddBlogPostView userToken={this.props.userToken} postType="ANALYSIS" gameId={this.props.match.params.gameId} />
 				</div>
 			);
 		} else if (this.props.view === "ANALYSISVIEW") {
 			return (
 				<div className={this.props.view}>
-					<MainMenu userToken={this.props.userToken} />
+					{this.createDefaultMainMenu()}
 					<PredictionPostsView postType="ANALYSIS" gameId={this.props.match.params.gameId}/>
 				</div>
 			);
 		} else if (this.props.view === "BLOGPOSTVIEW") {
 			return (
 				<div className={this.props.view}>
-					<MainMenu userToken={this.props.userToken} />
+					{this.createDefaultMainMenu()}
 					<BlogPostView userToken={this.userToken} postId={this.props.match.params.postId} />
 				</div>
 			)

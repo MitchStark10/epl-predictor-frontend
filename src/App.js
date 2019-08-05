@@ -2,13 +2,16 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import AppContainer from './AppContainer';
 import $ from 'jquery';
+const BrowserHistory = require('history').default;
 
 class App extends Component {
     constructor() {
         super();
         this.state = {
             userToken: "",
-            useLoginPage: false
+            useLoginPage: false,
+            urlBackHistoryList: [],
+            urlForwardHistoryList: []
         };
     }
 
@@ -30,14 +33,18 @@ class App extends Component {
     }
 
     renderAppContainer = (viewName, props) => {
-
         var match = null;
         if (props !== null && props !== undefined) {
             match = props.match;
         }
 
-        console.log(JSON.stringify(props));
-        return <AppContainer userToken={this.state.userToken} match={match} view={viewName} />
+        console.log("Test: " + match.url);
+        return <AppContainer userToken={this.state.userToken} 
+                            match={match} 
+                            view={viewName} 
+                            currentUrl={match.url} 
+                            urlBackHistoryList={this.state.urlBackHistoryList}
+                            urlForwardHistoryList={this.state.urlForwardHistoryList}/>
     }
 
     logout = () => {
@@ -63,19 +70,19 @@ class App extends Component {
         }
 
         return (
-            <BrowserRouter>
-                <Route exact path="/predictGames" render={() => this.renderAppContainer("PREDICTGAMESVIEW")}/>
-                <Route exact path="/results" render={() => this.renderAppContainer("PASTPREDICTIONSVIEW")} />
-                <Route exact path="/admin" render={() => this.renderAppContainer("ADMINVIEW")} />
-                <Route exact path="/leaderboard" render={() => this.renderAppContainer("LEADERBOARDSVIEW")} />
-                <Route exact path="/about" render={() => this.renderAppContainer("ABOUTVIEW")} />
+            <BrowserRouter history={BrowserHistory}>
+                <Route exact path="/predictGames" render={(props) => this.renderAppContainer("PREDICTGAMESVIEW", props)}/>
+                <Route exact path="/results" render={(props) => this.renderAppContainer("PASTPREDICTIONSVIEW", props)} />
+                <Route exact path="/admin" render={(props) => this.renderAppContainer("ADMINVIEW", props)} />
+                <Route exact path="/leaderboard" render={(props) => this.renderAppContainer("LEADERBOARDSVIEW", props)} />
+                <Route exact path="/about" render={(props) => this.renderAppContainer("ABOUTVIEW", props)} />
                 <Route exact path="/posts/predictions/:gameId" render={(props) => this.renderAppContainer("PREDICTIONPOSTSVIEW", props)} />
                 <Route exact path="/posts/analysis/:gameId" render={(props) => this.renderAppContainer("ANALYSISVIEW", props)} />
                 <Route exact path="/posts/:postId" render={(props) => this.renderAppContainer("BLOGPOSTVIEW", props)} />
                 <Route exact path="/addPrediction/:gameId" render={(props) => this.renderAppContainer("ADDPREDICTIONPOSTVIEW", props)} />
                 <Route exact path="/addAnalysis/:gameId" render={(props) => this.renderAppContainer("ADDANALYSISVIEW", props)} />
                 <Route exact path="/logout" render={() => this.logout()} />
-                <Route exact path="/" render={() => this.renderAppContainer("PREDICTGAMESVIEW")} />
+                <Route exact path="/" render={(props) => this.renderAppContainer("PREDICTGAMESVIEW", props)} />
             </BrowserRouter>
         );
     }
