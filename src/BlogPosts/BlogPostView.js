@@ -16,7 +16,7 @@ class BlogPostView extends Component {
     }
 
     retrieveBlogPostData(postId) {
-        fetch("/blog/retrieveBlogPost/" + postId)
+        fetch("/api/blog/retrieveBlogPost/" + postId)
         .then( response => response.json())
         .then( 
             (response) => {

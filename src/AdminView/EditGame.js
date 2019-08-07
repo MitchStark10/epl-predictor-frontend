@@ -24,7 +24,7 @@ class EditGame extends Component {
     }
 
     submitEdits = () => {
-        let url = "/games/updateGame/" + this.props.game["GameId"];
+        let url = "/api/games/updateGame/" + this.props.game["GameId"];
 
         $.post(url, this.state)
         .done((response) => {

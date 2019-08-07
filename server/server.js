@@ -26,12 +26,21 @@ app.get('/retrieveAllGames', (req, res) => {
 //failRate - The rate at which both the score and the outcome were not predicted correctly
 app.get('/retrievePredictionSuccessRate', (req, res) => {
     PredictionSuccessRateService.retrievePredictionRates(res);
-})
+});
 
 if (process.env.NODE_ENV === "production") {
-    app.use("/", express.static(path.join(__dirname, "../build/")));
+    app.use(express.static(path.join(__dirname, "../build/")));
 }
 
-app.use(routes);
+app.use("/api", routes);
+
+// the catch all route
+if (process.env.NODE_ENV === "production") {
+    console.log("Setting all route");
+    app.all('*', (req, res) => {
+        console.log("in here yo");
+        res.sendFile(path.join(__dirname + '/../build/index.html'));
+    });
+}
 
 app.listen(process.env.PORT || 8080, () => console.log('EPL Predictor Server app listening on port 8080!'))

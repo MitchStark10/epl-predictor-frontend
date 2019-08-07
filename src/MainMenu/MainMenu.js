@@ -25,7 +25,7 @@ class MainMenu extends Component {
     }
 
     retrieveIsAdmin() {
-        let getUserStatusUrl = "/auth/getUserStatus";
+        let getUserStatusUrl = "/api/auth/getUserStatus";
         $.post(getUserStatusUrl, this.state)
         .done((statusResponse) => {
             console.log("Status response: " + JSON.stringify(statusResponse));
