@@ -27,17 +27,17 @@ class AddBlogPostView extends Component {
         $.post("/api/blog/addNewBlogPost", postData)
         .done((response) => {
             if (this.props.postType === "PREDICTION") {
-                this.setState({redirectUrl: "/posts/predictions/" + this.props.gameId});
+                this.setState({redirectUrl: "/posts/predictions/" + this.props.gameId, errorMessage: ""});
             } else if (this.props.postType === "ANALYSIS") {
-                this.setState({redirectUrl: "/posts/analysis/" + this.props.gameId});
+                this.setState({redirectUrl: "/posts/analysis/" + this.props.gameId, errorMessage: ""});
             } else {
                 console.error("Unknown post type: " + this.props.postType);
                 this.setState({errorMessage: "Unknown post type: " + this.props.postType});
             }
-            
         })
         .fail((error) => {
-            this.setState({errorMessage: "Unable to add new game: " + error.responseText});
+            console.log("Unalbe to add new game: " + error.responseJSON.errorMsg);
+            this.setState({errorMessage: "Unable to add new game: " + error.responseJSON.errorMsg});
         });
     }
 
@@ -57,6 +57,7 @@ class AddBlogPostView extends Component {
                 <input type="text" id="postTitle" placeholder="Post Title" value={this.state.postTitle} onChange={this.handleTextChange} />
                 <input type="text" id="postContent" placeholder="Write Blog Post Here..." value={this.state.postContent} onChange={this.handleTextChange} />
                 <button id="SubmitPost" onClick={this.submitPost}>Submit</button>
+                <h1 id="ErrorMessage">{this.state.errorMessage}</h1>
             </div>
         );
     }

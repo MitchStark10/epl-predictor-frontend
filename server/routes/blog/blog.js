@@ -46,14 +46,31 @@ const DELETE_BLOG_POST_SQL = `
 DELETE FROM BLOG_POST WHERE PostId = ?
 `;
 
+const CHECK_IF_PREDICTION_EXISTS_FOR_USER_AND_GAME_SQL = `
+SELECT COUNT(*) AS PREDICTION_COUNT
+FROM PREDICTION
+WHERE GameId = ?
+    AND Username = ?
+`;
+
 app.post('/addNewBlogPost', async (req, res) => {
     console.log("Entered add new blog post");
 
     try {
-        let params = [req.body.blogPostTitle, req.body.blogPostData, req.body.username, req.body.gameId, req.body.blogPostType];
-        let insertBlogPostSql = mysql.format(INSERT_NEW_BLOG_POST_SQL, params);
-        await QueryRunner.runQuery(insertBlogPostSql);
-        res.status(200).json("Successfully added new blog post")
+        let checkPredictionParams = [req.body.gameId, req.body.username];
+        let checkPredictionSql = mysql.format(CHECK_IF_PREDICTION_EXISTS_FOR_USER_AND_GAME_SQL, checkPredictionParams);
+        let countResponse = await QueryRunner.runQuery(checkPredictionSql);
+        let count = countResponse[0]["PREDICTION_COUNT"];
+
+        if (count === 1) {
+            let params = [req.body.blogPostTitle, req.body.blogPostData, req.body.username, req.body.gameId, req.body.blogPostType];
+            let insertBlogPostSql = mysql.format(INSERT_NEW_BLOG_POST_SQL, params);
+            await QueryRunner.runQuery(insertBlogPostSql);
+            res.status(200).json("Successfully added new blog post")
+        } else {
+            res.status(400).json({errorMsg: "You cannot add a new blog post for a game that you have not predicted."})
+        }
+        
     } catch (error) {
         console.log(error)
         res.status(500).json("Unable to insert new blog post");
