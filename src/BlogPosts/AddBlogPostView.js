@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import $ from 'jquery';
+import './BlogPostView.css';
 
 class AddBlogPostView extends Component {
 
@@ -55,7 +56,7 @@ class AddBlogPostView extends Component {
         return (
             <div id="PostForm">
                 <input type="text" id="postTitle" placeholder="Post Title" value={this.state.postTitle} onChange={this.handleTextChange} />
-                <input type="text" id="postContent" placeholder="Write Blog Post Here..." value={this.state.postContent} onChange={this.handleTextChange} />
+                <textarea type="text" id="postContent" placeholder="Write Blog Post Here..." value={this.state.postContent} onChange={this.handleTextChange} /><br />
                 <button id="SubmitPost" onClick={this.submitPost}>Submit</button>
                 <h1 id="ErrorMessage">{this.state.errorMessage}</h1>
             </div>
