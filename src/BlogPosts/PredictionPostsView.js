@@ -10,6 +10,8 @@ class PredictionPostsView extends Component {
         this.state = {
             predictionPosts: [],
             needsPostsRefresh: true,
+            homeTeamName: "",
+            awayTeamName: "",
             errorMessage: "",
             redirectUrl: ""
         };
@@ -18,6 +20,13 @@ class PredictionPostsView extends Component {
 
     componentDidMount() {
         console.log("Prediction Posts view component did mount: " + this.props.gameId);
+
+        fetch("/api/blog/retrieveTeamNames/" + this.props.gameId)
+        .then( result => result.json() )
+        .then( (teamNames) => {
+            console.log(JSON.stringify(teamNames));
+            this.setState({homeTeamName: teamNames["HomeTeamName"], awayTeamName: teamNames["AwayTeamName"]});
+        })
 
         fetch("/api/blog/retrieveAllBlogPostHeaders/" + this.props.postType + "/" + this.props.gameId)
         .then( result => result.json() )
@@ -65,7 +74,7 @@ class PredictionPostsView extends Component {
 
         return (
             <div id="PredictionPostsView">
-                <h1>Predictions for game {this.props.gameId}</h1>
+                <h1>Predictions for {this.state.homeTeamName} vs. {this.state.awayTeamName}</h1>
                 <button onClick={this.addNewPredictionClick}>ADD NEW {this.props.postType}</button>
                 {this.renderPredictionPostHeaders()}
             </div>

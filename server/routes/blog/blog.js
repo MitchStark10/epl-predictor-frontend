@@ -53,10 +53,40 @@ WHERE GameId = ?
     AND Username = ?
 `;
 
+const GET_GAME_DATE_SQL = `
+SELECT GameDate
+FROM GAME
+WHERE GameId = ?
+`;
+
+const GET_TEAM_NAMES_SQL = `
+SELECT HomeTeamName, AwayTeamName
+FROM GAME 
+WHERE GameId = ?
+`;
+
 app.post('/addNewBlogPost', async (req, res) => {
     console.log("Entered add new blog post");
 
     try {
+
+        if (req.body.blogPostType === "PREDICTION") {
+            let currentDate = new Date();
+            currentDate.setHours(0, 0, 0, 0);
+
+            let getDateParams = [req.body.gameId];
+            let getGameDateSql = mysql.format(GET_GAME_DATE_SQL, getDateParams);
+            let gameDateResponse = await QueryRunner.runQuery(getGameDateSql);
+
+            let gameDate = new Date(Date.parse(gameDateResponse[0]["GameDate"]));
+            gameDate.setHours(0, 0, 0, 0);
+
+            if (currentDate >= gameDate) {
+                res.status(400).json({errorMsg: "You cannot add a prediction post on or after they day of the game"});
+                return;
+            }
+        }
+
         let checkPredictionParams = [req.body.gameId, req.body.username];
         let checkPredictionSql = mysql.format(CHECK_IF_PREDICTION_EXISTS_FOR_USER_AND_GAME_SQL, checkPredictionParams);
         let countResponse = await QueryRunner.runQuery(checkPredictionSql);
@@ -125,6 +155,22 @@ app.get('/retrieveAllBlogPostHeaders/:blogPostType/:blogPostGameId', async (req,
     }
 
     console.log("Exiting retrieveAllBlogPostHeaders");
+});
+
+app.get('/retrieveTeamNames/:gameId', async (req, res) => {
+    console.log("Entering /retrieveTeamNames/" + req.params.gameId);
+
+    try {
+        let getTeamNameParams = [req.params.gameId];
+        let getTeamNamesQuery = mysql.format(GET_TEAM_NAMES_SQL, getTeamNameParams);
+        let teamNamesResponse = await QueryRunner.runQuery(getTeamNamesQuery);
+        res.status(200).json(teamNamesResponse[0]);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json("Unable to retrieve team names for game id: " + req.params.gameId);
+    }
+
+    console.log("Exiting /retrieveTeamNames/" + req.params.gameId);
 });
 
 app.get('/retrieveBlogPost/:blogPostId', async (req, res) => {

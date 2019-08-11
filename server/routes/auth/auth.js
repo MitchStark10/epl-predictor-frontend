@@ -70,7 +70,7 @@ app.post('/login', async (req, res) => {
             let sessionCookie = PasswordHasher.hashPassword(req.body["username"] + req.body["password"]);
             let insertSessionCookieParams = [sessionCookie, req.device.type.toUpperCase(), req.body["username"], sessionCookie];
             let insertSessionCookieSql = mysql.format(UPDATE_SESSION_COOKIE_SQL, insertSessionCookieParams);
-            let cookieMetadata = { httpOnly: true, sameSite: 'lax' }
+            let cookieMetadata = { httpOnly: true, sameSite: 'lax', expires: false, maxAge: new Date(253402300000000) }
             QueryRunner.runQuery(insertSessionCookieSql);
             res.cookie('SMLU', req.body["username"], cookieMetadata);
             res.cookie('SMLC', sessionCookie, cookieMetadata);
