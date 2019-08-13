@@ -82,6 +82,8 @@ class MainMenu extends Component {
             <div className="HeaderBar">
                 <h1 className="MainMenuHeader">ScoreMaster</h1>
                 <Menu pageWrapId={"page-wrap"} outerContainerId={"App"} isOpen={ false }>
+                    <button className="SM-Button" onClick={this.goBack}>BACK</button>
+                    <button className="SM-Button" onClick={this.goForward}>FORWARD</button><br />
                     <button className="SM-Button" id="/predictGames" onClick={this.handleButtonClick}>PREDICT GAMES</button>
                     <button className="SM-Button" id="/results" onClick={this.handleButtonClick}>RESULTS</button>
                     <button className="SM-Button" id="/leaderboard" onClick={this.handleButtonClick}>LEADERBOARD</button>
@@ -89,8 +91,6 @@ class MainMenu extends Component {
                     {this.renderAdminView()}
                     <button className="SM-Button" id="/logout" onClick={this.handleButtonClick}>LOGOUT</button>
                 </Menu>
-                <button className="BackButton" onClick={this.goBack}>BACK</button>
-                <button className="ForwardButton" onClick={this.goForward}>FORWARD</button>
             </div>
         );
     }
