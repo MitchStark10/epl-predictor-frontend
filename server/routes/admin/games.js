@@ -1,6 +1,7 @@
 const app = module.exports = require('express')();
 const MongoClientWrapper = require('../../service/MongoClientWrapper');
 const Game = require('../../database/Game');
+const Collections = require('../../database/Collections');
 
 app.post('/addNewGame', async (req, res) => {
     const gameToInsert = new Game(req.body['homeTeamName'], 
@@ -12,10 +13,8 @@ app.post('/addNewGame', async (req, res) => {
 
     try {
         const mongoClient = new MongoClientWrapper();
-        //TODO: Create collections constants
-        //TODO: Potentially need to create a sync version of this client
-        const response = await mongoClient.runInsert("games", gameToInsert);
-        res.status(200).json(response);
+        const response = await mongoClient.runInsert(Collections.GAMES, gameToInsert);
+        res.status(200).json(response["ops"]);
     } catch (error) {
         console.error("Problem inserting new game: " + error);
         res.status(500).json("Problem inserting new game");

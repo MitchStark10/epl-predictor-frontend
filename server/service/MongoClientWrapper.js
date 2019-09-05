@@ -4,12 +4,20 @@ module.exports = class MongoClientWrapper {
     constructor() {
         this.url = process.env.SCOREMASTER_MONGO_URL;
         this.database = process.env.SCOREMASTER_MONGO_DB;
+        this.connectionOptions = {
+            useNewUrlParser: true, 
+            useUnifiedTopology: true 
+        }
+    }
+    
+    runQuery(collection, queryObject) {
+
     }
 
     runInsert(collection, insertObject) {
         return new Promise((resolve, reject) => {
-            console.log("Inserting new object: " + insertObject);
-            MongoClient.connect(this.url, (err, db) => {
+            console.log("Inserting new object: " + JSON.stringify(insertObject));
+            MongoClient.connect(this.url, this.connectionOptions, (err, db) => {
                 if (err) {
                     console.error(err);
                     reject(err);
@@ -25,7 +33,7 @@ module.exports = class MongoClientWrapper {
                     }
 
                     db.close();
-                    console.log("Response: " + response);
+                    console.log("Response: " + JSON.stringify(response));
                     resolve(response);
                 });
             });
