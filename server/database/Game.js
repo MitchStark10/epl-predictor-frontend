@@ -1,7 +1,6 @@
-class Game {
-    constructor(gameId, homeTeamName, awayTeamName, homeTeamScore, 
+module.exports = class Game {
+    constructor(homeTeamName, awayTeamName, homeTeamScore, 
                 awayTeamScore, gameDate, competition) {
-        this.gameId = gameId;
         this.homeTeamName = homeTeamName;
         this.awayTeamName = awayTeamName;
         this.homeTeamScore = homeTeamScore;
@@ -10,5 +9,3 @@ class Game {
         this.competition = competition;
     }
 }
-
-export default Game;
