@@ -1,4 +1,4 @@
-class BlogPost {
+module.exports = class BlogPost {
     constructor(postId, postTitle, postData, viewCount, username, 
                 gameId, blogPostType, editTime) {
         this.postId = postId;
@@ -12,5 +12,3 @@ class BlogPost {
 
     //TODO: Getters, setters, modifiers
 }
-
-export default BlogPost;

@@ -11,12 +11,8 @@ module.exports = class MongoClientWrapper {
     }
     
     runQuery(collection, queryObject) {
-
-    }
-
-    runInsert(collection, insertObject) {
         return new Promise((resolve, reject) => {
-            console.log("Inserting new object: " + JSON.stringify(insertObject));
+            console.log("Running query to [" + collection + " with search object: " + JSON.stringify(queryObject));
             MongoClient.connect(this.url, this.connectionOptions, (err, db) => {
                 if (err) {
                     console.error(err);
@@ -25,7 +21,59 @@ module.exports = class MongoClientWrapper {
                 }
 
                 let dbo = db.db(this.database);
-                dbo.collection(collection).insertOne(insertObject, function (err, response) {
+                dbo.collection(collection).find(queryObject).toArray((err, response) => {
+                    if (err) {
+                        console.error(err);
+                        reject(err);
+                        return;
+                    }
+
+                    db.close();
+                    console.log("Response: " + JSON.stringify(response));
+                    resolve(response);
+                });
+            })
+        });
+    }
+
+    runSingleObjectQuery(collection, queryObject) {
+        return new Promise((resolve, reject) => {
+            console.log("Running query to [" + collection + " with search object: " + JSON.stringify(queryObject));
+            MongoClient.connect(this.url, this.connectionOptions, (err, db) => {
+                if (err) {
+                    console.error(err);
+                    reject(err);
+                    return;
+                }
+
+                let dbo = db.db(this.database);
+                dbo.collection(collection).findOne(queryObject).toArray((err, response) => {
+                    if (err) {
+                        console.error(err);
+                        reject(err);
+                        return;
+                    }
+
+                    db.close();
+                    console.log("Response: " + JSON.stringify(response));
+                    resolve(response);
+                });
+            })
+        });
+    }
+
+    runInsert(collection, insertObject) {
+        return new Promise((resolve, reject) => {
+            console.log("Inserting to collection [" + collection + "] new object: " + JSON.stringify(insertObject));
+            MongoClient.connect(this.url, this.connectionOptions, (err, db) => {
+                if (err) {
+                    console.error(err);
+                    reject(err);
+                    return;
+                }
+
+                let dbo = db.db(this.database);
+                dbo.collection(collection).insertOne(insertObject, (err, response) => {
                     if (err) {
                         console.error(err);
                         reject(err);
@@ -38,6 +86,31 @@ module.exports = class MongoClientWrapper {
                 });
             });
         });
+    }
 
+    runUpdateOrInsert(collection, queryObj, insertObject) {
+        return new Promise((resolve, reject) => {
+            console.log("Inserting to collection [" + collection + "] new object: " + JSON.stringify(insertObject));
+            MongoClient.connect(this.url, this.connectionOptions, (err, db) => {
+                if (err) {
+                    console.error(err);
+                    reject(err);
+                    return;
+                }
+
+                let dbo = db.db(this.database);
+                dbo.collection(collection).update(queryObj, insertObject, { upsert: true }, (err, response) => {
+                    if (err) {
+                        console.error(err);
+                        reject(err);
+                        return;
+                    }
+
+                    db.close();
+                    console.log("Response: " + JSON.stringify(response));
+                    resolve(response);
+                });
+            });
+        });
     }
 }

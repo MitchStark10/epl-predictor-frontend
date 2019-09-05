@@ -1,3 +1,5 @@
 module.exports = {
-    GAMES: "games"
+    GAMES: "games",
+    USERS: "users",
+    SESSION_COOKIES: "sessionCookies"
 };
