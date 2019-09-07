@@ -1,53 +1,61 @@
 const app = module.exports = require('express')();
-const QueryRunner = require('../../service/QueryRunner').buildQueryRunner();
+const Collections = require('../../database/Collections');
+const MongoClientWrapper = require('../../service/MongoClientWrapper');
+const mongoClient = new MongoClientWrapper();
 
-const RETRIEVE_ALL_GAMES_SQL = `
-SELECT *
-FROM GAME
-ORDER BY GameDate DESC
-`;
+app.get('/retrieveAllUpcomingGames', (req, res) => {
+    console.log("Entering /retrieveAllUpcomingGames");
 
-const RETRIEVE_ALL_UPCOMING_GAMES_SQL = `
-SELECT * 
-FROM GAME 
-WHERE GameDate > SYSDATE()
-ORDER BY GameDate
-`;
+    //TODO: Is this now?
+    const today = new Date();
+    //TODO: Correct syntax if needed
+    const searchObj = {
+        gameDate: { gt: today }
+    };
 
-const RETRIEVE_ALL_PAST_GAMES_SQL = `
-SELECT *
-FROM GAME
-WHERE GameDate <= SYSDATE()
-ORDER BY GameDate DESC
-`;
-
-app.get('/retrieveAllUpcomingGames', async (req, res) => {
     try {
-        let response = await QueryRunner.runQuery(RETRIEVE_ALL_UPCOMING_GAMES_SQL);
-        res.status(200).json(response);
-    } catch (error) {
-        console.error("Error retrieving all upcoming games: " + error);
-        res.status(500).json("Error retrieving all upcoming games");
+        const previousGameResponse = mongoClient.runQuery(Collections.GAMES, searchObj);
+        res.status(200).json(previousGameResponse);
+    } catch (exception) {
+        console.error("Caught exception trying to retrieve all upcoming games: " + exception);
+        res.status(500).json("Exception caught while retrieving all upcoming games: " + exception);
     }
+
+    console.log("Exiting /retrieveAllUpcomingGames");
 });
 
-app.get('/retrieveAllPastGames', async (req, res) => {
+app.get('/retrieveAllPastGames', (req, res) => {
+    console.log("Entering /previousGames");
+
+    //TODO: Is this now?
+    const today = new Date();
+    //TODO: Correct syntax if needed
+    const searchObj = {
+        gameDate: { lt: today }
+    };
+
     try {
-        let response = await QueryRunner.runQuery(RETRIEVE_ALL_PAST_GAMES_SQL);
-        res.status(200).json(response);
-    } catch (error) {
-        console.error("Error retrieving all past games: " + error);
-        res.status(500).json("Error retrieving all past games");
+        const previousGameResponse = mongoClient.runQuery(Collections.GAMES, searchObj);
+        res.status(200).json(previousGameResponse);
+    } catch (exception) {
+        console.error("Caught exception trying to retrieve all previous games: " + exception);
+        res.status(500).json("Exception caught while retrieving all previous games: " + exception);
     }
+
+    console.log("Exiting /previousGames");
 });
 
 app.get('/retrieveAllGames', async (req, res) => {
+    console.log("Entering /retrieveAllGames");
+
     try {
-        let response = await QueryRunner.runQuery(RETRIEVE_ALL_GAMES_SQL);
-        res.status(200).json(response);
-    } catch (error) {
-        console.error("Error retrieving all games: " + error);
-        res.status(500).json("Error retrieving all games");
+        const previousGameResponse = mongoClient.runQuery(Collections., null);
+        res.status(200).json(previousGameResponse);
+    } catch (exception) {
+        console.error("Caught exception trying to retrieve all games: " + exception);
+        res.status(500).json("Exception caught while retrieving all games: " + exception);
     }
+
+    console.log("Exiting /retrieveAllGames");
 });
 

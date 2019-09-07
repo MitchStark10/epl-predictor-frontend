@@ -53,7 +53,7 @@ app.post('/login', async (req, res) => {
             };
 
             let cookieMetadata = { httpOnly: true, sameSite: 'lax', expires: false, maxAge: new Date(253402300000000) }
-            await mongoClient.runUpdateOrInsert(Collections.SESSION_COOKIES, queryObject, insertCookieObject);
+            await mongoClient.runUpdate(Collections.SESSION_COOKIES, queryObject, insertCookieObject, true);
 
             res.cookie('SMLU', req.body["username"], cookieMetadata);
             res.cookie('SMLC', sessionCookie, cookieMetadata);

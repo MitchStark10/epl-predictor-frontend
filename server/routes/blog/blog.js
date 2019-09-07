@@ -1,28 +1,8 @@
 const app = module.exports = require('express')();
-const QueryRunner = require('../../service/QueryRunner').buildQueryRunner();
-const mysql = require('mysql');
 const Collections = require('../../database/Collections');
 const BlogPost = require('../../database/BlogPost');
 const MongoClientWrapper = require('../../service/MongoClientWrapper');
 const mongoClient = new MongoClientWrapper();
-
-const INSERT_NEW_BLOG_POST_SQL = `
-INSERT INTO BLOG_POST(PostTitle, PostData, ViewCount, Username, GameId, BlogPostType)
-VALUES (?, ?, 0, ?, ?, ?)
-`;
-
-const CHECK_IF_PREDICTION_EXISTS_FOR_USER_AND_GAME_SQL = `
-SELECT COUNT(*) AS PREDICTION_COUNT
-FROM PREDICTION
-WHERE GameId = ?
-    AND Username = ?
-`;
-
-const GET_GAME_DATE_SQL = `
-SELECT GameDate
-FROM GAME
-WHERE GameId = ?
-`;
 
 app.post('/addNewBlogPost', async (req, res) => {
     console.log("Entered add new blog post");

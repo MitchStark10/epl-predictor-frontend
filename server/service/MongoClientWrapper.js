@@ -21,7 +21,8 @@ module.exports = class MongoClientWrapper {
                 }
 
                 let dbo = db.db(this.database);
-                dbo.collection(collection).find(queryObject).toArray((err, response) => {
+
+                queryCallback = (err, response) => {
                     if (err) {
                         console.error(err);
                         reject(err);
@@ -31,7 +32,13 @@ module.exports = class MongoClientWrapper {
                     db.close();
                     console.log("Response: " + JSON.stringify(response));
                     resolve(response);
-                });
+                };
+
+                if (queryObject !== null && queryObject !== undefined) {
+                    dbo.collection(collection).find(queryObject).toArray(queryCallback);
+                } else {
+                    dbo.collection(collection).find().toArray(queryCallback);
+                }
             })
         });
     }
@@ -88,7 +95,7 @@ module.exports = class MongoClientWrapper {
         });
     }
 
-    runUpdateOrInsert(collection, queryObj, insertObject) {
+    runUpdate(collection, queryObj, insertObject, insertIfNotFound) {
         return new Promise((resolve, reject) => {
             console.log("Inserting to collection [" + collection + "] new object: " + JSON.stringify(insertObject));
             MongoClient.connect(this.url, this.connectionOptions, (err, db) => {
@@ -99,7 +106,7 @@ module.exports = class MongoClientWrapper {
                 }
 
                 let dbo = db.db(this.database);
-                dbo.collection(collection).update(queryObj, insertObject, { upsert: true }, (err, response) => {
+                dbo.collection(collection).update(queryObj, insertObject, { upsert: insertIfNotFound }, (err, response) => {
                     if (err) {
                         console.error(err);
                         reject(err);
