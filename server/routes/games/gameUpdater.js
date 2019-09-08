@@ -1,6 +1,4 @@
 const app = module.exports = require('express')();
-const QueryRunner = require('../../service/QueryRunner').buildQueryRunner();
-const mysql = require('mysql');
 const Collections = require('../../database/Collections');
 const Game = require('../../database/Game');
 const MongoClientWrapper = require('../../service/MongoClientWrapper');

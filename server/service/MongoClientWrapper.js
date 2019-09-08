@@ -22,7 +22,7 @@ module.exports = class MongoClientWrapper {
 
                 let dbo = db.db(this.database);
 
-                queryCallback = (err, response) => {
+                const queryCallback = (err, response) => {
                     if (err) {
                         console.error(err);
                         reject(err);
@@ -54,7 +54,7 @@ module.exports = class MongoClientWrapper {
                 }
 
                 let dbo = db.db(this.database);
-                dbo.collection(collection).findOne(queryObject).toArray((err, response) => {
+                dbo.collection(collection).findOne(queryObject, (err, response) => {
                     if (err) {
                         console.error(err);
                         reject(err);

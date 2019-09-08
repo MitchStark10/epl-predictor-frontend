@@ -49,7 +49,7 @@ app.get('/retrieveAllGames', async (req, res) => {
     console.log("Entering /retrieveAllGames");
 
     try {
-        const previousGameResponse = mongoClient.runQuery(Collections., null);
+        const previousGameResponse = mongoClient.runQuery(Collections.GAMES, null);
         res.status(200).json(previousGameResponse);
     } catch (exception) {
         console.error("Caught exception trying to retrieve all games: " + exception);

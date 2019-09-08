@@ -1,32 +1,18 @@
 const app = module.exports = require('express')();
-const mysql = require('mysql');
-const QueryRunner = require('../../service/QueryRunner').buildQueryRunner();
-const bcrypt = require('bcrypt-nodejs');
-const PasswordHasher = require('../../service/PasswordHasher')();
-
-const RETRIEVE_ALL_USERNAMES = `
-SELECT DISTINCT Username
-FROM USER
-`;
-
-const RETRIEVE_ALL_PREDICTIONS_BY_USER = `
-SELECT * 
-FROM PREDICTION, GAME
-WHERE PREDICTION.GameId = GAME.GameId
-    AND GAME.HomeTeamScore IS NOT NULL
-    AND GAME.AwayTeamScore IS NOT NULL
-    AND PREDICTION.Username = ?
-ORDER BY GAME.GameDate DESC
-`;
+const Collections = require('../../database/Collections');
+const MongoClientWrapper = require('../../service/MongoClientWrapper');
+const mongoClient = new MongoClientWrapper();
 
 app.get('/', async (req, res) => {
     var leaderboardStatsList = [];
-    let usernameList = await QueryRunner.runQuery(RETRIEVE_ALL_USERNAMES);
+    let usernameList = await mongoClient.runQuery(Collections.USERS, null);
     
     for (var i = 0; i < usernameList.length; i++) {
-        let username = usernameList[i]["Username"];
-        let predictionsQuery = mysql.format(RETRIEVE_ALL_PREDICTIONS_BY_USER, username);
-        let predictionList = await QueryRunner.runQuery(predictionsQuery);
+        let userPredictionSearch = {
+            username: usernameList[i]["username"]
+        };
+
+        let predictionList = await mongoClient.runQuery(Collections.PREDICTIONS, userPredictionSearch);
         
         leaderboardStatsList.push(processPredictions(predictionList, username, i + 1));
     }
@@ -47,13 +33,13 @@ processPredictions = (predictionList, username, place) => {
 
     for (var i = 0; i < predictionList.length; i++) {
         let prediction = predictionList[i];
-        let predictedWinner = prediction["WinningTeam"];
-        let homeTeamScore = parseInt(prediction["HomeTeamScore"]);
-        let awayTeamScore = parseInt(prediction["AwayTeamScore"]);
+        let predictedWinner = prediction["winningTeam"];
+        let homeTeamScore = parseInt(prediction["homeTeamScore"]);
+        let awayTeamScore = parseInt(prediction["awayTeamScore"]);
 
         if ((homeTeamScore === awayTeamScore && predictedWinner === "Tie")
-            || (homeTeamScore > awayTeamScore && predictedWinner === prediction["HomeTeamName"])
-            || (awayTeamScore > homeTeamScore && predictedWinner === prediction["AwayTeamName"])) {
+            || (homeTeamScore > awayTeamScore && predictedWinner === prediction["homeTeamName"])
+            || (awayTeamScore > homeTeamScore && predictedWinner === prediction["awayTeamName"])) {
 
             correctPredictionsCount++;
 
