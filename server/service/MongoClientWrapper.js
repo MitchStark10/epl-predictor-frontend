@@ -12,7 +12,7 @@ module.exports = class MongoClientWrapper {
     
     runQuery(collection, queryObject) {
         return new Promise((resolve, reject) => {
-            console.log("Running query to [" + collection + " with search object: " + JSON.stringify(queryObject));
+            console.log("Running query to [" + collection + "] with search object: " + JSON.stringify(queryObject));
             MongoClient.connect(this.url, this.connectionOptions, (err, db) => {
                 if (err) {
                     console.error(err);
@@ -46,7 +46,7 @@ module.exports = class MongoClientWrapper {
 
     runSingleObjectQuery(collection, queryObject) {
         return new Promise((resolve, reject) => {
-            console.log("Running query to [" + collection + " with search object: " + JSON.stringify(queryObject));
+            console.log("Running query to [" + collection + "] with search object: " + JSON.stringify(queryObject));
             MongoClient.connect(this.url, this.connectionOptions, (err, db) => {
                 if (err) {
                     console.error(err);
@@ -98,7 +98,8 @@ module.exports = class MongoClientWrapper {
 
     runUpdate(collection, queryObj, insertObject, insertIfNotFound) {
         return new Promise((resolve, reject) => {
-            console.log("Inserting to collection [" + collection + "] new object: " + JSON.stringify(insertObject));
+            console.log("Update to collection [" + collection + "] new object: " + JSON.stringify(insertObject) 
+                + "\r\nAnd search object: " + JSON.stringify(queryObj));
             MongoClient.connect(this.url, this.connectionOptions, (err, db) => {
                 if (err) {
                     console.error(err);
@@ -107,7 +108,7 @@ module.exports = class MongoClientWrapper {
                 }
 
                 let dbo = db.db(this.database);
-                dbo.collection(collection).update(queryObj, insertObject, { upsert: insertIfNotFound }, (err, response) => {
+                dbo.collection(collection).updateOne(queryObj, { $set: insertObject }, { upsert: insertIfNotFound }, (err, response) => {
                     if (err) {
                         console.error(err);
                         reject(err);

@@ -82,7 +82,7 @@ class PastPredictionsView extends Component {
         for (var i = 0; i < this.state.pastPredictions.length; i++) {
             let prediction = this.state.pastPredictions[i];
 
-            if (prediction["GameId"] === gameId) {
+            if (prediction["gameId"] === gameId) {
                 return prediction;
             }
         }
@@ -114,7 +114,7 @@ class PastPredictionsView extends Component {
 
         for (var i = 0; i < this.state.pastGames.length; i++) {
             let game = this.state.pastGames[i];
-            let prediction = this.findPredictionByGameId(game["GameId"]);
+            let prediction = this.findPredictionByGameId(game["_id"]);
 
             let color = this.determineColor(game["HomeTeamScore"], game["AwayTeamScore"], game["HomeTeamName"], game["AwayTeamName"], prediction);
 
@@ -148,7 +148,7 @@ class PastPredictionsView extends Component {
 
         for (var i = 0; i < this.state.pastGames.length; i++) {
             let game = this.state.pastGames[i];
-            let prediction = this.findPredictionByGameId(game["GameId"]);
+            let prediction = this.findPredictionByGameId(game["_id"]);
 
             let gameDate = new Date(game["GameDate"]);
             var day = gameDate.getDate();
@@ -166,23 +166,23 @@ class PastPredictionsView extends Component {
             }
 
             jsxList.push(
-                <div className="PastGame" key={game["GameId"]} style={style}>
+                <div className="PastGame" key={game["_id"]} style={style}>
                     <h2>{monthIndex}/{day}/{year} - {game["Competition"]}</h2>
                     <h3>{this.renderPrediction(prediction)}</h3>
                     <p>{game["HomeTeamName"]}: {game["HomeTeamScore"]}</p>
                     <p>{game["AwayTeamName"]}: {game["AwayTeamScore"]}</p>
 
                     <button className="PredictionsButton"
-                        id={game["GameId"]}
+                        id={game["_id"]}
                         onClick={this.handleBlogButtonClick}
-                        value={"/posts/predictions/" + game["GameId"]}>
+                        value={"/posts/predictions/" + game["_id"]}>
                             View Predictions
                     </button>
 
                     <button className="AnalysisButton"
-                        id={game["GameId"]}
+                        id={game["_id"]}
                         onClick={this.handleBlogButtonClick}
-                        value={"/posts/analysis/" + game["GameId"]}>
+                        value={"/posts/analysis/" + game["_id"]}>
                             View Game Analysis
                     </button>
                 </div>

@@ -24,7 +24,7 @@ class EditGame extends Component {
     }
 
     submitEdits = () => {
-        let url = "/api/games/updateGame/" + this.props.game["GameId"];
+        let url = "/api/games/updateGame/" + this.props.game["_id"];
 
         $.post(url, this.state)
         .done((response) => {
@@ -48,7 +48,7 @@ class EditGame extends Component {
 
     render() {
         return (
-            <div className="EditSingleGame" key={this.props.game["GameId"]}>
+            <div className="EditSingleGame" key={this.props.game["_id"]}>
                 <input type="text" id="homeTeamName" placeholder="Home Team Name" value={this.state["homeTeamName"]} onChange={this.handleTextChange}/><br />
                 <input type="int" id="homeTeamScore" placeholder="Home Team Score" value={this.state["homeTeamScore"]} onChange={this.handleTextChange}/><br />
                 <input type="text" id="awayTeamName" placeholder="Away Team Name" value={this.state["awayTeamName"]} onChange={this.handleTextChange}/><br />

@@ -107,36 +107,36 @@ class PredictGamesView extends Component {
             var year = gameDate.getFullYear();
 
             jsxList.push(
-                <div className="UpcomingGame" key={game["GameId"]}>
+                <div className="UpcomingGame" key={game["_id"]}>
                     <h3>{monthIndex}/{day}/{year} - {game["Competition"]}</h3>
 
                     <button className="SM-Button"
-                    id={game["GameId"]}
+                    id={game["_id"]}
                     onClick={this.handlePredictionButtonClick}
                     value={game["HomeTeamName"]}>
                         {game["HomeTeamName"]}
                     </button>
 
                     <button className="SM-Button"
-                    id={game["GameId"]} 
+                    id={game["_id"]} 
                     onClick={this.handlePredictionButtonClick}
                     value="Tie">
                             Tie
                     </button>
 
                     <button className="SM-Button"
-                    id={game["GameId"]} 
+                    id={game["_id"]} 
                     onClick={this.handlePredictionButtonClick}
                     value={game["AwayTeamName"]}>
                         {game["AwayTeamName"]}
                     </button>
                     <br />
-                    {this.renderPrediction(game["GameId"])}
+                    {this.renderPrediction(game["_id"])}
 
                     <button className="PredictionsButton"
-                    id={game["GameId"]}
+                    id={game["_id"]}
                     onClick={this.handleBlogButtonClick}
-                    value={"/posts/predictions/" + game["GameId"]}>
+                    value={"/posts/predictions/" + game["_id"]}>
                         View Predictions
                     </button>
                 </div>

@@ -2,19 +2,20 @@ const app = module.exports = require('express')();
 const Collections = require('../../database/Collections');
 const BlogPost = require('../../database/BlogPost');
 const MongoClientWrapper = require('../../service/MongoClientWrapper');
+const ObjectId = require('mongodb').ObjectId; 
 const mongoClient = new MongoClientWrapper();
 
 app.post('/addNewBlogPost', async (req, res) => {
     console.log("Entered add new blog post");
 
     try {
-
+        //Ensure that the prediction is occurring before the day of the game
         if (req.body.blogPostType === "PREDICTION") {
             let currentDate = new Date();
             currentDate.setHours(0, 0, 0, 0);
 
             let gameQueryObject = {
-                gameId: req.body.gameId
+                id: ObjectId(req.body.gameId)
             };
 
             let gameDateResponse = await mongoClient.runQuery(Collections.GAMES, gameQueryObject);
@@ -28,12 +29,13 @@ app.post('/addNewBlogPost', async (req, res) => {
             }
         }
 
+        //Ensure that the blog post is being added for a game that the user has already predicted
         let predictionQueryObject = {
             gameId: req.body.gameId,
             username: req.body.username
         };
 
-        let predictionResponse = await mongoClient.runSingleObjectQuery(Collections.USERS, predictionQueryObject);
+        let predictionResponse = await mongoClient.runSingleObjectQuery(Collections.PREDICTIONS, predictionQueryObject);
 
         if (predictionResponse !== null && predictionResponse !== undefined) {
             const blogPostToInsert = new BlogPost(req.body.blogPostTitle, req.body.blogPostData, 0, 
@@ -110,7 +112,7 @@ app.get('/retrieveTeamNames/:gameId', async (req, res) => {
 
     try {
         let queryForTeamNamesObject = {
-            gameId: req.params.gameId
+            id: ObjectId(req.params.gameId)
         };
 
         let teamNamesResponse = await mongoClient.runSingleObjectQuery(Collections.GAMES, queryForTeamNamesObject);

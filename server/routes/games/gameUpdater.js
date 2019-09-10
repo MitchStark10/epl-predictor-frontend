@@ -2,26 +2,8 @@ const app = module.exports = require('express')();
 const Collections = require('../../database/Collections');
 const Game = require('../../database/Game');
 const MongoClientWrapper = require('../../service/MongoClientWrapper');
+const ObjectId = require('mongodb').ObjectId;
 const mongoClient = new MongoClientWrapper();
-
-const SELECT_TEAM_NAMES = `
-SELECT HomeTeamName, AwayTeamName
-FROM GAME
-WHERE GameId = ?
-`;
-
-const UPDATE_TEAM_NAMES_SQL = `
-UPDATE PREDICTION
-SET WinningTeam = ?
-WHERE WinningTeam = ?
-    AND GameId = ?
-`;
-
-const UPDATE_GAME_SQL = `
-UPDATE GAME
-SET HomeTeamName = ?, AwayTeamName = ?, HomeTeamScore = ?, AwayTeamScore = ?, GameDate = ?, Competition = ?
-WHERE GameId = ?
-`;
 
 let determineScoreQueryParam = (scoreRequestParam) => {
     console.log("Score request param: '" + scoreRequestParam + "'");
@@ -48,8 +30,8 @@ let updatePredictionTeamNames = async (oldName, newName, gameId) => {
 
 let checkIfPredictionTeamNamesNeedToUpdate = async (req) => {
     let gameSearchObject = {
-        gameId: gameId
-    }
+        _id: ObjectId(req.params["gameId"])
+    };
 
     let teamNameResponse = await mongoClient.runSingleObjectQuery(Collections.GAMES, gameSearchObject);
     let homeTeamName = teamNameResponse["homeTeamName"];
@@ -83,7 +65,7 @@ app.post('/updateGame/:gameId', async (req, res) => {
     let awayTeamScore = determineScoreQueryParam(req.body["awayTeamScore"]);
 
     let searchObject = {
-        gameId: req.params.gameId  
+        _id: ObjectId(req.params.gameId)
     };
 
     let updateGameObject = new Game(req.body["homeTeamName"], req.body["awayTeamName"], 
