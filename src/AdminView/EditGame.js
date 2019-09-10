@@ -7,12 +7,12 @@ class EditGame extends Component {
         super();
 
         this.state = {
-            "homeTeamName": props.game["HomeTeamName"],
-            "homeTeamScore": props.game["HomeTeamScore"],
-            "awayTeamName": props.game["AwayTeamName"],
-            "awayTeamScore": props.game["AwayTeamScore"],
-            "gameDate": props.game["GameDate"],
-            "competition": props.game["Competition"],
+            "homeTeamName": props.game["homeTeamName"],
+            "homeTeamScore": props.game["homeTeamScore"],
+            "awayTeamName": props.game["awayTeamName"],
+            "awayTeamScore": props.game["awayTeamScore"],
+            "gameDate": props.game["gameDate"],
+            "competition": props.game["competition"],
             "statusMessage": ""
         };
 

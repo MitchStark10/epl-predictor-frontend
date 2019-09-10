@@ -34,17 +34,18 @@ app.get('/upcomingPredictions/:username', async (req, res) => {
         const predictionSearchResults = await mongoClient.runQuery(Collections.PREDICTIONS, searchObject);
         const predictionsOnTodayOrLater = [];
         for (result of predictionSearchResults) {
-            const today = new Date();
-            const game = await mongoClient.runQuery(Collections.PREDICTIONS);
-            const gameDate = new Date(game.gameDate);
+            let gameSearchObject = {
+                gameId: result["gameId"],
+                gameDate: { $gte : new Date()}
+            };
+            const game = await mongoClient.runQuery(Collections.GAMES, gameSearchObject);
 
-            //TODO: fix this, bad logic
-            if (gameDate.getFullYear() > today.getFullYear() && gameDate.getMonth > today.getMonth() && gameDate.getDate > today.getDay()) {
+            if (game !== null && game !== undefined) {
                 predictionsOnTodayOrLater.push(result);
-            }
+            }            
         }
 
-        res.status(200).json(response);
+        res.status(200).json(predictionsOnTodayOrLater);
 
     } catch (error) {
         console.error("Error retrieving upcoming predictions: " + error);
@@ -55,30 +56,31 @@ app.get('/upcomingPredictions/:username', async (req, res) => {
 });
 
 app.get('/previousPredictions/:username', async (req, res) => {
-    console.log("Entering /previousPredictions/" + req.body["username"]);
+    console.log("Entering /previousPredictions/" + req.params["username"]);
 
     try {
         const searchObject = {
-            username: req.body["username"]
+            username: req.params["username"]
         }
 
         const predictionSearchResults = await mongoClient.runQuery(Collections.PREDICTIONS, searchObject);
-        const predictionsOnTodayOrLater = [];
+        const predictionsOnTodayOrBefore = [];
         for (result of predictionSearchResults) {
-            const today = new Date();
-            const game = await mongoClient.runQuery(Collections.PREDICTIONS);
-            const gameDate = new Date(game.gameDate);
-            //TODO: Fix this, bad logic
-            if (gameDate.getFullYear() <= today.getFullYear() && gameDate.getMonth <= today.getMonth() && gameDate.getDate > today.getDay()) {
-                predictionsOnTodayOrLater.push(result);
+            const gameSearchObject = {
+                gameId: result["gameId"],
+                gameDate: { $lte: new Date()}
+            };
+            const game = await mongoClient.runQuery(Collections.GAMES, gameSearchObject);
+            if (game !== null && game !== undefined) {
+                predictionsOnTodayOrBefore.push(result);
             }
         }
 
-        res.status(200).json(response);
+        res.status(200).json(predictionsOnTodayOrBefore);
 
     } catch (error) {
         console.error("Error retrieving previous predictions: " + error);
         res.status(500).json("Error retrieving previous predictions");
     }
 
-    console.log("Exiting /previousPredictions/" + req.body["username"]);});
+    console.log("Exiting /previousPredictions/" + req.params["username"]);});
