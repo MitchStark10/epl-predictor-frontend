@@ -87,7 +87,7 @@ app.post('/updateGame/:gameId', async (req, res) => {
     };
 
     let updateGameObject = new Game(req.body["homeTeamName"], req.body["awayTeamName"], 
-        homeTeamScore, awayTeamScore, req.body["gameDate"] + " 04:00:00", req.body["competition"]);
+        homeTeamScore, awayTeamScore, new Date(req.body["gameDate"]), req.body["competition"]);
 
     try {
         await mongoClient.runUpdate(Collections.GAMES, searchObject, updateGameObject, false);

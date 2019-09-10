@@ -29,7 +29,7 @@ class MainMenu extends Component {
         $.post(getUserStatusUrl, this.state)
         .done((statusResponse) => {
             console.log("Status response: " + JSON.stringify(statusResponse));
-            if (statusResponse["Status"] === "admin") {
+            if (statusResponse["status"] === "admin") {
                 this.setState({isAdmin: true, redirectUrl: ""});
             }
         })

@@ -34,6 +34,7 @@ module.exports = class MongoClientWrapper {
                     resolve(response);
                 };
 
+                //TODO: This could simply run a .find({}) for find all
                 if (queryObject !== null && queryObject !== undefined) {
                     dbo.collection(collection).find(queryObject).toArray(queryCallback);
                 } else {

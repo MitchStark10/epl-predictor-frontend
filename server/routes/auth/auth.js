@@ -100,7 +100,11 @@ app.post('/getUserStatus', async (req, res) => {
         let userFound = await mongoClient.runSingleObjectQuery(Collections.USERS, queryObject);
 
         if (userFound !== null && userFound !== undefined) {
-            res.status(200).json(userFound["status"]);
+            res.status(200).json(
+                {
+                    status: userFound["status"]
+                }
+            );
         } else {
             res.status(404).json("Username [" + req.body["userToken"] + "] was not found");   
         }
