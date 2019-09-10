@@ -52,6 +52,7 @@ class PredictGamesView extends Component {
     };
 
     retrievePredictions = () => {
+        console.log("fetching : " + this.props.userToken);
         fetch("/api/predictions/upcomingPredictions/" + this.props.userToken)
         .then ( result => result.json() )
         .then(
@@ -101,20 +102,20 @@ class PredictGamesView extends Component {
         for (var i = 0; i < this.state.upcomingGames.length; i++) {
             let game = this.state.upcomingGames[i];
 
-            let gameDate = new Date(game["GameDate"]);
+            let gameDate = new Date(game["gameDate"]);
             var day = gameDate.getDate();
             var monthIndex = gameDate.getMonth() + 1;
             var year = gameDate.getFullYear();
 
             jsxList.push(
                 <div className="UpcomingGame" key={game["_id"]}>
-                    <h3>{monthIndex}/{day}/{year} - {game["Competition"]}</h3>
+                    <h3>{monthIndex}/{day}/{year} - {game["competition"]}</h3>
 
                     <button className="SM-Button"
                     id={game["_id"]}
                     onClick={this.handlePredictionButtonClick}
-                    value={game["HomeTeamName"]}>
-                        {game["HomeTeamName"]}
+                    value={game["homeTeamName"]}>
+                        {game["homeTeamName"]}
                     </button>
 
                     <button className="SM-Button"
@@ -127,8 +128,8 @@ class PredictGamesView extends Component {
                     <button className="SM-Button"
                     id={game["_id"]} 
                     onClick={this.handlePredictionButtonClick}
-                    value={game["AwayTeamName"]}>
-                        {game["AwayTeamName"]}
+                    value={game["awayTeamName"]}>
+                        {game["awayTeamName"]}
                     </button>
                     <br />
                     {this.renderPrediction(game["_id"])}
@@ -150,9 +151,9 @@ class PredictGamesView extends Component {
         for (var i = 0; i < this.state.upcomingPredictions.length; i++) {
             let prediction = this.state.upcomingPredictions[i];
 
-            if (prediction["GameId"] === gameId) {
+            if (prediction["gameId"] === gameId) {
                 return (
-                    <h3>Predicted Winner: {prediction["WinningTeam"]}</h3>
+                    <h3>Predicted Winner: {prediction["winningTeam"]}</h3>
                 );
             }
         }

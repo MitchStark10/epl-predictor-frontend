@@ -16,6 +16,7 @@ class App extends Component {
     }
 
     setLoggedIn = (userToken) => {
+        console.log("Setting logged in: " + userToken);
         this.setState({userToken: userToken});
     }
 
@@ -39,6 +40,7 @@ class App extends Component {
         }
 
         console.log("Test: " + match.url);
+        console.log("test: " + this.state.userToken);
         return <AppContainer userToken={this.state.userToken} 
                             match={match} 
                             view={viewName} 

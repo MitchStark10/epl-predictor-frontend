@@ -19,7 +19,7 @@ app.post('/login', async (req, res) => {
                 device: req.device.type.toUpperCase()
             };
 
-            let cookieLoginResponse = await mongoClient.runSingleObjectQuery(Collections.USERS, loginWithCookieQuery);
+            let cookieLoginResponse = await mongoClient.runSingleObjectQuery(Collections.SESSION_COOKIES, loginWithCookieQuery);
 
             if (cookieLoginResponse !== null && cookieLoginResponse !== undefined) {
                 res.status(200).json({username: req.cookies["SMLU"]});

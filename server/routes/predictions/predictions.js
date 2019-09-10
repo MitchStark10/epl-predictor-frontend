@@ -24,11 +24,11 @@ app.post('/addOrUpdatePrediction', async (req, res) => {
 });
 
 app.get('/upcomingPredictions/:username', async (req, res) => {
-    console.log("Entering /upcomingPredictions/" + req.body["username"]);
+    console.log("Entering /upcomingPredictions/" + req.params["username"]);
 
     try {
         const searchObject = {
-            username: req.body["username"]
+            username: req.params["username"]
         }
 
         const predictionSearchResults = await mongoClient.runQuery(Collections.PREDICTIONS, searchObject);
@@ -52,7 +52,7 @@ app.get('/upcomingPredictions/:username', async (req, res) => {
         res.status(500).json("Error retrieving upcoming predictions");
     }
 
-    console.log("Exiting /upcomingPredictions/" + req.body["username"]);
+    console.log("Exiting /upcomingPredictions/" + req.params["username"]);
 });
 
 app.get('/previousPredictions/:username', async (req, res) => {

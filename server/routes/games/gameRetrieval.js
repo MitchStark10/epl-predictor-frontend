@@ -10,7 +10,7 @@ app.get('/retrieveAllUpcomingGames', async (req, res) => {
     const today = new Date();
     //TODO: Correct syntax if needed
     const searchObj = {
-        gameDate: { gt: today }
+        gameDate: { $gt: today }
     };
 
     try {

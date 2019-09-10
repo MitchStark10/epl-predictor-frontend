@@ -113,6 +113,7 @@ app.get('/retrieveTeamNames/:gameId', async (req, res) => {
     try {
         let queryForTeamNamesObject = {
             id: ObjectId(req.params.gameId)
+
         };
 
         let teamNamesResponse = await mongoClient.runSingleObjectQuery(Collections.GAMES, queryForTeamNamesObject);

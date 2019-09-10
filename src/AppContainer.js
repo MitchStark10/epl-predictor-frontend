@@ -40,6 +40,7 @@ class AppContainer extends Component {
 				</div>
 			);
 		} else if (this.props.view === "PREDICTGAMESVIEW") {
+			console.log("here: " + this.props.userToken);
 			return (
 				<div className={this.props.view}>
 					{this.createDefaultMainMenu()}
