@@ -13,7 +13,7 @@ class PostHeader extends Component {
     }
     
     redirectToPost = () => {
-        this.setState({redirectUrl: "/posts/" + this.props.predictionPost.PostId});
+        this.setState({redirectUrl: "/posts/" + this.props.predictionPost["_id"]});
     }
 
     render() {
@@ -23,9 +23,9 @@ class PostHeader extends Component {
         }
         
         return (
-            <div className="PostHeader" onClick={this.redirectToPost} key={this.props.predictionPost.PostId}>
-                <h1>{this.props.predictionPost.PostTitle}</h1>
-                <h4>Written By: {this.props.predictionPost.Username}</h4>
+            <div className="PostHeader" onClick={this.redirectToPost} key={this.props.predictionPost["_id"]}>
+                <h1>{this.props.predictionPost.postTitle}</h1>
+                <h4>Written By: {this.props.predictionPost.username}</h4>
             </div>
         )
     }

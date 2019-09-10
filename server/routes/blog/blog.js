@@ -15,7 +15,7 @@ app.post('/addNewBlogPost', async (req, res) => {
             currentDate.setHours(0, 0, 0, 0);
 
             let gameQueryObject = {
-                id: ObjectId(req.body.gameId)
+                _id: ObjectId(req.body.gameId)
             };
 
             let gameDateResponse = await mongoClient.runQuery(Collections.GAMES, gameQueryObject);
@@ -40,7 +40,7 @@ app.post('/addNewBlogPost', async (req, res) => {
         if (predictionResponse !== null && predictionResponse !== undefined) {
             const blogPostToInsert = new BlogPost(req.body.blogPostTitle, req.body.blogPostData, 0, 
                 req.body.username, req.body.gameId, req.body.blogPostType, new Date());
-            await mongoClient.runInsert(blogPostToInsert);
+            await mongoClient.runInsert(Collections.BLOG_POSTS, blogPostToInsert);
             res.status(200).json("Successfully added new blog post")
         } else {
             res.status(400).json({errorMsg: "You cannot add a new blog post for a game that you have not predicted."})
@@ -112,8 +112,7 @@ app.get('/retrieveTeamNames/:gameId', async (req, res) => {
 
     try {
         let queryForTeamNamesObject = {
-            id: ObjectId(req.params.gameId)
-
+            _id: ObjectId(req.params.gameId)
         };
 
         let teamNamesResponse = await mongoClient.runSingleObjectQuery(Collections.GAMES, queryForTeamNamesObject);
@@ -131,13 +130,13 @@ app.get('/retrieveBlogPost/:blogPostId', async (req, res) => {
 
     try {
         let searchObject = {
-            postId: req.params.blogPostId
+            _id: ObjectId(req.params.blogPostId)
         };
 
         let blogPostData = await mongoClient.runSingleObjectQuery(Collections.BLOG_POSTS, searchObject);
 
         //TODO: Convert to mongo query:  QueryRunner.runQuery(addViewSql);
-        res.status(200).json(blogPostData.postData);
+        res.status(200).json(blogPostData);
     } catch (error) {
         console.log(error);
         res.status(500).json("Unable to retrieve blog post");

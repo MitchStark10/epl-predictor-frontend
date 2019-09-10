@@ -24,8 +24,8 @@ class PredictionPostsView extends Component {
         fetch("/api/blog/retrieveTeamNames/" + this.props.gameId)
         .then( result => result.json() )
         .then( (teamNames) => {
-            console.log(JSON.stringify(teamNames));
-            this.setState({homeTeamName: teamNames["HomeTeamName"], awayTeamName: teamNames["AwayTeamName"]});
+            console.log("here: " + JSON.stringify(teamNames));
+            this.setState({homeTeamName: teamNames["homeTeamName"], awayTeamName: teamNames["awayTeamName"]});
         })
 
         fetch("/api/blog/retrieveAllBlogPostHeaders/" + this.props.postType + "/" + this.props.gameId)

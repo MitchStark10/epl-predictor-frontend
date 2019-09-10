@@ -43,7 +43,7 @@ class PastPredictionsView extends Component {
             return "black";
         }
 
-        let predictedWinner = prediction["WinningTeam"];
+        let predictedWinner = prediction["winningTeam"];
         let actualWinner;
 
         if (homeScore === awayScore) {
@@ -116,7 +116,7 @@ class PastPredictionsView extends Component {
             let game = this.state.pastGames[i];
             let prediction = this.findPredictionByGameId(game["_id"]);
 
-            let color = this.determineColor(game["HomeTeamScore"], game["AwayTeamScore"], game["HomeTeamName"], game["AwayTeamName"], prediction);
+            let color = this.determineColor(game["homeTeamScore"], game["awayTeamScore"], game["homeTeamName"], game["awayTeamName"], prediction);
 
             if (color === "green") {
                 correctPredictionCount++;
@@ -150,7 +150,7 @@ class PastPredictionsView extends Component {
             let game = this.state.pastGames[i];
             let prediction = this.findPredictionByGameId(game["_id"]);
 
-            let gameDate = new Date(game["GameDate"]);
+            let gameDate = new Date(game["gameDate"]);
             var day = gameDate.getDate();
             var monthIndex = gameDate.getMonth() + 1;
             var year = gameDate.getFullYear();
@@ -158,19 +158,19 @@ class PastPredictionsView extends Component {
 
             let style = {
                 "borderColor": this.determineColor(
-                        game["HomeTeamScore"], 
-                        game["AwayTeamScore"], 
-                        game["HomeTeamName"],
-                        game["AwayTeamName"],
+                        game["homeTeamScore"], 
+                        game["awayTeamScore"], 
+                        game["homeTeamName"],
+                        game["awayTeamName"],
                         prediction)
             }
 
             jsxList.push(
                 <div className="PastGame" key={game["_id"]} style={style}>
-                    <h2>{monthIndex}/{day}/{year} - {game["Competition"]}</h2>
+                    <h2>{monthIndex}/{day}/{year} - {game["competition"]}</h2>
                     <h3>{this.renderPrediction(prediction)}</h3>
-                    <p>{game["HomeTeamName"]}: {game["HomeTeamScore"]}</p>
-                    <p>{game["AwayTeamName"]}: {game["AwayTeamScore"]}</p>
+                    <p>{game["homeTeamName"]}: {game["homeTeamScore"]}</p>
+                    <p>{game["awayTeamName"]}: {game["awayTeamScore"]}</p>
 
                     <button className="PredictionsButton"
                         id={game["_id"]}
@@ -197,7 +197,7 @@ class PastPredictionsView extends Component {
             return "Prediction Not Made";
         }
 
-        return "Predicted Winner: " + prediction["WinningTeam"];
+        return "Predicted Winner: " + prediction["winningTeam"];
     }
 
     handleBlogButtonClick = (event) => {

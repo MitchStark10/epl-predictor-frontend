@@ -36,11 +36,12 @@ class BlogPostView extends Component {
     }
 
     render() {
+        console.log('test: ' + JSON.stringify(this.state));
         return (
             <div id="BlogPost">
-                <h1>{this.state.postData.PostTitle}</h1>
-                <h2>Written By: {this.state.postData.Username}</h2>
-                {this.state.postData.PostData}
+                <h1>{this.state.postData.postTitle}</h1>
+                <h2>Written By: {this.state.postData.username}</h2>
+                {this.state.postData.postData}
             </div>
         );
         
