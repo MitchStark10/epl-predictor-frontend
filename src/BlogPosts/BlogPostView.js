@@ -35,13 +35,17 @@ class BlogPostView extends Component {
         }
     }
 
+    likeBlogPost = () => {
+        //TODO: Send request to the server to update the likes on this page
+    }
+
     render() {
-        console.log('test: ' + JSON.stringify(this.state));
         return (
             <div id="BlogPost">
                 <h1>{this.state.postData.postTitle}</h1>
                 <h2>Written By: {this.state.postData.username}</h2>
                 {this.state.postData.postData}
+                <button id="LikeBlogPost">Like</button>
             </div>
         );
         

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import AppContainer from './AppContainer';
+import NotFoundPage from './NotFoundPage/NotFoundPage';
 import $ from 'jquery';
 const BrowserHistory = require('history').default;
 
@@ -84,6 +85,7 @@ class App extends Component {
                 <Route exact path="/addAnalysis/:gameId" render={(props) => this.renderAppContainer("ADDANALYSISVIEW", props)} />
                 <Route exact path="/logout" render={() => this.logout()} />
                 <Route exact path="/" render={(props) => this.renderAppContainer("PREDICTGAMESVIEW", props)} />
+                <Route path="/" render={() => <NotFoundPage />} />
             </BrowserRouter>
         );
     }
