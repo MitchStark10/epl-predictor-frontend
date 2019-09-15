@@ -72,6 +72,7 @@ app.post('/login', async (req, res) => {
 app.post('/logout', async (req, res) => {
     res.clearCookie('SMLU');
     res.clearCookie('SMLC');
+    res.redirect('/');
     res.status(200).json('Logout completed');
 });
 

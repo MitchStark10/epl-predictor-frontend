@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import AppContainer from './AppContainer';
 import $ from 'jquery';
 const BrowserHistory = require('history').default;
@@ -39,7 +39,6 @@ class App extends Component {
             match = props.match;
         }
 
-        console.log("Test: " + match.url);
         console.log("test: " + this.state.userToken);
         return <AppContainer userToken={this.state.userToken} 
                             match={match} 
@@ -58,7 +57,7 @@ class App extends Component {
             console.log(error);
             this.setState({userToken: ""});
         })
-        return this.renderAppContainer("LOGOUT");
+        return <Redirect to="/"/>;
     }
 
     render() {
