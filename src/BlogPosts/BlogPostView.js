@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import $ from 'jquery';
 
 class BlogPostView extends Component {
 
@@ -7,7 +8,8 @@ class BlogPostView extends Component {
 
         this.state = {
             postData: {},
-            errorMessage: ""
+            errorMessage: "",
+            hasUserLikedBlogPost: false
         };
     }
 
@@ -20,8 +22,24 @@ class BlogPostView extends Component {
         .then( response => response.json())
         .then( 
             (response) => {
-                console.log(JSON.stringify(response));
                 this.setState({postData: response});
+            },
+            (error) => {
+                this.setState({errorMessage: error});
+            }
+        );
+    }
+
+    retrievePostLikeStatus(postId) {
+        fetch("/api/blog/userBlogLikeStatus/" + postId + "/" + this.props.userToken)
+        .then( response => response.json())
+        .then(
+            (response) => {
+                if (response["userBlogLikeStatus"] === "LIKED") {
+                    this.setState({ hasUserLikedBlogPost: true});
+                } else {
+                    this.setState({ hasUserLikedBlogPost: false});
+                }
             },
             (error) => {
                 this.setState({errorMessage: error});
@@ -35,17 +53,27 @@ class BlogPostView extends Component {
         }
     }
 
-    likeBlogPost = () => {
+    toggleLikeBlogPost = () => {
         //TODO: Send request to the server to update the likes on this page
+        $.post("/api/blog/toggleBlogLikeStatus/" + this.state.postId + "/" + this.props.userToken)
+        .done((response) => {
+            this.setState({hasUserLikedBlogPost: !this.state.hasUserLikedBlogPost});
+        });
+        
     }
 
     render() {
+        let likeBlogPostLabel = "LIKE";
+        if (this.state.hasUserLikedBlogPost) {
+            likeBlogPostLabel = "UNLIKE";
+        }
+
         return (
             <div id="BlogPost">
                 <h1>{this.state.postData.postTitle}</h1>
                 <h2>Written By: {this.state.postData.username}</h2>
                 {this.state.postData.postData}
-                <button id="LikeBlogPost">Like</button>
+                <button id="LikeBlogPost" onClick={this.toggleLikeBlogPost}>{likeBlogPostLabel}</button>
             </div>
         );
         

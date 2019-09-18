@@ -54,40 +54,6 @@ app.post('/addNewBlogPost', async (req, res) => {
     console.log("Exiting add new blog post");
 });
 
-//TODO: Convert
-// app.post('/updateBlogPost', async (req, res) => {
-//     console.log("Entering updateBlogPost");
-
-//     try {
-//         let params = [req.body.blogPostTitle, req.body.blogPostData, req.body.blogPostId];
-//         let editGameSql = mysql.format(EDIT_BLOG_POST_SQL, params);
-//         await QueryRunner.runQuery(editGameSql);
-//         res.status(200).json("Successfully saved blog post edits");
-//     } catch (error) {
-//         console.log(error);
-//         res.status(500).json("Unable to edit blog post");
-//     }
-    
-//     console.log("Exiting updateBlogPost");
-// });
-
-//TODO: Convert
-// app.post('/likeBlogPost', async (req, rexs) => {
-//     console.log("Entering likeBlogPost/");
-
-//     try {
-//         let params = [req.body.blogPostId, req.body.username];
-//         let insertLikeSql = mysql.format(ADD_LIKE_SQL, params);
-//         await QueryRunner.runQuery(insertLikeSql);
-//         res.status(200).json("Successfully liked blog post");
-//     } catch (error) {
-//         console.log(error);
-//         res.status(500).json("Unable to like post");
-//     }
-
-//     console.log("Exiting likeBlogPost");
-// });
-
 app.get('/retrieveAllBlogPostHeaders/:blogPostType/:blogPostGameId', async (req, res) => {
     console.log("Entering retrieveAllBlogPostHeaders");
 
@@ -145,18 +111,57 @@ app.get('/retrieveBlogPost/:blogPostId', async (req, res) => {
     console.log("Exiting retrieveBlogPost/" + req.params.blogPostId);
 });
 
-// app.delete('/deleteBlogPost/:blogPostId', async (req, res) => {
-//     console.log("Entering deleteBlogPost/" + req.params.blogPostId);
 
-//     try {
-//         let params = [req.params.blogPostId];
-//         let deleteSql = mysql.format(DELETE_BLOG_POST_SQL, params);
-//         await QueryRunner.runQuery(deleteSql);
-//         res.status(200).json("Deleted blog post");
-//     } catch (error) {
-//         console.log(error);
-//         res.status(500).json("Unable to delete blog post");
-//     }
+app.get("/userBlogLikeStatus/:postId/:username", async (req, res) => {
+    console.log("Entering /userBlogLikeStatus/" + req.params.postId + "/" + req.params.username);
 
-//     console.log("Exiting deleteBlogPost/" + req.params.blogPostId);
-// });
+    try {
+        let queryObj = {
+            username: req.params.username,
+            postId: req.params.postId
+        };
+
+        let result = await mongoClient.runSingleObjectQuery(Collections.BLOG_POST_LIKES, queryObj);
+
+        let status = "UNLIKED";
+
+        if (result !== null && result !== undefined) {
+            status = "LIKED";
+        }
+
+        res.status(200).json({ userBlogLikeStatus: status});
+    } catch (exception) {
+        console.error("Unable to retrieve the blog like status for post: " + req.params.postId + " - " + req.params.username);
+        res.status(500).json({ errorMsg: "Unable to retrieve the blog like status requested"});
+    }
+
+    console.log("Exiting /userBlogLikeStatus/" + req.params.postId + "/" + req.params.username);
+});
+
+
+app.post("/toggleBlogLikeStatus/:postId/:username", async (req, res) => {
+    console.log("Entering /toggleBlogLikeStatus/" + req.params.postId + "/" + req.params.username);
+
+    try {
+        let queryObj = {
+            username: req.params.username,
+            postId: req.params.postId
+        };
+
+        let searchResult = await mongoClient.runSingleObjectQuery(Collections.BLOG_POST_LIKES, queryObj);
+
+        if (searchResult === undefined || searchResult === null) {
+            await mongoClient.runInsert(Collections.BLOG_POST_LIKES, queryObj);
+        } else {
+            await mongoClient.runDelete(Collections.BLOG_POST_LIKES, queryObj);
+        }
+        
+        res.status(200).json("Succesfully toggled like status")
+
+    } catch (exception) {
+        console.error("Unable to toggle like status for post: " + req.params.postId + " - " + req.params.username);
+        res.status(500).json({ errorMsg: "Unable to toggle like status for post: " + req.params.postId + " - " + req.params.username});
+    }
+
+    console.log("Exiting /toggleBlogLikeStatus/" + req.params.postId + "/" + req.params.username);
+});

@@ -122,4 +122,30 @@ module.exports = class MongoClientWrapper {
             });
         });
     }
+
+    runDelete(collection, deleteObject) {
+        return new Promise((resolve, reject) => {
+            console.log("Update to collection [" + collection + "] delete object: " + JSON.stringify(deleteObject));
+            MongoClient.connect(this.url, this.connectionOptions, (err, db) => {
+                if (err) {
+                    console.error(err);
+                    reject(err);
+                    return;
+                }
+
+                let dbo = db.db(this.database);
+                dbo.collection(collection).deleteOne(deleteObject, (err, response) => {
+                    if (err) {
+                        console.error(err);
+                        reject(err);
+                        return;
+                    }
+
+                    db.close();
+                    console.log("Response: " + JSON.stringify(response));
+                    resolve(response);
+                });
+            });
+        });
+    }
 }
