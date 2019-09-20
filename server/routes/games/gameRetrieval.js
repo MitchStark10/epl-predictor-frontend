@@ -6,15 +6,17 @@ const mongoClient = new MongoClientWrapper();
 app.get('/retrieveAllUpcomingGames', async (req, res) => {
     console.log("Entering /retrieveAllUpcomingGames");
 
-    //TODO: Is this now?
     const today = new Date();
-    //TODO: Correct syntax if needed
     const searchObj = {
         gameDate: { $gt: today }
     };
 
+    const orderObj = {
+        gameDate: 1
+    };
+
     try {
-        const previousGameResponse = await mongoClient.runQuery(Collections.GAMES, searchObj);
+        const previousGameResponse = await mongoClient.runQueryWithSort(Collections.GAMES, searchObj, orderObj);
         res.status(200).json(previousGameResponse);
     } catch (exception) {
         console.error("Caught exception trying to retrieve all upcoming games: " + exception);
@@ -31,11 +33,14 @@ app.get('/retrieveAllPastGames', async (req, res) => {
     const today = new Date();
     //TODO: Correct syntax if needed
     const searchObj = {
-    gameDate: { $lt: new Date() }
+        gameDate: { $lt: new Date() }
+    };
+    const orderObj = {
+        gameDate: -1
     };
 
     try {
-        const previousGameResponse = await mongoClient.runQuery(Collections.GAMES, searchObj);
+        const previousGameResponse = await mongoClient.runQueryWithSort(Collections.GAMES, searchObj, orderObj);
         res.status(200).json(previousGameResponse);
     } catch (exception) {
         console.error("Caught exception trying to retrieve all previous games: " + exception);
@@ -49,7 +54,10 @@ app.get('/retrieveAllGames', async (req, res) => {
     console.log("Entering /retrieveAllGames");
 
     try {
-        const allGameResponse = await mongoClient.runQuery(Collections.GAMES, null);
+        const orderObj = {
+            gameDate: -1
+        };
+        const allGameResponse = await mongoClient.runQueryWithSort(Collections.GAMES, null, orderObj);
         res.status(200).json(allGameResponse);
     } catch (exception) {
         console.error("Caught exception trying to retrieve all games: " + exception);

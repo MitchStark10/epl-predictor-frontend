@@ -44,6 +44,42 @@ module.exports = class MongoClientWrapper {
         });
     }
 
+    //TODO: Refactor this to not duplicate so much code
+    runQueryWithSort(collection, queryObject, sortObject) {
+        return new Promise((resolve, reject) => {
+            console.log("Running query to [" + collection + "] with search object: " + JSON.stringify(queryObject) + " - sort object: " 
+                + JSON.stringify(sortObject));
+            MongoClient.connect(this.url, this.connectionOptions, (err, db) => {
+                if (err) {
+                    console.error(err);
+                    reject(err);
+                    return;
+                }
+
+                let dbo = db.db(this.database);
+
+                const queryCallback = (err, response) => {
+                    if (err) {
+                        console.error(err);
+                        reject(err);
+                        return;
+                    }
+
+                    db.close();
+                    console.log("Response: " + JSON.stringify(response));
+                    resolve(response);
+                };
+
+                //TODO: This could simply run a .find({}) for find all
+                if (queryObject !== null && queryObject !== undefined) {
+                    dbo.collection(collection).find(queryObject).sort(sortObject).toArray(queryCallback);
+                } else {
+                    dbo.collection(collection).find().sort(sortObject).toArray(queryCallback);
+                }
+            })
+        });
+    }
+
     runSingleObjectQuery(collection, queryObject) {
         return new Promise((resolve, reject) => {
             console.log("Running query to [" + collection + "] with search object: " + JSON.stringify(queryObject));
