@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
+import CommentsView from './CommentsView';
 
 class BlogPostView extends Component {
 
@@ -74,6 +75,7 @@ class BlogPostView extends Component {
                 <h2>Written By: {this.state.postData.username}</h2>
                 {this.state.postData.postData}
                 <button id="LikeBlogPost" onClick={this.toggleLikeBlogPost}>{likeBlogPostLabel}</button>
+                <CommentsView />
             </div>
         );
         
