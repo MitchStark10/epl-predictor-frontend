@@ -4,34 +4,34 @@ const MongoClientWrapper = require('../../service/MongoClientWrapper');
 const mongoClient = new MongoClientWrapper();
 const Comment = require('../../database/Comment');
 
-app.get('/retrieveAllComments/:gameId', async (req, res) => {
-    console.log("Entering /retrieveAllComments/" + req.params.gameId);
+app.get('/retrieveAllComments/:postId', async (req, res) => {
+    console.log("Entering /retrieveAllComments/" + req.params.postId);
 
     try {
         const queryObj = {
-            gameId: req.params.gameId
+            postId: req.params.postId
         };
 
         const orderByObj = {
             commentTimestamp: -1
         }
 
-        const allCommentsFromGame = await mongoClient.runQueryWithSort(Collections.COMMENTS, queryObj, orderByObj);
+        const allCommentsFromPost = await mongoClient.runQueryWithSort(Collections.COMMENTS, queryObj, orderByObj);
 
-        res.status(200).json(allCommentsFromGame);
+        res.status(200).json(allCommentsFromPost);
     } catch (exception) {
         console.error("Caught unexpected exception during comments retrieval: " + exception);
         res.status(500).json({errorMsg: "Unable to retrieve comments. Please try again later."});
     }
 
-    console.log("Exiting /retrieveAllComments/" + req.params.gameId);
+    console.log("Exiting /retrieveAllComments/" + req.params.postId);
 });
 
 app.post('/addComment', async (req, res) => {
     console.log("Entering /addcomment");
 
     try {
-        const commentToInsert = new Comment(req.body.username, req.body.gameId, req.body.commentText);
+        const commentToInsert = new Comment(req.body.username, req.body.postId, req.body.commentText);
         await mongoClient.runInsert(Collections.COMMENTS, commentToInsert);
 
         res.status(200).json("Succesfully added new comment");

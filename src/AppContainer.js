@@ -109,7 +109,7 @@ class AppContainer extends Component {
 			return (
 				<div className={this.props.view}>
 					{this.createDefaultMainMenu()}
-					<BlogPostView userToken={this.userToken} postId={this.props.match.params.postId} />
+					<BlogPostView userToken={this.props.userToken} postId={this.props.match.params.postId} />
 				</div>
 			)
 		} else if (this.props.view === "LOGOUT") {

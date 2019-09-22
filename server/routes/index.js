@@ -11,6 +11,7 @@ app.use('/auth', require('./auth/auth'));
 app.use('/predictions', require('./predictions/predictions'));
 app.use('/leaderboards', require('./leaderboards/leaderboards'));
 app.use('/blog', require('./blog/blog'));
+app.use('/comments', require('./comments/comments'));
 
 // the catch all route
 app.all('*', (req, res) => {

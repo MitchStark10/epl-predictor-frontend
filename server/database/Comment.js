@@ -1,7 +1,7 @@
 module.exports = class Comment {
-    constructor(username, gameId, comment) {
+    constructor(username, postId, comment) {
         this.username = username;
-        this.gameId = gameId;
+        this.postId = postId;
         this.comment = comment;
         this.commentTimestamp = new Date();
     }
