@@ -26,6 +26,8 @@ class EditGame extends Component {
     submitEdits = () => {
         let url = "/api/games/updateGame/" + this.props.game["_id"];
 
+        console.log("test: " + JSON.stringify(this.state));
+
         $.post(url, this.state)
         .done((response) => {
             this.setState({"statusMessage": "Successfully updated game"});

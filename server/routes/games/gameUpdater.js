@@ -53,6 +53,11 @@ let checkIfPredictionTeamNamesNeedToUpdate = async (req) => {
 }
 
 app.post('/updateGame/:gameId', async (req, res) => {
+
+    if (req.body["gameDate"] === null || req.body["gameDate"] === undefined) {
+        res.status(400).json({errorMsg: "Cannot update game with null date"});
+    }
+
     try {
         await checkIfPredictionTeamNamesNeedToUpdate(req);
     } catch (error) {
@@ -68,8 +73,13 @@ app.post('/updateGame/:gameId', async (req, res) => {
         _id: ObjectId(req.params.gameId)
     };
 
+    let timezone = "";
+    if (!req.body["gameDate"].includes("T04")) {
+        timezone = "T04:00:00Z";
+    }
+
     let updateGameObject = new Game(req.body["homeTeamName"], req.body["awayTeamName"], 
-        homeTeamScore, awayTeamScore, new Date(req.body["gameDate"] + "T04:00:00Z"), req.body["competition"]);
+        homeTeamScore, awayTeamScore, new Date(req.body["gameDate"] + timezone), req.body["competition"]);
 
     try {
         await mongoClient.runUpdate(Collections.GAMES, searchObject, updateGameObject, false);
