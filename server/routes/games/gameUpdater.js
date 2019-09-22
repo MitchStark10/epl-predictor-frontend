@@ -74,7 +74,7 @@ app.post('/updateGame/:gameId', async (req, res) => {
     };
 
     let timezone = "";
-    if (!req.body["gameDate"].includes("T04")) {
+    if (!req.body["gameDate"].includes("T0")) {
         timezone = "T04:00:00Z";
     }
 
