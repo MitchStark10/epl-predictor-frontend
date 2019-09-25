@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import IndividualComment from './IndividualComment';
 import $ from 'jquery';
+import './Comments.css';
 
 class CommentsView extends Component {
     constructor(props) {

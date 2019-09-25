@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
-import CommentsView from './CommentsView';
+import CommentsView from './Comments/CommentsView';
 
 class BlogPostView extends Component {
 

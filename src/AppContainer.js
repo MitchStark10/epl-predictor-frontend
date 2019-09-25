@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import logo from './soccerball.png';
 import './App.css';
-import MainMenu from './MainMenu/MainMenu';
+import AppHeader from './AppHeader/AppHeader';
 import AdminView from './AdminView/AdminView';
 import PredictGamesView from './PredictGames/PredictGames';
 import PreviousPredictionsView from './PastPredictions/PastPredictionsView';
@@ -23,7 +23,7 @@ class AppContainer extends Component {
 	}
 
 	createDefaultMainMenu = () => {
-		return <MainMenu userToken={this.props.userToken} currentUrl={this.props.currentUrl} urlBackHistoryList={this.props.urlBackHistoryList} urlForwardHistoryList={this.props.urlForwardHistoryList}/>;
+		return <AppHeader userToken={this.props.userToken} currentUrl={this.props.currentUrl} urlBackHistoryList={this.props.urlBackHistoryList} urlForwardHistoryList={this.props.urlForwardHistoryList}/>;
 	}
 
 
