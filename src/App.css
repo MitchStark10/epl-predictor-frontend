@@ -1,7 +1,8 @@
 .App {
   text-align: center;
-  background-color: lightgrey;
+  background-color: #464866;
   min-height: 100vh;
+  color: white;
 }
 
 .App-logo {
@@ -32,7 +33,7 @@
 }
 
 button {
-  background-color: rgb(1, 78, 243);
+  background-color: #2E9CCA;
   border: none;
   color: white;
   padding: 10px;
