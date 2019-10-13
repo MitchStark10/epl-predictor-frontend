@@ -23,7 +23,7 @@ class AppContainer extends Component {
 	}
 
 	createDefaultMainMenu = () => {
-		return <AppHeader userToken={this.props.userToken} currentUrl={this.props.currentUrl} urlBackHistoryList={this.props.urlBackHistoryList} urlForwardHistoryList={this.props.urlForwardHistoryList}/>;
+		return <AppHeader userToken={this.props.userToken} currentUrl={this.props.currentUrl} />;
 	}
 
 

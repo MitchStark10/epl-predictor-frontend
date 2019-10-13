@@ -47,7 +47,7 @@ class AddNewGameForm extends Component {
                     <option value="International">International</option>
                 </select><br />
 
-                <button className="SM-Button"id="addNewGame" onClick={this.submitGame}>ADD NEW GAME</button>
+                <button className="SmButton"id="addNewGame" onClick={this.submitGame}>ADD NEW GAME</button>
                 <p id="statusMessage">{this.state.statusMessage}</p>
             </div>
         );

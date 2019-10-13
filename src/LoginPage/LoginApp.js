@@ -43,7 +43,7 @@ class LoginApp extends React.Component {
             <div id="loginApp">
                 <h1>Login</h1>
                 {this.getForm()}
-                <button className="SM-Button" id="toggleFormButton" onClick={this.toggleForm.bind(this)}>{this.state.buttonText}</button>
+                <button className="SmButton" id="toggleFormButton" onClick={this.toggleForm.bind(this)}>{this.state.buttonText}</button>
             </div>
         );
         

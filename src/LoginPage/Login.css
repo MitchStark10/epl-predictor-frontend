@@ -22,6 +22,6 @@ input[type="text"], input[type="password"], input[type="int"] {
     border-radius: 15px;
 }
 
-.SM-Button {
+.SmButton {
     min-width: 200px;
 }

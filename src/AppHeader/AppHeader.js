@@ -9,7 +9,8 @@ class AppHeader extends Component {
         this.state = {
             "userToken": props.userToken,
             "isAdmin": false,
-            "redirectUrl": ""
+            "redirectUrl": "",
+            "selectedDropDownButton": ""
         }
     }
 
@@ -38,35 +39,51 @@ class AppHeader extends Component {
     }
 
     handleButtonClick = (event) => {
-        console.log("About to add")
-        this.props.urlBackHistoryList.push(this.props.currentUrl);
-        console.log("Done adding: " + JSON.stringify(this.props.urlBackHistoryList));
         this.setState({redirectUrl: event.target.id});
     }
 
-    renderAdminView = () => {
+    handleDropDownButtonClick = (e) => {
+        if (this.state.selectedDropDownButton === e.target.id) {
+            this.setState({"selectedDropDownButton": ""});   
+        } else {
+            this.setState({"selectedDropDownButton": e.target.id});
+        }
+    }
+
+    renderAdminButton = () => {
         if (this.state.isAdmin) {
             return (
-                <button className="SM-Button" id="/admin" onClick={this.handleButtonClick}>ADMIN</button>
+                <button className="SmButton" id="/admin" onClick={this.handleButtonClick}>ADMIN</button>
             )
         }
 
         return null;
     }
 
-    goBack = () => {
-        console.log("Attempting to go back a page: " + JSON.stringify(this.props.urlBackHistoryList));
-        if (this.props.urlBackHistoryList.length > 0) {
-            this.props.urlForwardHistoryList.push(this.props.currentUrl);
-            this.setState({redirectUrl: this.props.urlBackHistoryList.pop()});
-        }
-    }
-
-    goForward = () => {
-        console.log("Attempting to go forward a page: " + JSON.stringify(this.props.urlForwardHistoryList));
-        if (this.props.urlForwardHistoryList.length > 0) {
-            this.props.urlBackHistoryList.push(this.props.currentUrl);
-            this.setState({redirectUrl: this.props.urlForwardHistoryList.pop()});
+    renderDropDownList = () => {
+        switch (this.state.selectedDropDownButton) {
+            case "games":
+                return (
+                    <div id="GamesDropDownList">
+                        <button className="SmButton" id="/predictGames" onClick={this.handleButtonClick}>PREDICT GAMES</button>
+                        <button className="SmButton" id="/results" onClick={this.handleButtonClick}>RESULTS</button>
+                        <button className="SmButton" id="/leaderboard" onClick={this.handleButtonClick}>LEADERBOARD</button>
+                    </div>
+                );
+            case "posts":
+                return (
+                    <div id="PostsDropDownList">
+                        <h1>TODO: Built posts pages</h1>
+                    </div>
+                );
+            case "about":
+                return (
+                    <div id="AboutDropDownList">
+                        <button className="SmButton" id="/about" onClick={this.handleButtonClick}>ABOUT</button>
+                    </div>
+                );
+            default:
+                return null;
         }
     }
 
@@ -76,16 +93,18 @@ class AppHeader extends Component {
             return <Redirect to={this.state.redirectUrl} />
         }
 
-        //TODO: Modify the header buttons to include the following: Predictions, Blogs, About, Admin
+        //TODO: Display the below buttons under their appropriate menu category
+        // <button className="SmButton" id="/logout" onClick={this.handleButtonClick}>LOGOUT</button>
+        // <button className="SmButton" id="/about" onClick={this.handleButtonClick}>ABOUT</button>
+ 
         return (
             <div className="HeaderBar">
                 <h1 className="MainMenuHeaderText">ScoreMaster</h1>
-                <button className="SM-Button" id="/logout" onClick={this.handleButtonClick}>LOGOUT</button>
-                <button className="SM-Button" id="/predictGames" onClick={this.handleButtonClick}>PREDICT GAMES</button>
-                <button className="SM-Button" id="/results" onClick={this.handleButtonClick}>RESULTS</button>
-                <button className="SM-Button" id="/leaderboard" onClick={this.handleButtonClick}>LEADERBOARD</button>
-                <button className="SM-Button" id="/about" onClick={this.handleButtonClick}>ABOUT</button>
-                {this.renderAdminView()}
+                <button className="DropDownButton" id="games" onMouseOut={this.handleDropDownButtonClick} onMouseOver={this.renderDropDownList}>GAMES</button>
+                <button className="DropDownButton" id="posts">POSTS</button>
+                <button className="DropDownButton" id="about">ABOUT</button>
+                {this.renderDropDownList()}
+                <button className="SmButton" id="/logout" onClick={this.handleButtonClick}>LOGOUT</button>
             </div>
         );
     }

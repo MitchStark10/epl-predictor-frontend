@@ -52,7 +52,7 @@ class LoginForm extends Component {
                 <input type="text" id="username" value={this.state.username} placeholder="Username goes here" onChange={this.handleTextChange.bind(this)}/><br />
                 <input type="password" id="password" value={this.state.password} placeholder="Password goes here" onChange={this.handleTextChange.bind(this)}/>
 
-                <button className="SM-Button" id="login" onClick={this.login.bind(this)}>LOGIN</button>
+                <button className="SmButton" id="login" onClick={this.login.bind(this)}>LOGIN</button>
             </div>
         );
     }

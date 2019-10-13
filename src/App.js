@@ -10,9 +10,7 @@ class App extends Component {
         super();
         this.state = {
             userToken: "",
-            useLoginPage: false,
-            urlBackHistoryList: [],
-            urlForwardHistoryList: []
+            useLoginPage: false
         };
     }
 
