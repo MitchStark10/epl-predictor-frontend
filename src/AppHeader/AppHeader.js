@@ -42,12 +42,12 @@ class AppHeader extends Component {
         this.setState({redirectUrl: event.target.id});
     }
 
-    handleDropDownButtonClick = (e) => {
-        if (this.state.selectedDropDownButton === e.target.id) {
-            this.setState({"selectedDropDownButton": ""});   
-        } else {
-            this.setState({"selectedDropDownButton": e.target.id});
-        }
+    handleDropDownButtonHover = (e) => {
+        this.setState({ "selectedDropDownButton": e.target.id });
+    }
+
+    hanldeDropDownButtonMouseLeave = () => {
+        this.setState({"selectedDropDownButton": ""});
     }
 
     renderAdminButton = () => {
@@ -64,29 +64,26 @@ class AppHeader extends Component {
         switch (this.state.selectedDropDownButton) {
             case "games":
                 return (
-                    <div id="GamesDropDownList">
-                        <br />
-                        <button className="SmButton" id="/predictGames" onClick={this.handleButtonClick}>PREDICT GAMES</button>
-                        <button className="SmButton" id="/results" onClick={this.handleButtonClick}>RESULTS</button>
-                        <button className="SmButton" id="/leaderboard" onClick={this.handleButtonClick}>LEADERBOARD</button>
+                    <div id="GamesDropDownList" className="DropDownList">
+                        <button className="SmButton DropDownListButton GameDropDownButton" id="/predictGames" onClick={this.handleButtonClick}>PREDICT GAMES</button>
+                        <button className="SmButton DropDownListButton GameDropDownButton" id="/results" onClick={this.handleButtonClick}>RESULTS</button>
+                        <button className="SmButton DropDownListButton GameDropDownButton" id="/leaderboard" onClick={this.handleButtonClick}>LEADERBOARD</button>
                     </div>
                 );
             case "posts":
                 return (
-                    <div id="PostsDropDownList">
-                        <br />
+                    <div id="PostsDropDownList" className="DropDownList">
                         <h1>TODO: Built posts pages</h1>
                     </div>
                 );
             case "about":
                 return (
-                    <div id="AboutDropDownList">
-                        <br />
-                        <button className="SmButton" id="/about" onClick={this.handleButtonClick}>ABOUT</button>
+                    <div id="AboutDropDownList" className="DropDownList">
+                        <button className="DropDownListButton" id="/about" onClick={this.handleButtonClick}>ABOUT</button>
                     </div>
                 );
             default:
-                return null;
+                break;
         }
     }
 
@@ -101,18 +98,38 @@ class AppHeader extends Component {
         // <button className="SmButton" id="/about" onClick={this.handleButtonClick}>ABOUT</button>
  
         return (
-            <div className="HeaderBar">
+            <div>
+                <div className="HeaderBar" onMouseLeave={this.hanldeDropDownButtonMouseLeave}>
                 <h1 className="MainMenuHeaderText">ScoreMaster</h1>
-                <button className="DropDownButton" id="games"
-                    onMouseEnter={this.handleDropDownButtonClick}
-                    onMouseLeave={this.handleDropDownButtonClick}
-                >
-                    GAMES
-                </button>
-                <button className="DropDownButton" id="posts">POSTS</button>
-                <button className="DropDownButton" id="about">ABOUT</button>
-                <button className="SmButton" id="/logout" onClick={this.handleButtonClick}>LOGOUT</button>
+                    <button
+                        className="DropDownButton"
+                        id="games"
+                        onMouseEnter={this.handleDropDownButtonHover}
+                    >
+                        GAMES
+                    </button>
+
+                    <button
+                        className="DropDownButton"
+                        id="posts"
+                        onMouseEnter={this.handleDropDownButtonHover}
+                    >
+                        POSTS
+                    </button>
+
+                    <button
+                        className="DropDownButton"
+                        id="about"
+                        onMouseEnter={this.handleDropDownButtonHover}
+                    >
+                        ABOUT
+                    </button>
+
                 {this.renderDropDownList()}
+                </div>
+
+                <button className="SmButton" id="/logout" onClick={this.handleButtonClick}>LOGOUT</button>
+
             </div>
         );
     }

@@ -1,4 +1,4 @@
-.HeaderBar {
+.HeaderBar, .DropDownList {
   background-color: #25274D;
   display: inline-block;
   width: 100%;
@@ -14,11 +14,13 @@
     margin: auto;
     margin-top: 5px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
-  }
+}
 
 #\/logout {
   background-color: #25274D;
-  float: right;
+  position: fixed;
+  right: 10px;
+  top: 5px;
   margin: 7px;
 }
 
@@ -29,6 +31,15 @@
   float: left;
   min-width: 200px;
   font-size: 25px;
+}
+
+.GameDropDownButton {
+  /* position: absolute; */
+  left: 50px;
+}
+
+.DropDownListButton {
+  display: inline-block;
 }
 
 .DropDownButton:hover, #\/logout:hover {
