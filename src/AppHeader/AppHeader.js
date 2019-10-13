@@ -65,6 +65,7 @@ class AppHeader extends Component {
             case "games":
                 return (
                     <div id="GamesDropDownList">
+                        <br />
                         <button className="SmButton" id="/predictGames" onClick={this.handleButtonClick}>PREDICT GAMES</button>
                         <button className="SmButton" id="/results" onClick={this.handleButtonClick}>RESULTS</button>
                         <button className="SmButton" id="/leaderboard" onClick={this.handleButtonClick}>LEADERBOARD</button>
@@ -73,12 +74,14 @@ class AppHeader extends Component {
             case "posts":
                 return (
                     <div id="PostsDropDownList">
+                        <br />
                         <h1>TODO: Built posts pages</h1>
                     </div>
                 );
             case "about":
                 return (
                     <div id="AboutDropDownList">
+                        <br />
                         <button className="SmButton" id="/about" onClick={this.handleButtonClick}>ABOUT</button>
                     </div>
                 );
@@ -100,11 +103,16 @@ class AppHeader extends Component {
         return (
             <div className="HeaderBar">
                 <h1 className="MainMenuHeaderText">ScoreMaster</h1>
-                <button className="DropDownButton" id="games" onMouseOut={this.handleDropDownButtonClick} onMouseOver={this.renderDropDownList}>GAMES</button>
+                <button className="DropDownButton" id="games"
+                    onMouseEnter={this.handleDropDownButtonClick}
+                    onMouseLeave={this.handleDropDownButtonClick}
+                >
+                    GAMES
+                </button>
                 <button className="DropDownButton" id="posts">POSTS</button>
                 <button className="DropDownButton" id="about">ABOUT</button>
-                {this.renderDropDownList()}
                 <button className="SmButton" id="/logout" onClick={this.handleButtonClick}>LOGOUT</button>
+                {this.renderDropDownList()}
             </div>
         );
     }
