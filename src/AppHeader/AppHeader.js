@@ -73,13 +73,15 @@ class AppHeader extends Component {
             case "posts":
                 return (
                     <div id="PostsDropDownList" className="DropDownList">
-                        <h1>TODO: Built posts pages</h1>
+                        <button className="SmButton DropDownListButton GameDropDownButton" id="/recentPosts" onClick={this.handleButtonClick}>RECENT POSTS</button>
+                        <button className="SmButton DropDownListButton GameDropDownButton" id="/searchPosts" onClick={this.handleButtonClick}>SEARCH POSTS</button>
+                        <button className="SmButton DropDownListButton GameDropDownButton" id="/createPost" onClick={this.handleButtonClick}J>CREATE POST</button>
                     </div>
                 );
             case "about":
                 return (
                     <div id="AboutDropDownList" className="DropDownList">
-                        <button className="DropDownListButton" id="/about" onClick={this.handleButtonClick}>ABOUT</button>
+                        <button className="SmButton DropDownListButton GameDropDownButton" id="/about" onClick={this.handleButtonClick}>ABOUT</button>
                     </div>
                 );
             default:

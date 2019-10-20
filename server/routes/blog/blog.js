@@ -73,6 +73,20 @@ app.get('/retrieveAllBlogPostHeaders/:blogPostType/:blogPostGameId', async (req,
     console.log("Exiting retrieveAllBlogPostHeaders");
 });
 
+
+app.get('/retrieveRecentBlogPostHeaders', async (req, res) => {
+    console.log("Entering /retrieveRecentBlogPostHeaders");
+
+    try {
+        
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({errorMsg: "Unable to retrieve recent blog post headers"});
+    }
+
+    console.log("Exiting /retrieveRecentBlogPostHeaders");
+});
+
 app.get('/retrieveTeamNames/:gameId', async (req, res) => {
     console.log("Entering /retrieveTeamNames/" + req.params.gameId);
 
