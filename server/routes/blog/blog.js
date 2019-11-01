@@ -73,20 +73,6 @@ app.get('/retrieveAllBlogPostHeaders/:blogPostType/:blogPostGameId', async (req,
     console.log("Exiting retrieveAllBlogPostHeaders");
 });
 
-
-app.get('/retrieveRecentBlogPostHeaders', async (req, res) => {
-    console.log("Entering /retrieveRecentBlogPostHeaders");
-
-    try {
-        
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({errorMsg: "Unable to retrieve recent blog post headers"});
-    }
-
-    console.log("Exiting /retrieveRecentBlogPostHeaders");
-});
-
 app.get('/retrieveTeamNames/:gameId', async (req, res) => {
     console.log("Entering /retrieveTeamNames/" + req.params.gameId);
 
@@ -125,6 +111,23 @@ app.get('/retrieveBlogPost/:blogPostId', async (req, res) => {
     console.log("Exiting retrieveBlogPost/" + req.params.blogPostId);
 });
 
+app.get('/retrieveAllBlogPostHeaders', async (req, res) => {
+    console.log("Entering /retrieveAllBlogPostHeaders");
+
+    try {
+        
+        let sortObject = {
+            editTime: -1
+        };
+
+        res.status(200).json(await mongoClient.runQueryWithSort(Collections.BLOG_POSTS, null, sortObject));
+    } catch (error) {
+        console.error(error);
+        res.status(500).json("Unable to retrieve all blog post headers")
+    }
+
+    console.log("Exiting /retrieveAllBlogPostHeaders");
+});
 
 app.get("/userBlogLikeStatus/:postId/:username", async (req, res) => {
     console.log("Entering /userBlogLikeStatus/" + req.params.postId + "/" + req.params.username);

@@ -61,6 +61,7 @@ class AppHeader extends Component {
     }
 
     renderDropDownList = () => {
+        //TODO: Recent posts should be the main view after logging in
         switch (this.state.selectedDropDownButton) {
             case "games":
                 return (
@@ -74,7 +75,6 @@ class AppHeader extends Component {
                 return (
                     <div id="PostsDropDownList" className="DropDownList">
                         <button className="SmButton DropDownListButton GameDropDownButton" id="/recentPosts" onClick={this.handleButtonClick}>RECENT POSTS</button>
-                        <button className="SmButton DropDownListButton GameDropDownButton" id="/searchPosts" onClick={this.handleButtonClick}>SEARCH POSTS</button>
                         <button className="SmButton DropDownListButton GameDropDownButton" id="/createPost" onClick={this.handleButtonClick}J>CREATE POST</button>
                     </div>
                 );

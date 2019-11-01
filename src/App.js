@@ -76,6 +76,7 @@ class App extends Component {
                     <Route exact path="/results" render={(props) => this.renderAppContainer("PASTPREDICTIONSVIEW", props)} />
                     <Route exact path="/admin" render={(props) => this.renderAppContainer("ADMINVIEW", props)} />
                     <Route exact path="/leaderboard" render={(props) => this.renderAppContainer("LEADERBOARDSVIEW", props)} />
+                    <Route exact path="/recentPosts" render={(props) => this.renderAppContainer("RECENTPOSTSVIEW", props)} />
                     <Route exact path="/about" render={(props) => this.renderAppContainer("ABOUTVIEW", props)} />
                     <Route exact path="/posts/predictions/:gameId" render={(props) => this.renderAppContainer("PREDICTIONPOSTSVIEW", props)} />
                     <Route exact path="/posts/analysis/:gameId" render={(props) => this.renderAppContainer("ANALYSISVIEW", props)} />
