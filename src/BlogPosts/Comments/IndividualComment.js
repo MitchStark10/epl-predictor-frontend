@@ -3,6 +3,7 @@ import './Comments.css';
 
 class IndividualComment extends Component {
 
+    //TODO: Create a frontend utility class for this method, it's being used in multiple spots
     formatDate = (date) => {
         let monthNames = [
             "January", "February", "March",

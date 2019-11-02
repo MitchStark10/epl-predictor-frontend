@@ -13,6 +13,7 @@ import PredictionPostsView from './BlogPosts/PredictionPostsView';
 import AddBlogPostView from './BlogPosts/AddBlogPostView';
 import BlogPostView from './BlogPosts/BlogPostView';
 import PostFeedView from './BlogPosts/PostFeedView';
+import CreatePostView from './BlogPosts/CreatePostView';
 
 class AppContainer extends Component {
 	constructor() {
@@ -119,6 +120,13 @@ class AppContainer extends Component {
 				<div className={this.props.view}>
 					{this.createDefaultMainMenu()}
 					<PostFeedView />
+				</div>
+			);
+		} else if (this.props.view === "CREATEPOSTVIEW") {
+			return (
+				<div className={this.props.view}>
+					{this.createDefaultMainMenu()}
+					<CreatePostView />
 				</div>
 			);
 		} else if (this.props.view === "LOGOUT") {
