@@ -37,7 +37,7 @@ app.post('/addNewBlogPost', async (req, res) => {
 
         let predictionResponse = await mongoClient.runSingleObjectQuery(Collections.PREDICTIONS, predictionQueryObject);
 
-        if (predictionResponse !== null && predictionResponse !== undefined) {
+        if ((predictionResponse !== null && predictionResponse !== undefined) || (req.body.gameId === "none")) {
             const blogPostToInsert = new BlogPost(req.body.blogPostTitle, req.body.blogPostData, 0, 
                 req.body.username, req.body.gameId, req.body.blogPostType, new Date());
             await mongoClient.runInsert(Collections.BLOG_POSTS, blogPostToInsert);

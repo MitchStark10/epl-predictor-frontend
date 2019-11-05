@@ -75,7 +75,7 @@ class BlogPostView extends Component {
             <div id="BlogPost">
                 <h1>{this.state.postData.postTitle}</h1>
                 <h2>Written By: {this.state.postData.username}</h2>
-                {this.state.postData.postData}
+                <div id="PostContent" dangerouslySetInnerHTML={{__html: this.state.postData.postData}} />
                 <button id="LikeBlogPost" onClick={this.toggleLikeBlogPost}>{likeBlogPostLabel}</button>
                 <CommentsView postId={this.props.postId} userToken={this.props.userToken}/>
             </div>

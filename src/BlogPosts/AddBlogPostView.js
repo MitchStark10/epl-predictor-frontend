@@ -31,7 +31,11 @@ class AddBlogPostView extends Component {
             if (this.props.postType === "PREDICTION") {
                 this.setState({redirectUrl: "/posts/predictions/" + this.props.gameId, errorMessage: ""});
             } else if (this.props.postType === "ANALYSIS") {
-                this.setState({redirectUrl: "/posts/analysis/" + this.props.gameId, errorMessage: ""});
+                if (this.props.gameId !== "none") {
+                    this.setState({ redirectUrl: "/posts/analysis/" + this.props.gameId, errorMessage: "" });
+                } else {
+                    this.setState({ redirectUrl: "/recentPosts", errorMsg: "" });
+                }
             } else {
                 console.error("Unknown post type: " + this.props.postType);
                 this.setState({errorMessage: "Unknown post type: " + this.props.postType});

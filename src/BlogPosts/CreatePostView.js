@@ -8,7 +8,7 @@ class CreatePostView extends React.Component {
         super();
 
         this.state = {
-            postType: "PREDICTION",
+            postType: "ANALYSIS",
             selectedGameId: "none",
             gameOptions: [],
             needsUpdate: true,
@@ -86,6 +86,15 @@ class CreatePostView extends React.Component {
         url += "/" + this.state.selectedGameId;
 
         this.setState({redirectUrl: url});
+    
+    }
+
+    renderNoneOption = () => {
+        if (this.state.postType === "ANALYSIS") {
+            return <option key="none" id="none">None</option>;
+        }
+
+        return null;
     }
 
     render() {
@@ -98,11 +107,11 @@ class CreatePostView extends React.Component {
             <div className="CreatePost">
                 <h1>CREATE POST</h1>
                 <select id="PostType" onChange={this.onPostTypeChange}>
-                    <option id="PREDICTION">PREDICTION</option>
                     <option id="ANALYSIS">ANALYSIS</option>
+                    <option id="PREDICTION">PREDICTION</option>
                 </select>
                 <select id="PostType">
-                    <option key="none" id="none">None</option>
+                    {this.renderNoneOption()}
                     {this.state.gameOptions.map( (game) => <option key={game._id} id={game._id}>{game.homeTeamName} VS. {game.awayTeamName} - {this.formatDate(new Date(game.gameDate))}</option>)}
                 </select>
                 <br />
