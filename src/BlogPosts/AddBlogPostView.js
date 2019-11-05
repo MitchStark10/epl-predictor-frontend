@@ -11,6 +11,7 @@ class AddBlogPostView extends Component {
         this.state = {
             postTitle: "",
             postContent: "",
+            viewType: "ADD_CONTENT",
             errorMessage: "",
             redirectUrl: ""
         };
@@ -42,10 +43,29 @@ class AddBlogPostView extends Component {
         });
     }
 
+    toggleViewType = () => {
+        if (this.state.viewType === "ADD_CONTENT") {
+            this.setState({viewType: "RENDER"});
+        } else {
+            this.setState({viewType: "ADD_CONTENT"});
+        }
+    }
+
     handleTextChange = (e) => {
         let newStateObj = {};
         newStateObj[e.target.id] = e.target.value;
         this.setState(newStateObj);
+    }
+
+    renderPostContent = () => {
+        return (
+            <div id="RenderView">
+                <div id="RenderedPostTitle">
+                    <h1>{this.state.postTitle}</h1>
+                </div>
+                <div id="RenderedPostContent" dangerouslySetInnerHTML={{ __html: this.state.postContent }} />
+            </div>
+       )
     }
 
     render() {
@@ -53,11 +73,23 @@ class AddBlogPostView extends Component {
             return <Redirect to={this.state.redirectUrl} />;
         }
 
+        if (this.state.viewType === "RENDER") {
+            return (
+                <div id="PostForm">
+                    {this.renderPostContent()}
+                    <button id="SubmitPost" onClick={this.submitPost}>SUBMIT</button>
+                    <button id="ToggleViewType" onClick={this.toggleViewType}>EDIT</button>
+                    <h1 id="ErrorMessage">{this.state.errorMessage}</h1>
+                </div>
+            );
+        }
+
         return (
             <div id="PostForm">
                 <input type="text" id="postTitle" placeholder="Post Title" value={this.state.postTitle} onChange={this.handleTextChange} />
                 <textarea type="text" id="postContent" placeholder="Write Blog Post Here..." value={this.state.postContent} onChange={this.handleTextChange} /><br />
-                <button id="SubmitPost" onClick={this.submitPost}>Submit</button>
+                <button id="SubmitPost" onClick={this.submitPost}>SUBMIT</button>
+                <button id="ToggleViewType" onClick={this.toggleViewType}>RENDER</button>
                 <h1 id="ErrorMessage">{this.state.errorMessage}</h1>
             </div>
         );

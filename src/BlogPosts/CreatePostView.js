@@ -1,5 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
+import { Redirect } from 'react-router-dom';
 
 class CreatePostView extends React.Component {
 
@@ -8,8 +9,10 @@ class CreatePostView extends React.Component {
 
         this.state = {
             postType: "PREDICTION",
+            selectedGameId: "none",
             gameOptions: [],
             needsUpdate: true,
+            redirectUrl: "",
             errorMsg: ""
         }
     }
@@ -51,6 +54,10 @@ class CreatePostView extends React.Component {
         this.setState({postType: e.target.selectedOptions[0].id, needsUpdate: true});
     } 
 
+    onGameChange = (e) => {
+        this.setState({selectedGameId: e.target.selectedOptions[0].id});
+    }
+
 
     //TODO: Create a frontend utility class for this method, it's being used in multiple spots
     formatDate = (date) => {
@@ -64,14 +71,28 @@ class CreatePostView extends React.Component {
         let day = date.getDate();
         let monthIndex = date.getMonth();
         let year = date.getFullYear();
-        let hour = date.getHours();
-        let minute = date.getMinutes();
-        let seconds = date.getSeconds();
 
         return  monthNames[monthIndex] + ' ' + day +  ', ' + year;
     }
 
+    gotoAddBlogPostView = () => {
+        let url = "";
+        if (this.state.postType === "PREDICTION") {
+            url += "/addPrediction"
+        } else {
+            url += "addAnalysis"
+        }
+
+        url += "/" + this.state.selectedGameId;
+
+        this.setState({redirectUrl: url});
+    }
+
     render() {
+        if (this.state.redirectUrl !== "") {
+            return <Redirect to={this.state.redirectUrl} />;
+        }
+
         //TODO: the selects are ugly, fix them
         return (
             <div className="CreatePost">
@@ -81,10 +102,11 @@ class CreatePostView extends React.Component {
                     <option id="ANALYSIS">ANALYSIS</option>
                 </select>
                 <select id="PostType">
+                    <option key="none" id="none">None</option>
                     {this.state.gameOptions.map( (game) => <option key={game._id} id={game._id}>{game.homeTeamName} VS. {game.awayTeamName} - {this.formatDate(new Date(game.gameDate))}</option>)}
                 </select>
                 <br />
-                <button className="SmBUtton" id="CreatePost">CREATE POST</button>
+                <button className="SmBUtton" id="CreatePost" onClick={this.gotoAddBlogPostView}>CREATE POST</button>
             </div>
         )
     }
