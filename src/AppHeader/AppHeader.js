@@ -15,12 +15,14 @@ class AppHeader extends Component {
     }
 
     componentDidMount() {
-        this.retrieveIsAdmin();
+        if (this.state.redirectUrl === "") {
+            this.retrieveIsAdmin();
+        }
     }
 
     componentDidUpdate() {
         if (this.state.redirectUrl !== "") {
-            this.setState({redirectUrl: ""});
+            this.setState({redirectUrl: ""})
         }
     }
 
@@ -29,7 +31,7 @@ class AppHeader extends Component {
         $.post(getUserStatusUrl, this.state)
         .done((statusResponse) => {
             console.log("Status response: " + JSON.stringify(statusResponse));
-            if (statusResponse["status"] === "admin") {
+            if (statusResponse["status"] === "admin" && this.state.redirectUrl === "") {
                 this.setState({isAdmin: true, redirectUrl: ""});
             }
         })
@@ -75,7 +77,7 @@ class AppHeader extends Component {
                 return (
                     <div id="PostsDropDownList" className="DropDownList">
                         <button className="SmButton DropDownListButton GameDropDownButton" id="/recentPosts" onClick={this.handleButtonClick}>RECENT POSTS</button>
-                        <button className="SmButton DropDownListButton GameDropDownButton" id="/createPost" onClick={this.handleButtonClick}J>CREATE POST</button>
+                        <button className="SmButton DropDownListButton GameDropDownButton" id="/createPost" onClick={this.handleButtonClick}>CREATE POST</button>
                     </div>
                 );
             case "about":
@@ -90,15 +92,11 @@ class AppHeader extends Component {
     }
 
     render() {
-        console.log("Testing during rendering: " + JSON.stringify(this.props.urlBackHistoryList));
+
         if (this.state.redirectUrl !== "") {
             return <Redirect to={this.state.redirectUrl} />
         }
 
-        //TODO: Display the below buttons under their appropriate menu category
-        // <button className="SmButton" id="/logout" onClick={this.handleButtonClick}>LOGOUT</button>
-        // <button className="SmButton" id="/about" onClick={this.handleButtonClick}>ABOUT</button>
- 
         return (
             <div>
                 <div className="HeaderBar" onMouseLeave={this.hanldeDropDownButtonMouseLeave}>
