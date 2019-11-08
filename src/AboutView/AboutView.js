@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import './AboutView.css';
+import packageJson from '../../package.json'
 
 class AboutView extends Component {
     render() {
         return (
             <div>
                 <h1>About ScoreMaster</h1>
-                <h4>Version: 1.3.5</h4>
+                <h4>Version: {packageJson.version}</h4>
                 <h4>Author: Mitch Stark</h4>
                 <p className="AboutParagraph">
                     Welcome to ScoreMaster! This web app was created to help keep track of 
