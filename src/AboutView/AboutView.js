@@ -6,16 +6,16 @@ class AboutView extends Component {
     render() {
         return (
             <div>
-                <h1>About ScoreMaster</h1>
-                <h4>Version: {packageJson.version}</h4>
-                <h4>Author: Mitch Stark</h4>
+                <div id="AboutHeader">
+                    <h1>ScoreMaster {packageJson.version}</h1>
+                    <h4>Author: Mitch Stark</h4>
+                </div>
                 <p className="AboutParagraph">
-                    Welcome to ScoreMaster! This web app was created to help keep track of 
-                    soccer predictions, and to create a little bit of competition amongst those who do it. 
-                    A "seasons" challengewill soon be added to provide incentive to rise your way to the 
-                    top of the ranks! Each season will consist of a handful of games from the EPL, 
-                    Champions League, and MLS chosen of the course of the month. The winner is chosen 
-                    by having the highest numberof correct predictions throughout the month. 
+                    Welcome to ScoreMaster! This site provides a one stop shop for all things EPL.
+                    Whether you are just looking to keep track of your predictions in the league,
+                    looking to read other's thoughts on an upcoming game, or find a spot to host
+                    your blog about your favorite team or league, it can all be done here. We
+                    welcome all lovers of the game, and are excited to have you here!
                 </p>
                 <p className="AboutParagraph">
                     If you have any feature suggestions, any games you'd like to see, or any issues, 
