@@ -38,7 +38,6 @@ class App extends Component {
             match = props.match;
         }
 
-        console.log("test: " + this.state.userToken);
         return <AppContainer userToken={this.state.userToken} 
                             match={match} 
                             view={viewName} 

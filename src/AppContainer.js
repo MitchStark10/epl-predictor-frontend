@@ -30,6 +30,7 @@ class AppContainer extends Component {
 
 
 	displayView = () => {
+		//TODO: This desperately needs to be refactored
 		console.log(this.props.view);
 		if (this.props.view === "LOGINVIEW") {
 			return (
