@@ -10,6 +10,7 @@ class BlogPostView extends Component {
         this.state = {
             postData: {},
             errorMessage: "",
+            needsReRender: false,
             hasUserLikedBlogPost: false
         };
     }
@@ -60,7 +61,6 @@ class BlogPostView extends Component {
         .done((response) => {
             this.setState({hasUserLikedBlogPost: !this.state.hasUserLikedBlogPost});
         });
-        
     }
 
     render() {
@@ -69,15 +69,13 @@ class BlogPostView extends Component {
             likeBlogPostLabel = "UNLIKE";
         }
 
-        console.log("here: " + this.props.userToken);
-
         return (
             <div id="BlogPost">
                 <h1>{this.state.postData.postTitle}</h1>
                 <h2>Written By: {this.state.postData.username}</h2>
                 <div id="PostContent" dangerouslySetInnerHTML={{__html: this.state.postData.postData}} />
                 <button id="LikeBlogPost" onClick={this.toggleLikeBlogPost}>{likeBlogPostLabel}</button>
-                <CommentsView postId={this.props.postId} userToken={this.props.userToken}/>
+                <CommentsView forceReload={this.toggleCommentAdded} postId={this.props.postId} userToken={this.props.userToken}/>
             </div>
         );
         

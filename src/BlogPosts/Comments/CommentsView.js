@@ -9,22 +9,35 @@ class CommentsView extends Component {
         this.state = {
             comments: [],
             commentText: "",
+            needsCommentReload: true,
             errorMsg: ""
         };
     }
 
     componentDidMount() {
-        $.get("/api/comments/retrieveAllComments/" + this.props.postId)
-        .done( (response) => {
-            console.log("Received response: " + response);
-            this.setState({comments: response});
-        })
-        .fail( (error) => {
-            console.error("Received error: " + error);
-            this.setState({errorMsg: error["errorMsg"]});
-        });
+        this.retrieveComments();
     }
-   
+
+    componentDidUpdate() {
+        this.retrieveComments();
+    }
+
+    retrieveComments = () => {
+        if (!this.state.needsCommentReload) {
+            return;
+        }
+
+        $.get("/api/comments/retrieveAllComments/" + this.props.postId)
+            .done((response) => {
+                console.log("Received response: " + response);
+                this.setState({comments: response, needsCommentReload: false});
+            })
+            .fail((error) => {
+                console.error("Received error: " + error);
+                this.setState({ errorMsg: error["errorMsg"] });
+            });
+    }
+
     handleTextChange = (e) => {
         let newStateObj = {};
         newStateObj[e.target.id] = e.target.value;
@@ -40,12 +53,12 @@ class CommentsView extends Component {
 
         $.post("/api/comments/addComment", commentToAdd)
         .done( (response) => {
-            this.setState({commentText: ""});  
+            this.setState({commentText: "", needsCommentReload: true});
         })
         .fail( (error) => {
             console.error(error);
             this.setState({errorMsg: error["errorMsg"]});
-        })
+        });
     }
 
     renderComments = () => {
