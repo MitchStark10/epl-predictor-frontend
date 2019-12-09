@@ -11,12 +11,14 @@ class BlogPostView extends Component {
             postData: {},
             errorMessage: "",
             needsReRender: false,
+            numLikes: 0,
             hasUserLikedBlogPost: false
         };
     }
 
     componentDidMount() {
         this.retrieveBlogPostData(this.props.postId);
+        //TODO: Retrieve blog post likes
     }
 
     retrieveBlogPostData(postId) {
@@ -75,6 +77,7 @@ class BlogPostView extends Component {
                 <h2>Written By: {this.state.postData.username}</h2>
                 <div id="PostContent" dangerouslySetInnerHTML={{__html: this.state.postData.postData}} />
                 <button id="LikeBlogPost" onClick={this.toggleLikeBlogPost}>{likeBlogPostLabel}</button>
+                <p>Likes: {this.state.numLikes}</p>
                 <CommentsView forceReload={this.toggleCommentAdded} postId={this.props.postId} userToken={this.props.userToken}/>
             </div>
         );
