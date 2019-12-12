@@ -67,3 +67,16 @@ app.get('/retrieveAllGames', async (req, res) => {
     console.log("Exiting /retrieveAllGames");
 });
 
+app.post('/searchForGame', async (req, res) => {
+    console.log("Entering /searchForGame");
+
+    try {
+        const gameResponse = await mongoClient.runQuery(Collections.GAMES, req.body);
+        res.status(200).json(gameResponse);
+    } catch (exception) {
+        console.error("Caught exception trying to search for game: " + exception);
+        res.status(500).json("Exception caught while searching for game: " + exception);
+    }
+
+    console.log("Exiting /searchForGame");
+});
