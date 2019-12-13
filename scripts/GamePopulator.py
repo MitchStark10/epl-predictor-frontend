@@ -28,8 +28,8 @@ for testEl in test.findAll('tr'):
         print(currentGameDate + " - " + teamList[0] + " vs. " + teamList[1])
 
         datePieces = currentGameDate.split(' ')
-        monthNum = monthList.index(datePieces[2])
-        dateToBeInserted = datePieces[3] + "-" + str(monthNum).rjust(2, '0') + "-" + datePieces[1]
+        monthNum = monthList.index(datePieces[2]) + 1
+        dateToBeInserted = datePieces[3] + "-" + str(monthNum).rjust(2, '0') + "-" + datePieces[1].rjust(2, '0')
 
         gameToAdd = {}
         gameToAdd["homeTeamName"] = teamList[0]

@@ -103,6 +103,7 @@ class PredictGamesView extends Component {
             let game = this.state.upcomingGames[i];
 
             let gameDate = new Date(game["gameDate"]);
+            console.log(gameDate);
             var day = gameDate.getDate();
             var monthIndex = gameDate.getMonth() + 1;
             var year = gameDate.getFullYear();

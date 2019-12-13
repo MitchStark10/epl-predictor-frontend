@@ -8,7 +8,7 @@ app.post('/addNewGame', async (req, res) => {
         req.body['awayTeamName'], 
         null,
         null,
-        new Date(req.body['gameDate'] + "T04:00:00Z"), 
+        new Date(req.body['gameDate'] + "T06:00:00Z"), 
         req.body['competition']);
 
     try {
