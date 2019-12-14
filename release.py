@@ -29,16 +29,20 @@ with open ("package.json") as file:
 	else:
 		packageVersionNumbers[2] = str(int(packageVersionNumbers[2]) + 1)
 
+	newPackageVersion = ".".join(packageVersionNumbers)
+	packageInfo['version'] = newPackageVersion
+
 print("Updated package info: " + str(packageInfo))
 
 packageJsonFile = open("package.json", "w")
 packageJsonFile.write(json.dumps(packageInfo, indent=4))
 
 #Commit
+os.system('git add .')
 os.system('git commit -m "release version ' + newPackageVersion + '"')
 
 #Tag version number
-os.system('git tag v' + newPackageVersionNumber)
+os.system('git tag v' + newPackageVersion)
 
 #Push commit
 os.system('git push -u origin master')
