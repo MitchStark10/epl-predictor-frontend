@@ -23,11 +23,11 @@ with open ("package.json") as file:
 	packageVersionNumbers = packageInfo['version'].split('.')
 
 	if releaseType.lower() == "major":
-		packageVersionNumbers[0] = str(int(packageVersionNumbers[0] + 1))
+		packageVersionNumbers[0] = str(int(packageVersionNumbers[0]) + 1)
 	elif releaseType.lower() == "minor":
-		packageVersionNumbers[1] = str(int(packageVersionNumbers[1] + 1))
+		packageVersionNumbers[1] = str(int(packageVersionNumbers[1]) + 1)
 	else:
-		packageVersionNumbers[2] = str(int(packageVersionNumbers[2] + 1))
+		packageVersionNumbers[2] = str(int(packageVersionNumbers[2]) + 1)
 
 print("Updated package info: " + str(packageInfo))
 
