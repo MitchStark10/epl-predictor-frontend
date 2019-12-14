@@ -7,7 +7,7 @@ releaseTypes = ["major", "minor", "patch"]
 #Determine what type of release this is
 releaseType = input("Type of release (Major/Minor/Patch):")
 
-if not (releaseType.lower(0 in releaseTypes):
+if not (releaseType.lower() in releaseTypes):
 	raise Exception("Unknown release type: " + releaseType)
 
 #Checkout master
