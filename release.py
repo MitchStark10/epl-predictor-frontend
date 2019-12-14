@@ -17,6 +17,7 @@ os.system("git checkout master")
 os.system("git merge develop")
 
 newPackageVersion = ""
+newPackageInfo = {}
 #Update version number
 with open ("package.json") as file:
 	packageInfo = json.load(file)
@@ -31,11 +32,12 @@ with open ("package.json") as file:
 
 	newPackageVersion = ".".join(packageVersionNumbers)
 	packageInfo['version'] = newPackageVersion
+	newPackageInfo = packageInfo
 
 print("Updated package info: " + str(packageInfo))
 
 packageJsonFile = open("package.json", "w")
-packageJsonFile.write(json.dumps(packageInfo, indent=4))
+packageJsonFile.write(json.dumps(newPackageInfo, indent=4))
 
 #Commit
 os.system('git add .')
