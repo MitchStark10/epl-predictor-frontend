@@ -11,6 +11,15 @@ app.post('/addNewGame', async (req, res) => {
         new Date(req.body['gameDate'] + "T06:00:00Z"), 
         req.body['competition']);
 
+    if (req.body["homeTeamScore"] !== null 
+        && req.body["homeTeamScore"] !== undefined
+        && req.body["awayTeamScore"] !== null
+        && req.body["awayTeamScore"] !== undefined) {
+
+        gameToInsert.homeTeamScore = req.body["homeTeamScore"];
+        gameToInsert.awayTeamScore = req.body["awayTeamScore"];
+    }
+
     try {
         const mongoClient = new MongoClientWrapper();
         const response = await mongoClient.runInsert(Collections.GAMES, gameToInsert);

@@ -70,8 +70,15 @@ app.get('/retrieveAllGames', async (req, res) => {
 app.post('/searchForGame', async (req, res) => {
     console.log("Entering /searchForGame");
 
+    if (req.body["gameDate"] === null || req.body["gameDate"] === undefined) {
+        res.status(400).json("Must include 'gameDate' field within the request");
+        return;
+    }
+
     try {
-        const gameResponse = await mongoClient.runQuery(Collections.GAMES, req.body);
+        let searchObject = req.body;
+        searchObject["gameDate"] = new Date(req.body['gameDate'] + "T06:00:00Z");
+        const gameResponse = await mongoClient.runQuery(Collections.GAMES, searchObject);
         res.status(200).json(gameResponse);
     } catch (exception) {
         console.error("Caught exception trying to search for game: " + exception);
