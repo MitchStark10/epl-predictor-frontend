@@ -38,6 +38,7 @@ print("Updated package info: " + str(packageInfo))
 
 packageJsonFile = open("package.json", "w")
 packageJsonFile.write(json.dumps(newPackageInfo, indent=4))
+packageJsonFile.close()
 
 #Commit
 os.system('git add .')
