@@ -34,8 +34,6 @@ with open ("package.json") as file:
 	packageInfo['version'] = newPackageVersion
 	newPackageInfo = packageInfo
 
-print("Updated package info: " + str(packageInfo))
-
 packageJsonFile = open("package.json", "w")
 packageJsonFile.write(json.dumps(newPackageInfo, indent=4))
 packageJsonFile.close()
@@ -55,6 +53,4 @@ os.system('git push --tags')
 
 #Checkout develop
 os.system('git checkout develop')
-
-#Checkout master
-os.system('git checkout master')
+os.system('git merge master')
