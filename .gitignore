@@ -23,4 +23,6 @@ yarn-debug.log*
 yarn-error.log*
 
 # AWS Python dependencies
-scripts/pythonLibs/
+scripts/*
+!scripts/*.py
+!scripts/*.cfg
