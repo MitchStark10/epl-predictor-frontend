@@ -54,16 +54,15 @@ def populateGames(event, context):
             if len(gameAlreadyExistingResponse) > 0:
                 print("Game already exists in DB...")
     
-                print("test: " + str("homeTeamScore" in gameToAdd))
                 if "homeTeamScore" in gameToAdd and gameAlreadyExistingResponse[0]["homeTeamScore"] == None:
                     requests.post(url = "http://scoremaster-frontend.herokuapp.com/api/games/updateGame/" + gameAlreadyExistingResponse[0]["_id"], data = gameToAdd)
                     print("Updated game with score in DB")
     
                 continue
 
-        #TODO: System variable for URL to abstract away environment
-        requests.post(url = "http://scoremaster-frontend.herokuapp.com/api/admin/addNewGame", data = gameToAdd)
-        print("Added game to DB")
+            #TODO: System variable for URL to abstract away environment
+            requests.post(url = "http://scoremaster-frontend.herokuapp.com/api/admin/addNewGame", data = gameToAdd)
+            print("Added game to DB")
         
 
     return {
@@ -71,3 +70,5 @@ def populateGames(event, context):
         'body': json.dumps('Updated ' + str(updateCount) + ' games in the db')
     }
 
+if __name__ == "__main__":
+    populateGames(None, None)
