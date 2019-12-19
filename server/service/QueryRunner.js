@@ -3,10 +3,10 @@ var mysql = require('mysql');
 
 function QueryRunner() {
 	this.pool = mysql.createPool({
-		host: process.env.SOCCERCENTER_HOST,
-		user: process.env.SOCCERCENTER_USER,
-		password: process.env.SOCCERCENTER_PASSWORD,
-		database: process.env.SOCCERCENTER_DATABASE
+		host: process.env.SCOREMASTER_HOST,
+		user: process.env.SCOREMASTER_USER,
+		password: process.env.SCOREMASTER_PASSWORD,
+		database: process.env.SCOREMASTER_DATABASE
 	});
 }
 
