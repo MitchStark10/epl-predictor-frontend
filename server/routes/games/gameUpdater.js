@@ -1,9 +1,25 @@
 const app = module.exports = require('express')();
-const Collections = require('../../database/Collections');
-const Game = require('../../database/Game');
-const MongoClientWrapper = require('../../service/MongoClientWrapper');
-const ObjectId = require('mongodb').ObjectId;
-const mongoClient = new MongoClientWrapper();
+const QueryRunner = require('../../service/QueryRunner').buildQueryRunner();
+const mysql = require('mysql');
+
+const SELECT_TEAM_NAMES = `
+SELECT HomeTeamName, AwayTeamName
+FROM GAME
+WHERE GameId = ?
+`;
+
+const UPDATE_TEAM_NAMES_SQL = `
+UPDATE PREDICTION
+SET WinningTeam = ?
+WHERE WinningTeam = ?
+    AND GameId = ?
+`;
+
+const UPDATE_GAME_SQL = `
+UPDATE GAME
+SET HomeTeamName = ?, AwayTeamName = ?, HomeTeamScore = ?, AwayTeamScore = ?, GameDate = ?, Competition = ?
+WHERE GameId = ?
+`;
 
 let determineScoreQueryParam = (scoreRequestParam) => {
     console.log("Score request param: '" + scoreRequestParam + "'");
@@ -16,26 +32,18 @@ let determineScoreQueryParam = (scoreRequestParam) => {
 }
 
 let updatePredictionTeamNames = async (oldName, newName, gameId) => {
-    const searchObject = {
-        gameId: gameId,
-        winningTeam: oldName
-    };
-
-    const updateObject = {
-        winningTeam: newName
-    };
-
-    await mongoClient.runUpdate(Collections.PREDICTIONS, searchObject, updateObject, false);
+    let params = [newName, oldName, gameId];
+    let updateNamesSql = mysql.format(UPDATE_TEAM_NAMES_SQL, params);
+    await QueryRunner.runQuery(updateNamesSql);
 }
 
 let checkIfPredictionTeamNamesNeedToUpdate = async (req) => {
-    let gameSearchObject = {
-        _id: ObjectId(req.params["gameId"])
-    };
+    let params = [req.params["gameId"]];
+    let retrieveTeamNamesQuery = mysql.format(SELECT_TEAM_NAMES, params);
 
-    let teamNameResponse = await mongoClient.runSingleObjectQuery(Collections.GAMES, gameSearchObject);
-    let homeTeamName = teamNameResponse["homeTeamName"];
-    let awayTeamName = teamNameResponse["awayTeamName"];
+    let teamNameResponse = await QueryRunner.runQuery(retrieveTeamNamesQuery);
+    let homeTeamName = teamNameResponse[0]["HomeTeamName"];         
+    let awayTeamName = teamNameResponse[0]["AwayTeamName"];
 
     if (req.body["homeTeamName"] !== homeTeamName) {
         console.log("Updating home team name predictions for game: " + req.params["gameId"]
@@ -53,11 +61,6 @@ let checkIfPredictionTeamNamesNeedToUpdate = async (req) => {
 }
 
 app.post('/updateGame/:gameId', async (req, res) => {
-
-    if (req.body["gameDate"] === null || req.body["gameDate"] === undefined) {
-        res.status(400).json({errorMsg: "Cannot update game with null date"});
-    }
-
     try {
         await checkIfPredictionTeamNamesNeedToUpdate(req);
     } catch (error) {
@@ -69,20 +72,20 @@ app.post('/updateGame/:gameId', async (req, res) => {
     let homeTeamScore = determineScoreQueryParam(req.body["homeTeamScore"]);
     let awayTeamScore = determineScoreQueryParam(req.body["awayTeamScore"]);
 
-    let searchObject = {
-        _id: ObjectId(req.params.gameId)
-    };
+    let params = [
+        req.body["homeTeamName"],
+        req.body["awayTeamName"],
+        homeTeamScore,
+        awayTeamScore,
+        req.body["gameDate"] + " 04:00:00",
+        req.body["competition"],
+        req.params["gameId"]
+    ];
 
-    let timezone = "";
-    if (!req.body["gameDate"].includes("T0")) {
-        timezone = "T04:00:00Z";
-    }
-
-    let updateGameObject = new Game(req.body["homeTeamName"], req.body["awayTeamName"], 
-        homeTeamScore, awayTeamScore, new Date(req.body["gameDate"] + timezone), req.body["competition"]);
+    let updateSql = mysql.format(UPDATE_GAME_SQL, params);
 
     try {
-        await mongoClient.runUpdate(Collections.GAMES, searchObject, updateGameObject, false);
+        await QueryRunner.runQuery(updateSql);
         res.status(200).json("Successfully updated game: " + req.params.gameId)
     } catch (error) {
         console.error("Error updating game: " + req.params["gameId"] + ": " + error);

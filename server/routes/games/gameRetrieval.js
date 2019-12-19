@@ -1,89 +1,52 @@
 const app = module.exports = require('express')();
-const Collections = require('../../database/Collections');
-const MongoClientWrapper = require('../../service/MongoClientWrapper');
-const mongoClient = new MongoClientWrapper();
+const QueryRunner = require('../../service/QueryRunner').buildQueryRunner();
+
+const RETRIEVE_ALL_GAMES_SQL = `
+SELECT *
+FROM GAME
+ORDER BY GameDate DESC
+`;
+
+const RETRIEVE_ALL_UPCOMING_GAMES_SQL = `
+SELECT * 
+FROM GAME 
+WHERE GameDate > SYSDATE()
+ORDER BY GameDate
+`;
+
+const RETRIEVE_ALL_PAST_GAMES_SQL = `
+SELECT *
+FROM GAME
+WHERE GameDate <= SYSDATE()
+ORDER BY GameDate DESC
+`;
 
 app.get('/retrieveAllUpcomingGames', async (req, res) => {
-    console.log("Entering /retrieveAllUpcomingGames");
-
-    const today = new Date();
-    const searchObj = {
-        gameDate: { $gt: today }
-    };
-
-    const orderObj = {
-        gameDate: 1
-    };
-
     try {
-        const previousGameResponse = await mongoClient.runQueryWithSort(Collections.GAMES, searchObj, orderObj);
-        res.status(200).json(previousGameResponse);
-    } catch (exception) {
-        console.error("Caught exception trying to retrieve all upcoming games: " + exception);
-        res.status(500).json("Exception caught while retrieving all upcoming games: " + exception);
+        let response = await QueryRunner.runQuery(RETRIEVE_ALL_UPCOMING_GAMES_SQL);
+        res.status(200).json(response);
+    } catch (error) {
+        console.error("Error retrieving all upcoming games: " + error);
+        res.status(500).json("Error retrieving all upcoming games");
     }
-
-    console.log("Exiting /retrieveAllUpcomingGames");
 });
 
 app.get('/retrieveAllPastGames', async (req, res) => {
-    console.log("Entering /previousGames");
-
-    //TODO: Is this now?
-    const today = new Date();
-    //TODO: Correct syntax if needed
-    const searchObj = {
-        gameDate: { $lt: new Date() }
-    };
-    const orderObj = {
-        gameDate: -1
-    };
-
     try {
-        const previousGameResponse = await mongoClient.runQueryWithSort(Collections.GAMES, searchObj, orderObj);
-        res.status(200).json(previousGameResponse);
-    } catch (exception) {
-        console.error("Caught exception trying to retrieve all previous games: " + exception);
-        res.status(500).json("Exception caught while retrieving all previous games: " + exception);
+        let response = await QueryRunner.runQuery(RETRIEVE_ALL_PAST_GAMES_SQL);
+        res.status(200).json(response);
+    } catch (error) {
+        console.error("Error retrieving all past games: " + error);
+        res.status(500).json("Error retrieving all past games");
     }
-
-    console.log("Exiting /previousGames");
 });
 
 app.get('/retrieveAllGames', async (req, res) => {
-    console.log("Entering /retrieveAllGames");
-
     try {
-        const orderObj = {
-            gameDate: -1
-        };
-        const allGameResponse = await mongoClient.runQueryWithSort(Collections.GAMES, null, orderObj);
-        res.status(200).json(allGameResponse);
-    } catch (exception) {
-        console.error("Caught exception trying to retrieve all games: " + exception);
-        res.status(500).json("Exception caught while retrieving all games: " + exception);
+        let response = await QueryRunner.runQuery(RETRIEVE_ALL_GAMES_SQL);
+        res.status(200).json(response);
+    } catch (error) {
+        console.error("Error retrieving all games: " + error);
+        res.status(500).json("Error retrieving all games");
     }
-
-    console.log("Exiting /retrieveAllGames");
-});
-
-app.post('/searchForGame', async (req, res) => {
-    console.log("Entering /searchForGame");
-
-    if (req.body["gameDate"] === null || req.body["gameDate"] === undefined) {
-        res.status(400).json("Must include 'gameDate' field within the request");
-        return;
-    }
-
-    try {
-        let searchObject = req.body;
-        searchObject["gameDate"] = new Date(req.body['gameDate'] + "T06:00:00Z");
-        const gameResponse = await mongoClient.runQuery(Collections.GAMES, searchObject);
-        res.status(200).json(gameResponse);
-    } catch (exception) {
-        console.error("Caught exception trying to search for game: " + exception);
-        res.status(500).json("Exception caught while searching for game: " + exception);
-    }
-
-    console.log("Exiting /searchForGame");
 });

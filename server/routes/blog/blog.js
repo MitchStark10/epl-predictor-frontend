@@ -1,26 +1,84 @@
 const app = module.exports = require('express')();
-const Collections = require('../../database/Collections');
-const BlogPost = require('../../database/BlogPost');
-const MongoClientWrapper = require('../../service/MongoClientWrapper');
-const ObjectId = require('mongodb').ObjectId; 
-const mongoClient = new MongoClientWrapper();
+const QueryRunner = require('../../service/QueryRunner').buildQueryRunner();
+const mysql = require('mysql');
+
+const INSERT_NEW_BLOG_POST_SQL = `
+INSERT INTO BLOG_POST(PostTitle, PostData, ViewCount, Username, GameId, BlogPostType)
+VALUES (?, ?, 0, ?, ?, ?)
+`;
+
+const ADD_LIKE_SQL = `
+INSERT INTO BLOG_POST_LIKE(PostId, Username)
+VALUES (?, ?)
+`;
+
+const RETRIEVE_BLOG_POST_HEADERS_SQL = `
+SELECT PostId, PostTitle, Username
+FROM BLOG_POST
+WHERE BlogPostType = ?
+    AND GameId = ?
+`;
+
+const RETRIEVE_BLOG_POST_SQL = `
+SELECT PostId, 
+    PostTitle, 
+    CONVERT(PostData USING utf8) AS PostData, 
+    ViewCount, 
+    Username
+FROM BLOG_POST
+WHERE PostId = ?
+`;
+
+const EDIT_BLOG_POST_SQL = `
+UPDATE BLOG_POST
+SET PostTitle = ?,
+    PostData = ?
+WHERE PostId = ?
+`;
+
+const ADD_BLOG_POST_VIEW_SQL = `
+UPDATE BLOG_POST
+SET ViewCount = ViewCount + 1
+WHERE PostId = ?
+`;
+
+const DELETE_BLOG_POST_SQL = `
+DELETE FROM BLOG_POST WHERE PostId = ?
+`;
+
+const CHECK_IF_PREDICTION_EXISTS_FOR_USER_AND_GAME_SQL = `
+SELECT COUNT(*) AS PREDICTION_COUNT
+FROM PREDICTION
+WHERE GameId = ?
+    AND Username = ?
+`;
+
+const GET_GAME_DATE_SQL = `
+SELECT GameDate
+FROM GAME
+WHERE GameId = ?
+`;
+
+const GET_TEAM_NAMES_SQL = `
+SELECT HomeTeamName, AwayTeamName
+FROM GAME 
+WHERE GameId = ?
+`;
 
 app.post('/addNewBlogPost', async (req, res) => {
     console.log("Entered add new blog post");
 
     try {
-        //Ensure that the prediction is occurring before the day of the game
+
         if (req.body.blogPostType === "PREDICTION") {
             let currentDate = new Date();
             currentDate.setHours(0, 0, 0, 0);
 
-            let gameQueryObject = {
-                _id: ObjectId(req.body.gameId)
-            };
+            let getDateParams = [req.body.gameId];
+            let getGameDateSql = mysql.format(GET_GAME_DATE_SQL, getDateParams);
+            let gameDateResponse = await QueryRunner.runQuery(getGameDateSql);
 
-            let gameDateResponse = await mongoClient.runQuery(Collections.GAMES, gameQueryObject);
-
-            let gameDate = new Date(Date.parse(gameDateResponse["gameDate"]));
+            let gameDate = new Date(Date.parse(gameDateResponse[0]["GameDate"]));
             gameDate.setHours(0, 0, 0, 0);
 
             if (currentDate >= gameDate) {
@@ -29,18 +87,15 @@ app.post('/addNewBlogPost', async (req, res) => {
             }
         }
 
-        //Ensure that the blog post is being added for a game that the user has already predicted
-        let predictionQueryObject = {
-            gameId: req.body.gameId,
-            username: req.body.username
-        };
+        let checkPredictionParams = [req.body.gameId, req.body.username];
+        let checkPredictionSql = mysql.format(CHECK_IF_PREDICTION_EXISTS_FOR_USER_AND_GAME_SQL, checkPredictionParams);
+        let countResponse = await QueryRunner.runQuery(checkPredictionSql);
+        let count = countResponse[0]["PREDICTION_COUNT"];
 
-        let predictionResponse = await mongoClient.runSingleObjectQuery(Collections.PREDICTIONS, predictionQueryObject);
-
-        if ((predictionResponse !== null && predictionResponse !== undefined) || (req.body.gameId === "none")) {
-            const blogPostToInsert = new BlogPost(req.body.blogPostTitle, req.body.blogPostData, 0, 
-                req.body.username, req.body.gameId, req.body.blogPostType, new Date());
-            await mongoClient.runInsert(Collections.BLOG_POSTS, blogPostToInsert);
+        if (count === 1) {
+            let params = [req.body.blogPostTitle, req.body.blogPostData, req.body.username, req.body.gameId, req.body.blogPostType];
+            let insertBlogPostSql = mysql.format(INSERT_NEW_BLOG_POST_SQL, params);
+            await QueryRunner.runQuery(insertBlogPostSql);
             res.status(200).json("Successfully added new blog post")
         } else {
             res.status(400).json({errorMsg: "You cannot add a new blog post for a game that you have not predicted."})
@@ -54,16 +109,45 @@ app.post('/addNewBlogPost', async (req, res) => {
     console.log("Exiting add new blog post");
 });
 
+app.post('/updateBlogPost', async (req, res) => {
+    console.log("Entering updateBlogPost");
+
+    try {
+        let params = [req.body.blogPostTitle, req.body.blogPostData, req.body.blogPostId];
+        let editGameSql = mysql.format(EDIT_BLOG_POST_SQL, params);
+        await QueryRunner.runQuery(editGameSql);
+        res.status(200).json("Successfully saved blog post edits");
+    } catch (error) {
+        console.log(error);
+        res.status(500).json("Unable to edit blog post");
+    }
+    
+    console.log("Exiting updateBlogPost");
+});
+
+app.post('/likeBlogPost', async (req, rexs) => {
+    console.log("Entering likeBlogPost/");
+
+    try {
+        let params = [req.body.blogPostId, req.body.username];
+        let insertLikeSql = mysql.format(ADD_LIKE_SQL, params);
+        await QueryRunner.runQuery(insertLikeSql);
+        res.status(200).json("Successfully liked blog post");
+    } catch (error) {
+        console.log(error);
+        res.status(500).json("Unable to like post");
+    }
+
+    console.log("Exiting likeBlogPost");
+});
+
 app.get('/retrieveAllBlogPostHeaders/:blogPostType/:blogPostGameId', async (req, res) => {
     console.log("Entering retrieveAllBlogPostHeaders");
 
     try {
-        let queryObject = {
-            gameId: req.params.blogPostGameId,
-            blogPostType: req.params.blogPostType
-        };
-
-        let blogResults = await mongoClient.runQuery(Collections.BLOG_POSTS, queryObject);
+        let params = [req.params.blogPostType, req.params.blogPostGameId];
+        let retrieveQuery = mysql.format(RETRIEVE_BLOG_POST_HEADERS_SQL, params)
+        let blogResults = await QueryRunner.runQuery(retrieveQuery);
         res.status(200).json(blogResults);
     } catch (error) {
         console.log(error);
@@ -77,12 +161,10 @@ app.get('/retrieveTeamNames/:gameId', async (req, res) => {
     console.log("Entering /retrieveTeamNames/" + req.params.gameId);
 
     try {
-        let queryForTeamNamesObject = {
-            _id: ObjectId(req.params.gameId)
-        };
-
-        let teamNamesResponse = await mongoClient.runSingleObjectQuery(Collections.GAMES, queryForTeamNamesObject);
-        res.status(200).json(teamNamesResponse);
+        let getTeamNameParams = [req.params.gameId];
+        let getTeamNamesQuery = mysql.format(GET_TEAM_NAMES_SQL, getTeamNameParams);
+        let teamNamesResponse = await QueryRunner.runQuery(getTeamNamesQuery);
+        res.status(200).json(teamNamesResponse[0]);
     } catch (error) {
         console.log(error);
         res.status(500).json("Unable to retrieve team names for game id: " + req.params.gameId);
@@ -95,14 +177,13 @@ app.get('/retrieveBlogPost/:blogPostId', async (req, res) => {
     console.log("Entering retrieveBlogPost/" + req.params.blogPostId);
 
     try {
-        let searchObject = {
-            _id: ObjectId(req.params.blogPostId)
-        };
+        let params = [req.params.blogPostId];
+        let retrieveBlogQuery = mysql.format(RETRIEVE_BLOG_POST_SQL, params);
+        let blogPostData = await QueryRunner.runQuery(retrieveBlogQuery);
 
-        let blogPostData = await mongoClient.runSingleObjectQuery(Collections.BLOG_POSTS, searchObject);
-
-        //TODO: Convert to mongo query:  QueryRunner.runQuery(addViewSql);
-        res.status(200).json(blogPostData);
+        let addViewSql = mysql.format(ADD_BLOG_POST_VIEW_SQL, params)
+        QueryRunner.runQuery(addViewSql);
+        res.status(200).json(blogPostData[0]);
     } catch (error) {
         console.log(error);
         res.status(500).json("Unable to retrieve blog post");
@@ -111,74 +192,18 @@ app.get('/retrieveBlogPost/:blogPostId', async (req, res) => {
     console.log("Exiting retrieveBlogPost/" + req.params.blogPostId);
 });
 
-app.get('/retrieveAllBlogPostHeaders', async (req, res) => {
-    console.log("Entering /retrieveAllBlogPostHeaders");
+app.delete('/deleteBlogPost/:blogPostId', async (req, res) => {
+    console.log("Entering deleteBlogPost/" + req.params.blogPostId);
 
     try {
-        
-        let sortObject = {
-            editTime: -1
-        };
-
-        res.status(200).json(await mongoClient.runQueryWithSort(Collections.BLOG_POSTS, null, sortObject));
+        let params = [req.params.blogPostId];
+        let deleteSql = mysql.format(DELETE_BLOG_POST_SQL, params);
+        await QueryRunner.runQuery(deleteSql);
+        res.status(200).json("Deleted blog post");
     } catch (error) {
-        console.error(error);
-        res.status(500).json("Unable to retrieve all blog post headers")
+        console.log(error);
+        res.status(500).json("Unable to delete blog post");
     }
 
-    console.log("Exiting /retrieveAllBlogPostHeaders");
-});
-
-app.get("/userBlogLikeStatus/:postId/:username", async (req, res) => {
-    console.log("Entering /userBlogLikeStatus/" + req.params.postId + "/" + req.params.username);
-
-    try {
-        let queryObj = {
-            username: req.params.username,
-            postId: req.params.postId
-        };
-
-        let result = await mongoClient.runSingleObjectQuery(Collections.BLOG_POST_LIKES, queryObj);
-
-        let status = "UNLIKED";
-
-        if (result !== null && result !== undefined) {
-            status = "LIKED";
-        }
-
-        res.status(200).json({ userBlogLikeStatus: status});
-    } catch (exception) {
-        console.error("Unable to retrieve the blog like status for post: " + req.params.postId + " - " + req.params.username);
-        res.status(500).json({ errorMsg: "Unable to retrieve the blog like status requested"});
-    }
-
-    console.log("Exiting /userBlogLikeStatus/" + req.params.postId + "/" + req.params.username);
-});
-
-
-app.post("/toggleBlogLikeStatus/:postId/:username", async (req, res) => {
-    console.log("Entering /toggleBlogLikeStatus/" + req.params.postId + "/" + req.params.username);
-
-    try {
-        let queryObj = {
-            username: req.params.username,
-            postId: req.params.postId
-        };
-
-        let searchResult = await mongoClient.runSingleObjectQuery(Collections.BLOG_POST_LIKES, queryObj);
-
-        if (searchResult === undefined || searchResult === null) {
-            await mongoClient.runInsert(Collections.BLOG_POST_LIKES, queryObj);
-        } else {
-            await mongoClient.runDelete(Collections.BLOG_POST_LIKES, queryObj);
-        }
-        
-        res.status(200).json("Succesfully toggled like status")
-
-    } catch (exception) {
-        console.error("Unable to toggle like status for post: " + req.params.postId + " - " + req.params.username);
-        res.status(500).json({ errorMsg: "Unable to toggle like status for post: " + req.params.postId + " - " + req.params.username});
-    }
-
-    console.log("Exiting /toggleBlogLikeStatus/" + req.params.postId + "/" + req.params.username);
+    console.log("Exiting deleteBlogPost/" + req.params.blogPostId);
 });

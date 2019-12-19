@@ -1,60 +1,59 @@
 const app = module.exports = require('express')();
-const Collections = require('../../database/Collections');
-const MongoClientWrapper = require('../../service/MongoClientWrapper');
-const ObjectId = require('mongodb').ObjectId; 
-const mongoClient = new MongoClientWrapper();
+const mysql = require('mysql');
+const QueryRunner = require('../../service/QueryRunner').buildQueryRunner();
+const bcrypt = require('bcrypt-nodejs');
+const PasswordHasher = require('../../service/PasswordHasher')();
+
+const RETRIEVE_ALL_USERNAMES = `
+SELECT DISTINCT Username
+FROM USER
+`;
+
+const RETRIEVE_ALL_PREDICTIONS_BY_USER = `
+SELECT * 
+FROM PREDICTION, GAME
+WHERE PREDICTION.GameId = GAME.GameId
+    AND GAME.HomeTeamScore IS NOT NULL
+    AND GAME.AwayTeamScore IS NOT NULL
+    AND PREDICTION.Username = ?
+ORDER BY GAME.GameDate DESC
+`;
 
 app.get('/', async (req, res) => {
-    try {
-        var leaderboardStatsList = [];
-        let usernameList = await mongoClient.runQuery(Collections.USERS, null);
-
-        for (var i = 0; i < usernameList.length; i++) {
-            const username = usernameList[i]["username"];
-            let userPredictionSearch = {
-                username: username
-            };
-
-            let predictionList = await mongoClient.runQuery(Collections.PREDICTIONS, userPredictionSearch);
-
-            leaderboardStatsList.push(await processPredictions(predictionList, username, i + 1));
-        }
-
-        leaderboardStatsList = leaderboardStatsList.sort(function (a, b) {
-            return b["correctPredictionRate"] - a["correctPredictionRate"];
-        });
-
-        res.status(200).json(leaderboardStatsList);
-    } catch (exception) {
-        console.log("Encountered exception retrieving leaderboards: " + exception + " - " + exception.stack);
-        res.status(500).json({ errorMsg: "Unable to retrieve leaderboards" });
+    var leaderboardStatsList = [];
+    let usernameList = await QueryRunner.runQuery(RETRIEVE_ALL_USERNAMES);
+    
+    for (var i = 0; i < usernameList.length; i++) {
+        let username = usernameList[i]["Username"];
+        let predictionsQuery = mysql.format(RETRIEVE_ALL_PREDICTIONS_BY_USER, username);
+        let predictionList = await QueryRunner.runQuery(predictionsQuery);
+        
+        leaderboardStatsList.push(processPredictions(predictionList, username, i + 1));
     }
+
+    leaderboardStatsList = leaderboardStatsList.sort(function(a, b) {
+        return b["correctPredictionRate"] - a["correctPredictionRate"];
+    });
+
+    res.status(200).json(leaderboardStatsList);
 });
 
-processPredictions = async (predictionList, username, place) => {
+processPredictions = (predictionList, username, place) => {
     var correctPredictionsCount = 0;
-    let totalPredictionsCount = 0;
+    let totalPredictionsCount = predictionList.length;
     var streakSymbol = "";
     var streakCount = 0;
     var streakBroken = false;
-    const gameCache = {};
 
     for (var i = 0; i < predictionList.length; i++) {
         let prediction = predictionList[i];
-        let game = await retrieveGame(prediction["gameId"], gameCache);
-        let predictedWinner = prediction["winningTeam"];
-        let homeTeamScore = parseInt(game["homeTeamScore"]);
-        let awayTeamScore = parseInt(game["awayTeamScore"]);
-
-        if (Number.isNaN(homeTeamScore) || Number.isNaN(awayTeamScore)) {
-            continue;
-        }
-
-        totalPredictionsCount++;
+        let predictedWinner = prediction["WinningTeam"];
+        let homeTeamScore = parseInt(prediction["HomeTeamScore"]);
+        let awayTeamScore = parseInt(prediction["AwayTeamScore"]);
 
         if ((homeTeamScore === awayTeamScore && predictedWinner === "Tie")
-            || (homeTeamScore > awayTeamScore && predictedWinner === game["homeTeamName"])
-            || (awayTeamScore > homeTeamScore && predictedWinner === game["awayTeamName"])) {
+            || (homeTeamScore > awayTeamScore && predictedWinner === prediction["HomeTeamName"])
+            || (awayTeamScore > homeTeamScore && predictedWinner === prediction["AwayTeamName"])) {
 
             correctPredictionsCount++;
 
@@ -80,18 +79,4 @@ processPredictions = async (predictionList, username, place) => {
         "correctPredictionRate": ((correctPredictionsCount / totalPredictionsCount) * 100).toFixed(2),
         "place": place
     };
-}
-
-retrieveGame = async (gameId, gameCache) => {
-    if (gameCache[gameId] !== null && gameCache[gameId] !== undefined) {
-        return gameCache[gameId];
-    }
-
-    const gameSearchObj = {
-        _id: ObjectId(gameId)
-    };
-
-    const gameData = await mongoClient.runSingleObjectQuery(Collections.GAMES, gameSearchObj);
-    gameCache[gameId] = gameData;
-    return gameData;
 };

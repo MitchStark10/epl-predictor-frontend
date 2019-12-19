@@ -4,6 +4,8 @@ const MongoClientWrapper = require('../../service/MongoClientWrapper');
 const mongoClient = new MongoClientWrapper();
 const Comment = require('../../database/Comment');
 
+//TODO: All of this needs to be fixed
+
 app.get('/retrieveAllComments/:postId', async (req, res) => {
     console.log("Entering /retrieveAllComments/" + req.params.postId);
 
