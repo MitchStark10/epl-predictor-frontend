@@ -43,7 +43,8 @@ def populateGames(event, context):
             gameToAdd["gameDate"] = dateToBeInserted
             gameToAdd["competition"] = "English Premier League"
     
-            gameAlreadyExistingResponse = json.loads(requests.post(url = "http://scoremaster-frontend.herokuapp.com/api/games/searchForGame", data = gameToAdd).text)
+            gameAlreadyExistingResponse = json.loads(requests.post(url = "http://localhost:8080/api/games/searchForGame", data = gameToAdd).text)
+            print(str(gameAlreadyExistingResponse))
     
             #Add the score to the gameToAdd object after the search, so that we do not disclude results that have not been
             #updated yet
@@ -54,14 +55,14 @@ def populateGames(event, context):
             if len(gameAlreadyExistingResponse) > 0:
                 print("Game already exists in DB...")
     
-                if "homeTeamScore" in gameToAdd and gameAlreadyExistingResponse[0]["homeTeamScore"] == None:
-                    requests.post(url = "http://scoremaster-frontend.herokuapp.com/api/games/updateGame/" + gameAlreadyExistingResponse[0]["_id"], data = gameToAdd)
+                if "homeTeamScore" in gameToAdd and gameAlreadyExistingResponse[0]["HomeTeamScore"] == None:
+                    requests.post(url = "http://localhost:8080/api/games/updateGame/" + str(gameAlreadyExistingResponse[0]["GameId"]), data = gameToAdd)
                     print("Updated game with score in DB")
     
                 continue
 
             #TODO: System variable for URL to abstract away environment
-            requests.post(url = "http://scoremaster-frontend.herokuapp.com/api/admin/addNewGame", data = gameToAdd)
+            requests.post(url = "http://localhost:8080/api/admin/addNewGame", data = gameToAdd)
             print("Added game to DB")
         
 
