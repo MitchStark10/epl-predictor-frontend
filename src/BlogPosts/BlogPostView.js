@@ -73,12 +73,12 @@ class BlogPostView extends Component {
 
         return (
             <div id="BlogPost">
-                <h1>{this.state.postData.postTitle}</h1>
-                <h2>Written By: {this.state.postData.username}</h2>
-                <div id="PostContent" dangerouslySetInnerHTML={{__html: this.state.postData.postData}} />
+                <h1>{this.state.postData.PostTitle}</h1>
+                <h2>Written By: {this.state.postData.Username}</h2>
+                <div id="PostContent" dangerouslySetInnerHTML={{__html: this.state.postData.PostData}} />
                 <button id="LikeBlogPost" onClick={this.toggleLikeBlogPost}>{likeBlogPostLabel}</button>
                 <p>Likes: {this.state.numLikes}</p>
-                <CommentsView forceReload={this.toggleCommentAdded} postId={this.props.postId} userToken={this.props.userToken}/>
+                {/* <CommentsView forceReload={this.toggleCommentAdded} postId={this.props.postId} userToken={this.props.userToken}/> */}
             </div>
         );
         

@@ -71,12 +71,20 @@ processPredictions = (predictionList, username, place) => {
         }
     }
 
+    let correctPredictionRate = ((correctPredictionsCount / totalPredictionsCount) * 100).toFixed(2);
+    console.log(correctPredictionRate)
+
+    if (isNaN(correctPredictionRate)) {
+        console.log("here")
+        correctPredictionRate = 0;
+    }
+
     return {
         "username": username,
         "correctPredictionCount": correctPredictionsCount,
         "totalPredictionCount": totalPredictionsCount,
         "streak": streakSymbol + streakCount,
-        "correctPredictionRate": ((correctPredictionsCount / totalPredictionsCount) * 100).toFixed(2),
+        "correctPredictionRate": correctPredictionRate,
         "place": place
     };
 };

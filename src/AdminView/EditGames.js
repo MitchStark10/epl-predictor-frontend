@@ -47,7 +47,7 @@ class EditGames extends Component {
             let game = this.state.games[i];
 
             jsxList.push(
-                <div className="EditGameContainer" key={game["_id"]}>
+                <div className="EditGameContainer" key={game["GameId"]}>
                     <EditGame game={game} />
                     <br />
                 </div>

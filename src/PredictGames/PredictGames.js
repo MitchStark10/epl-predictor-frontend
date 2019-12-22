@@ -102,43 +102,43 @@ class PredictGamesView extends Component {
         for (var i = 0; i < this.state.upcomingGames.length; i++) {
             let game = this.state.upcomingGames[i];
 
-            let gameDate = new Date(game["gameDate"]);
+            let gameDate = new Date(game["GameDate"]);
             console.log(gameDate);
             var day = gameDate.getDate();
             var monthIndex = gameDate.getMonth() + 1;
             var year = gameDate.getFullYear();
 
             jsxList.push(
-                <div className="UpcomingGame" key={game["_id"]}>
-                    <h3>{monthIndex}/{day}/{year} - {game["competition"]}</h3>
+                <div className="UpcomingGame" key={game["GameId"]}>
+                    <h3>{monthIndex}/{day}/{year} - {game["Competition"]}</h3>
 
                     <button className="SmButton"
-                    id={game["_id"]}
+                    id={game["GameId"]}
                     onClick={this.handlePredictionButtonClick}
-                    value={game["homeTeamName"]}>
-                        {game["homeTeamName"]}
+                    value={game["HomeTeamName"]}>
+                        {game["HomeTeamName"]}
                     </button>
 
                     <button className="SmButton"
-                    id={game["_id"]} 
+                    id={game["GameId"]} 
                     onClick={this.handlePredictionButtonClick}
                     value="Tie">
                             Tie
                     </button>
 
                     <button className="SmButton"
-                    id={game["_id"]} 
+                    id={game["GameId"]} 
                     onClick={this.handlePredictionButtonClick}
-                    value={game["awayTeamName"]}>
-                        {game["awayTeamName"]}
+                    value={game["AwayTeamName"]}>
+                        {game["AwayTeamName"]}
                     </button>
                     <br />
-                    {this.renderPrediction(game["_id"])}
+                    {this.renderPrediction(game["GameId"])}
 
                     <button className="PredictionsButton"
-                    id={game["_id"]}
+                    id={game["GameId"]}
                     onClick={this.handleBlogButtonClick}
-                    value={"/posts/predictions/" + game["_id"]}>
+                    value={"/posts/predictions/" + game["GameId"]}>
                         View Predictions
                     </button>
                 </div>
@@ -152,9 +152,9 @@ class PredictGamesView extends Component {
         for (var i = 0; i < this.state.upcomingPredictions.length; i++) {
             let prediction = this.state.upcomingPredictions[i];
 
-            if (prediction["gameId"] === gameId) {
+            if (prediction["GameId"] === gameId) {
                 return (
-                    <h3>Predicted Winner: {prediction["winningTeam"]}</h3>
+                    <h3>Predicted Winner: {prediction["WinningTeam"]}</h3>
                 );
             }
         }

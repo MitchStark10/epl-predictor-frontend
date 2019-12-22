@@ -25,7 +25,7 @@ class IndividualComment extends Component {
     render() {
         const formattedDate = this.formatDate(new Date(this.props.commentData.commentTimestamp));
         return (
-            <div className="IndividualComment" id={this.props.commentData["_id"]}>
+            <div className="IndividualComment" id={this.props.commentData["gameId"]}>
                 <p>{this.props.commentData.comment}</p>
                 <p>{this.props.commentData.username}</p>
                 <p>{formattedDate}</p>

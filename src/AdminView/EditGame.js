@@ -7,12 +7,12 @@ class EditGame extends Component {
         super();
 
         this.state = {
-            "homeTeamName": props.game["homeTeamName"],
-            "homeTeamScore": props.game["homeTeamScore"],
-            "awayTeamName": props.game["awayTeamName"],
-            "awayTeamScore": props.game["awayTeamScore"],
-            "gameDate": props.game["gameDate"],
-            "competition": props.game["competition"],
+            "homeTeamName": props.game["HomeTeamName"],
+            "homeTeamScore": props.game["HomeTeamScore"],
+            "awayTeamName": props.game["AwayTeamName"],
+            "awayTeamScore": props.game["AwayTeamScore"],
+            "gameDate": props.game["GameDate"],
+            "competition": props.game["Competition"],
             "statusMessage": ""
         };
 
@@ -24,7 +24,7 @@ class EditGame extends Component {
     }
 
     submitEdits = () => {
-        let url = "/api/games/updateGame/" + this.props.game["_id"];
+        let url = "/api/games/updateGame/" + this.props.game["GameId"];
 
         console.log("test: " + JSON.stringify(this.state));
 
@@ -50,7 +50,7 @@ class EditGame extends Component {
 
     render() {
         return (
-            <div className="EditSingleGame" key={this.props.game["_id"]}>
+            <div className="EditSingleGame" key={this.props.game["GameId"]}>
                 <input type="text" id="homeTeamName" placeholder="Home Team Name" value={this.state["homeTeamName"]} onChange={this.handleTextChange}/><br />
                 <input type="int" id="homeTeamScore" placeholder="Home Team Score" value={this.state["homeTeamScore"]} onChange={this.handleTextChange}/><br />
                 <input type="text" id="awayTeamName" placeholder="Away Team Name" value={this.state["awayTeamName"]} onChange={this.handleTextChange}/><br />
