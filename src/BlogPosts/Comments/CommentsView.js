@@ -34,7 +34,7 @@ class CommentsView extends Component {
             })
             .fail((error) => {
                 console.error("Received error: " + error);
-                this.setState({ errorMsg: error["errorMsg"] });
+                this.setState({errorMsg: error["errorMsg"], needsCommentReload: false});
             });
     }
 

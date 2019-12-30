@@ -15,19 +15,19 @@ class IndividualComment extends Component {
         let day = date.getDate();
         let monthIndex = date.getMonth();
         let year = date.getFullYear();
-        let hour = date.getHours();
+        let hour = date.getHours() - (date.getTimezoneOffset() / 60);
         let minute = date.getMinutes();
         let seconds = date.getSeconds();
-
+        
         return  monthNames[monthIndex] + ' ' + day +  ', ' + year + ' ' + hour + ':' + minute + ':' + seconds;
     }
 
     render() {
-        const formattedDate = this.formatDate(new Date(this.props.commentData.commentTimestamp));
+        const formattedDate = this.formatDate(new Date(this.props.commentData.CommentTime));
         return (
-            <div className="IndividualComment" id={this.props.commentData["gameId"]}>
-                <p>{this.props.commentData.comment}</p>
-                <p>{this.props.commentData.username}</p>
+            <div className="IndividualComment" id={this.props.commentData["CommentId"]}>
+                <p>{this.props.commentData.CommentText}</p>
+                <p>{this.props.commentData.Username}</p>
                 <p>{formattedDate}</p>
             </div>
         );
