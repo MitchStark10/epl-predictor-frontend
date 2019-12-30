@@ -82,7 +82,7 @@ class PastPredictionsView extends Component {
         for (var i = 0; i < this.state.pastPredictions.length; i++) {
             let prediction = this.state.pastPredictions[i];
 
-            if (prediction["gameId"] === gameId) {
+            if (prediction["GameId"] === gameId) {
                 return prediction;
             }
         }
