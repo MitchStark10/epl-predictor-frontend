@@ -54,3 +54,4 @@ os.system('git push --tags')
 #Checkout develop
 os.system('git checkout develop')
 os.system('git merge master')
+os.system('git push')
