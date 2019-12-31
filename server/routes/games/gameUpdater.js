@@ -77,7 +77,7 @@ app.post('/updateGame/:gameId', async (req, res) => {
         req.body["awayTeamName"],
         homeTeamScore,
         awayTeamScore,
-        req.body["gameDate"] + " 04:00:00",
+        req.body["gameDate"] + " 06:00:00",
         req.body["competition"],
         req.params["gameId"]
     ];
