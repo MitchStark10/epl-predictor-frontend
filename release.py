@@ -25,8 +25,11 @@ with open ("package.json") as file:
 
 	if releaseType.lower() == "major":
 		packageVersionNumbers[0] = str(int(packageVersionNumbers[0]) + 1)
+		packageVersionNumbers[1] = 0
+		packageVersionNumbers[2] = 0
 	elif releaseType.lower() == "minor":
 		packageVersionNumbers[1] = str(int(packageVersionNumbers[1]) + 1)
+		packageVersionNumbers[2] = 0
 	else:
 		packageVersionNumbers[2] = str(int(packageVersionNumbers[2]) + 1)
 
