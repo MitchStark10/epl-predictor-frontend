@@ -31,7 +31,7 @@ class AppHeader extends Component {
         $.post(getUserStatusUrl, this.state)
         .done((statusResponse) => {
             console.log("Status response: " + JSON.stringify(statusResponse));
-            if (statusResponse["status"] === "admin" && this.state.redirectUrl === "") {
+            if (statusResponse["Status"] === "admin" && this.state.redirectUrl === "") {
                 this.setState({isAdmin: true, redirectUrl: ""});
             }
         })
@@ -63,7 +63,6 @@ class AppHeader extends Component {
     }
 
     renderDropDownList = () => {
-        //TODO: Recent posts should be the main view after logging in
         switch (this.state.selectedDropDownButton) {
             case "games":
                 return (
@@ -71,6 +70,7 @@ class AppHeader extends Component {
                         <button className="SmButton DropDownListButton GameDropDownButton" id="/predictGames" onClick={this.handleButtonClick}>PREDICT GAMES</button><br />
                         <button className="SmButton DropDownListButton GameDropDownButton" id="/results" onClick={this.handleButtonClick}>RESULTS</button><br />
                         <button className="SmButton DropDownListButton GameDropDownButton" id="/leaderboard" onClick={this.handleButtonClick}>LEADERBOARD</button><br />
+                        {this.renderAdminButton()}
                     </div>
                 );
             case "posts":
@@ -127,6 +127,7 @@ class AppHeader extends Component {
 
                     {this.renderDropDownList()}
 
+                    <h4 id="userTag">Logged in: {this.state.userToken}</h4>
                     <button className="SmButton" id="/logout" onClick={this.handleButtonClick}>LOGOUT</button>
                 </div>
             </div>

@@ -19,8 +19,16 @@
   background-color: #25274D;
   position: absolute;
   right: 10px;
-  top: 5px;
+  top: 0px;
   margin: 7px;
+}
+
+/* TODO: Only show user tag when there is space on the screen */
+#userTag {
+  position: absolute;
+  right: 250px;
+  top: 13px;
+  margin: 5px;
 }
 
 .DropDownButton {
