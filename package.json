@@ -1,6 +1,6 @@
 {
     "name": "predictor-web-frontend",
-    "version": "1.5.10",
+    "version": "1.5.11",
     "private": true,
     "proxy": "http://localhost:8080/",
     "dependencies": {
