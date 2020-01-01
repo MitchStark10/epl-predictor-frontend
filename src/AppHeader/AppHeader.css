@@ -18,7 +18,7 @@
 
 #\/logout {
   background-color: #25274D;
-  position: fixed;
+  position: absolute;
   right: 10px;
   top: 5px;
   margin: 7px;

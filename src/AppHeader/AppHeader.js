@@ -68,22 +68,22 @@ class AppHeader extends Component {
             case "games":
                 return (
                     <div id="GamesDropDownList" className="DropDownList">
-                        <button className="SmButton DropDownListButton GameDropDownButton" id="/predictGames" onClick={this.handleButtonClick}>PREDICT GAMES</button>
-                        <button className="SmButton DropDownListButton GameDropDownButton" id="/results" onClick={this.handleButtonClick}>RESULTS</button>
-                        <button className="SmButton DropDownListButton GameDropDownButton" id="/leaderboard" onClick={this.handleButtonClick}>LEADERBOARD</button>
+                        <button className="SmButton DropDownListButton GameDropDownButton" id="/predictGames" onClick={this.handleButtonClick}>PREDICT GAMES</button><br />
+                        <button className="SmButton DropDownListButton GameDropDownButton" id="/results" onClick={this.handleButtonClick}>RESULTS</button><br />
+                        <button className="SmButton DropDownListButton GameDropDownButton" id="/leaderboard" onClick={this.handleButtonClick}>LEADERBOARD</button><br />
                     </div>
                 );
             case "posts":
                 return (
                     <div id="PostsDropDownList" className="DropDownList">
-                        <button className="SmButton DropDownListButton GameDropDownButton" id="/recentPosts" onClick={this.handleButtonClick}>RECENT POSTS</button>
-                        <button className="SmButton DropDownListButton GameDropDownButton" id="/createPost" onClick={this.handleButtonClick}>CREATE POST</button>
+                        <button className="SmButton DropDownListButton GameDropDownButton" id="/recentPosts" onClick={this.handleButtonClick}>RECENT POSTS</button><br />
+                        <button className="SmButton DropDownListButton GameDropDownButton" id="/createPost" onClick={this.handleButtonClick}>CREATE POST</button><br />
                     </div>
                 );
             case "about":
                 return (
                     <div id="AboutDropDownList" className="DropDownList">
-                        <button className="SmButton DropDownListButton GameDropDownButton" id="/about" onClick={this.handleButtonClick}>ABOUT</button>
+                        <button className="SmButton DropDownListButton GameDropDownButton" id="/about" onClick={this.handleButtonClick}>ABOUT</button><br />
                     </div>
                 );
             default:
@@ -125,11 +125,10 @@ class AppHeader extends Component {
                         ABOUT
                     </button>
 
-                {this.renderDropDownList()}
+                    {this.renderDropDownList()}
+
+                    <button className="SmButton" id="/logout" onClick={this.handleButtonClick}>LOGOUT</button>
                 </div>
-
-                <button className="SmButton" id="/logout" onClick={this.handleButtonClick}>LOGOUT</button>
-
             </div>
         );
     }
