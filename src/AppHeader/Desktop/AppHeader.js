@@ -99,7 +99,7 @@ class AppHeader extends Component {
 
         return (
             <div>
-                <div className="HeaderBar" onMouseLeave={this.hanldeDropDownButtonMouseLeave}>
+                <div className="DesktopHeaderBar" onMouseLeave={this.hanldeDropDownButtonMouseLeave}>
                 <h1 className="MainMenuHeaderText">ScoreMaster</h1>
                     <button
                         className="DropDownButton"
@@ -128,7 +128,7 @@ class AppHeader extends Component {
                     {this.renderDropDownList()}
 
                     <h4 id="userTag">Logged in: {this.state.userToken}</h4>
-                    <button className="SmButton" id="/logout" onClick={this.handleButtonClick}>LOGOUT</button>
+                    <button className="SmButton DesktopLogout" id="/logout" onClick={this.handleButtonClick}>LOGOUT</button>
                 </div>
             </div>
         );

@@ -1,7 +1,8 @@
-.HeaderBar, .DropDownList {
+.DesktopHeaderBar, .DropDownList {
   background-color: #25274D;
   display: inline-block;
   width: 100%;
+  min-height: 40px;
 }
 
 .MainMenuHeaderText {
@@ -15,7 +16,7 @@
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
 }
 
-#\/logout {
+#\/logout.DesktopLogout {
   background-color: #25274D;
   position: absolute;
   right: 10px;

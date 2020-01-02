@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import logo from './soccerball.png';
 import './App.css';
-import AppHeader from './AppHeader/AppHeader';
+import AppHeader from './AppHeader/Desktop/AppHeader';
 import AdminView from './AdminView/AdminView';
 import PredictGamesView from './PredictGames/PredictGames';
 import PreviousPredictionsView from './PastPredictions/PastPredictionsView';
@@ -14,17 +14,32 @@ import AddBlogPostView from './BlogPosts/AddBlogPostView';
 import BlogPostView from './BlogPosts/BlogPostView';
 import PostFeedView from './BlogPosts/PostFeedView';
 import CreatePostView from './BlogPosts/CreatePostView';
+import MainMenu from './MainMenu/MainMenu';
 
 class AppContainer extends Component {
 	constructor() {
 		super();
 
 		this.state = {
+			useMobileMenu: true,
 			redirectUrl: ""
 		};
 	}
 
+	componentDidMount() {
+		window.addEventListener("resize", this.resize.bind(this));
+		this.resize();
+	}
+
+	resize() {
+		this.setState({ useMobileMenu: window.innerWidth <= 800 });
+	}
+
 	createDefaultMainMenu = () => {
+		if (this.state.useMobileMenu) {
+			return <MainMenu userToken={this.props.userToken} currentUrl={this.props.currentUrl} />;
+		}
+
 		return <AppHeader userToken={this.props.userToken} currentUrl={this.props.currentUrl} />;
 	}
 
