@@ -1,5 +1,6 @@
 import json
 from bs4 import BeautifulSoup
+from datetime import datetime
 import re
 import requests
 
@@ -9,7 +10,21 @@ def stringContainsNumber(s):
     return any(i.isdigit() for i in s)
 
 def populateGames(event, context):
-    fixturesPage = requests.get(url = "https://scores.nbcsports.com/epl/fixtures.asp")
+    today = datetime.today()
+    currentMonth = today.month
+    upcomingMonth = today.month % 12 + 1
+    retrieveAndUpdateGames(currentMonth)
+    retrieveAndUpdateGames(upcomingMonth)
+
+    if today.day < 3:
+        previousMonth = today.month - 1
+        if previousMonth == 0:
+            previousMonth = 12
+        
+        retrieveAndUpdateGames(previousMonth)
+
+def retrieveAndUpdateGames(month):
+    fixturesPage = requests.get(url = "https://scores.nbcsports.com/epl/fixtures.asp?month=" + str(month))
     baseSoup = BeautifulSoup(fixturesPage.text, 'html.parser')
     test = baseSoup.find('table', {'class': 'shsBorderTable'})
     
