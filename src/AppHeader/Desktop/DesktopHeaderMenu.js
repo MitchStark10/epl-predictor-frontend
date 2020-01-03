@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
-import './AppHeader.css'
+import './DesktopHeaderMenu.css'
 import { Redirect } from 'react-router-dom';
 
-class AppHeader extends Component {
+class DesktopHeaderMenu extends Component {
     constructor(props) {
         super();
         this.state = {
@@ -91,6 +91,14 @@ class AppHeader extends Component {
         }
     }
 
+    renderLoggedInUser = () => {
+        if (this.props.showLoggedInUser) {
+            return <h4 id="userTag">Logged in: {this.state.userToken}</h4>
+        }
+
+        return null;
+    }
+
     render() {
 
         if (this.state.redirectUrl !== "") {
@@ -126,8 +134,7 @@ class AppHeader extends Component {
                     </button>
 
                     {this.renderDropDownList()}
-
-                    <h4 id="userTag">Logged in: {this.state.userToken}</h4>
+                    {this.renderLoggedInUser()}
                     <button className="SmButton DesktopLogout" id="/logout" onClick={this.handleButtonClick}>LOGOUT</button>
                 </div>
             </div>
@@ -135,4 +142,4 @@ class AppHeader extends Component {
     }
 }
 
-export default AppHeader;
+export default DesktopHeaderMenu;

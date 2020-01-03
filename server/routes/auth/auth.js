@@ -1,9 +1,9 @@
-
 const app = module.exports = require('express')();
 const mysql = require('mysql');
 const QueryRunner = require('../../service/QueryRunner').buildQueryRunner();
 const bcrypt = require('bcrypt-nodejs');
 const PasswordHasher = require('../../service/PasswordHasher')();
+const cookieMetadata = { httpOnly: true, sameSite: 'lax', expires: false, maxAge: new Date(253402300000000) }
 
 const LOGIN_SQL = `
 SELECT Password
@@ -37,6 +37,15 @@ FROM USER
 WHERE Username = ?
 `;
 
+function createAndSetSessionCookie(username, password, res) {
+    const sessionCookie = PasswordHasher.hashPassword(req.body["username"] + req.body["password"]);
+    const insertSessionCookieParams = [sessionCookie, req.device.type.toUpperCase(), req.body["username"], sessionCookie];
+    const insertSessionCookieSql = mysql.format(UPDATE_SESSION_COOKIE_SQL, insertSessionCookieParams);
+    QueryRunner.runQuery(insertSessionCookieSql);
+    res.cookie('SMLU', req.body["username"], cookieMetadata);
+    res.cookie('SMLC', sessionCookie, cookieMetadata);
+}
+
 app.post('/login', async (req, res) => {
     try {
         console.log("Logging in with device: " + JSON.stringify(req.device));
@@ -68,13 +77,7 @@ app.post('/login', async (req, res) => {
         let userLoginResponse = userLoginResponseArray[0];
 
         if (bcrypt.compareSync(req.body["password"], userLoginResponse["Password"])) {
-            let sessionCookie = PasswordHasher.hashPassword(req.body["username"] + req.body["password"]);
-            let insertSessionCookieParams = [sessionCookie, req.device.type.toUpperCase(), req.body["username"], sessionCookie];
-            let insertSessionCookieSql = mysql.format(UPDATE_SESSION_COOKIE_SQL, insertSessionCookieParams);
-            let cookieMetadata = { httpOnly: true, sameSite: 'lax', expires: false, maxAge: new Date(253402300000000) }
-            QueryRunner.runQuery(insertSessionCookieSql);
-            res.cookie('SMLU', req.body["username"], cookieMetadata);
-            res.cookie('SMLC', sessionCookie, cookieMetadata);
+            createSessionCookie(req.body["username"], req.body["password"]);
             res.status(200).json({username: req.body["username"]});
         } else {
             console.warn("Password did not match for user: " + req.body["username"]);
@@ -100,10 +103,9 @@ app.post('/newUser', async (req, res) => {
 
     try {
         await QueryRunner.runQuery(newUserInsert);
-        //TODO: Cookie
+        createSessionCookie(req.body["username"], req.body["password"]);
         res.status(200).json("New user created");
     } catch (error) {
-        //TODO: Display if user already exists
         console.error("Error during new user: " + error);
         res.status(500).json("Error occurred creating the new user");
     }

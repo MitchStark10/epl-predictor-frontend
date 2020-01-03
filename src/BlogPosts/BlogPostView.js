@@ -18,6 +18,7 @@ class BlogPostView extends Component {
 
     componentDidMount() {
         this.retrieveBlogPostData(this.props.postId);
+        this.retrieveBlogPostData()
         //TODO: Retrieve blog post likes
     }
 
@@ -58,7 +59,6 @@ class BlogPostView extends Component {
     }
 
     toggleLikeBlogPost = () => {
-        //TODO: Send request to the server to update the likes on this page
         $.post("/api/blog/toggleBlogLikeStatus/" + this.state.postId + "/" + this.props.userToken)
         .done((response) => {
             this.setState({hasUserLikedBlogPost: !this.state.hasUserLikedBlogPost});

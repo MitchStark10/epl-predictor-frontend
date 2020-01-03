@@ -24,7 +24,6 @@
   margin: 7px;
 }
 
-/* TODO: Only show user tag when there is space on the screen */
 #userTag {
   position: absolute;
   right: 250px;

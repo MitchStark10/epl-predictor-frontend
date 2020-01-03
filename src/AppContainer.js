@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import logo from './soccerball.png';
 import './App.css';
-import AppHeader from './AppHeader/Desktop/AppHeader';
+import DesktopHeaderMenu from './AppHeader/Desktop/DesktopHeaderMenu';
+import MobileHeaderMenu from './AppHeader/Mobile/MobileHeaderMenu';
 import AdminView from './AdminView/AdminView';
 import PredictGamesView from './PredictGames/PredictGames';
 import PreviousPredictionsView from './PastPredictions/PastPredictionsView';
@@ -14,14 +15,17 @@ import AddBlogPostView from './BlogPosts/AddBlogPostView';
 import BlogPostView from './BlogPosts/BlogPostView';
 import PostFeedView from './BlogPosts/PostFeedView';
 import CreatePostView from './BlogPosts/CreatePostView';
-import MainMenu from './MainMenu/MainMenu';
 
 class AppContainer extends Component {
 	constructor() {
 		super();
 
+		this.minimumDesktopPixelWidth = 1050;
+		this.minimumDesktopPixelWidthToDisplayFullHeader = 1260;
+
 		this.state = {
 			useMobileMenu: true,
+			displayLoggedInUser: false,
 			redirectUrl: ""
 		};
 	}
@@ -32,15 +36,22 @@ class AppContainer extends Component {
 	}
 
 	resize() {
-		this.setState({ useMobileMenu: window.innerWidth <= 800 });
+		this.setState({ 
+			useMobileMenu: window.innerWidth <= this.minimumDesktopPixelWidth, 
+			displayLoggedInUser: window.innerWidth >= this.minimumDesktopPixelWidthToDisplayFullHeader 
+		});
 	}
 
 	createDefaultMainMenu = () => {
 		if (this.state.useMobileMenu) {
-			return <MainMenu userToken={this.props.userToken} currentUrl={this.props.currentUrl} />;
+			return <MobileHeaderMenu userToken={this.props.userToken} currentUrl={this.props.currentUrl} />;
 		}
 
-		return <AppHeader userToken={this.props.userToken} currentUrl={this.props.currentUrl} />;
+		return <DesktopHeaderMenu 
+			userToken={this.props.userToken} 
+			currentUrl={this.props.currentUrl} 
+			showLoggedInUser={this.state.displayLoggedInUser}
+		/>;
 	}
 
 

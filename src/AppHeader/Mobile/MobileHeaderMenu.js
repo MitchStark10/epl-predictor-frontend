@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import { slide as Menu } from "react-burger-menu";
-import './MainMenu.css'
+import './MobileHeaderMenu.css'
 import { Redirect } from 'react-router-dom';
 
-class MainMenu extends Component {
+class MobileHeaderMenu extends Component {
     constructor(props) {
         super();
         this.state = {
@@ -74,4 +74,4 @@ class MainMenu extends Component {
     }
 }
 
-export default MainMenu;
+export default MobileHeaderMenu;

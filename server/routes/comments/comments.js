@@ -13,7 +13,6 @@ INSERT INTO COMMENT(Username, PostId, CommentText, CommentTime)
 VALUES (?, ?, ?, NOW())
 `;
 
-
 app.get('/retrieveAllComments/:postId', async (req, res) => {
     console.log("Entering /retrieveAllComments/" + req.params.postId);
 
@@ -45,5 +44,3 @@ app.post('/addComment', async (req, res) => {
 
     console.log("Exiting /addcomment");
 });
-
-//TODO: Edit, delete comments
