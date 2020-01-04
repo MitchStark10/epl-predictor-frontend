@@ -1,59 +1,36 @@
 import React, { Component } from 'react';
-import logo from './soccerball.png';
-import './App.css';
-import DesktopHeaderMenu from './AppHeader/Desktop/DesktopHeaderMenu';
-import MobileHeaderMenu from './AppHeader/Mobile/MobileHeaderMenu';
-import AdminView from './AdminView/AdminView';
-import PredictGamesView from './PredictGames/PredictGames';
-import PreviousPredictionsView from './PastPredictions/PastPredictionsView';
-import LoginApp from './LoginPage/LoginApp';
-import LeaderboardsView from './Leaderboards/LeaderboardsView';
-import AboutView from './AboutView/AboutView';
+import logo from '../soccerball.png';
+import '../App.css';
+import AdminView from '../AdminView/AdminView';
+import PreviousPredictionsView from '../PastPredictions/PastPredictionsView';
+import LoginApp from '../LoginPage/LoginApp';
+import LeaderboardsView from '../Leaderboards/LeaderboardsView';
+import AboutView from '../AboutView/AboutView';
 import { Redirect } from 'react-router-dom';
-import PredictionPostsView from './BlogPosts/PredictionPostsView';
-import AddBlogPostView from './BlogPosts/AddBlogPostView';
-import BlogPostView from './BlogPosts/BlogPostView';
-import PostFeedView from './BlogPosts/PostFeedView';
-import CreatePostView from './BlogPosts/CreatePostView';
+import PredictionPostsView from '../BlogPosts/PredictionPostsView';
+import AddBlogPostView from '../BlogPosts/AddBlogPostView';
+import BlogPostView from '../BlogPosts/BlogPostView';
+import PostFeedView from '../BlogPosts/PostFeedView';
+import CreatePostView from '../BlogPosts/CreatePostView';
+import PredictGamesRouter from './PredictGamesRouter';
+import MenuRouter from './DefaultMenu';
 
 class AppContainer extends Component {
 	constructor() {
 		super();
 
-		this.minimumDesktopPixelWidth = 1050;
-		this.minimumDesktopPixelWidthToDisplayFullHeader = 1260;
+		this.viewRouters = [
+			
+		];
 
 		this.state = {
-			useMobileMenu: true,
-			displayLoggedInUser: false,
 			redirectUrl: ""
 		};
 	}
 
-	componentDidMount() {
-		window.addEventListener("resize", this.resize.bind(this));
-		this.resize();
+	createDefaultMainMenu() {
+		return <MenuRouter />
 	}
-
-	resize() {
-		this.setState({ 
-			useMobileMenu: window.innerWidth <= this.minimumDesktopPixelWidth, 
-			displayLoggedInUser: window.innerWidth >= this.minimumDesktopPixelWidthToDisplayFullHeader 
-		});
-	}
-
-	createDefaultMainMenu = () => {
-		if (this.state.useMobileMenu) {
-			return <MobileHeaderMenu userToken={this.props.userToken} currentUrl={this.props.currentUrl} />;
-		}
-
-		return <DesktopHeaderMenu 
-			userToken={this.props.userToken} 
-			currentUrl={this.props.currentUrl} 
-			showLoggedInUser={this.state.displayLoggedInUser}
-		/>;
-	}
-
 
 	displayView = () => {
 		//TODO: This desperately needs to be refactored
@@ -70,12 +47,7 @@ class AppContainer extends Component {
 			);
 		} else if (this.props.view === "PREDICTGAMESVIEW") {
 			console.log("here: " + this.props.userToken);
-			return (
-				<div className={this.props.view}>
-					{this.createDefaultMainMenu()}
-					<PredictGamesView userToken={this.props.userToken}/>
-				</div>		
-			);
+			return new PredictGamesRouter().render(this.props.view, this.props.userToken);
 		} else if (this.props.view === "PASTPREDICTIONSVIEW") {
 			console.log("returning past predictons view")
 			return (
@@ -170,7 +142,6 @@ class AppContainer extends Component {
 			return <Redirect to={this.state.redirectUrl} />
 		}
 
-		console.log("rendering with view: " + this.props.view)
 		return (
 			<div className="App">
 				{this.displayView()}
