@@ -1,6 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
 import { Redirect } from 'react-router-dom';
+import DateUtility from '../Utility/DateUtility';
 
 class CreatePostView extends React.Component {
 
@@ -58,23 +59,6 @@ class CreatePostView extends React.Component {
         this.setState({selectedGameId: e.target.selectedOptions[0].id});
     }
 
-
-    //TODO: Create a frontend utility class for this method, it's being used in multiple spots
-    formatDate = (date) => {
-        let monthNames = [
-            "January", "February", "March",
-            "April", "May", "June", "July",
-            "August", "September", "October",
-            "November", "December"
-        ];
-
-        let day = date.getDate();
-        let monthIndex = date.getMonth();
-        let year = date.getFullYear();
-
-        return  monthNames[monthIndex] + ' ' + day +  ', ' + year;
-    }
-
     gotoAddBlogPostView = () => {
         let url = "";
         if (this.state.postType === "PREDICTION") {
@@ -112,7 +96,7 @@ class CreatePostView extends React.Component {
                 </select>
                 <select id="PostType">
                     {this.renderNoneOption()}
-                    {this.state.gameOptions.map( (game) => <option key={game.GameId} id={game.GameId}>{game.HomeTeamName} VS. {game.AwayTeamName} - {this.formatDate(new Date(game.GameDate))}</option>)}
+                    {this.state.gameOptions.map( (game) => <option key={game.GameId} id={game.GameId}>{game.HomeTeamName} VS. {game.AwayTeamName} - {new DateUtility().formatDate(new Date(game.GameDate))}</option>)}
                 </select>
                 <br />
                 <button className="SmBUtton" id="CreatePost" onClick={this.gotoAddBlogPostView}>CREATE POST</button>

@@ -57,7 +57,6 @@ class MobileHeaderMenu extends Component {
             return <Redirect to={this.state.redirectUrl} />
         }
 
-        //TODO: Move the header, it does not belong in the MainMenu class
         return (
             <div className="MobileHeaderBar">
                 <h1 className="MainMenuHeader">ScoreMaster</h1>
