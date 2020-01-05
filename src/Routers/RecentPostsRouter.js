@@ -1,21 +1,21 @@
 import React from 'react';
 import MenuRouter from './MenuRouter';
-import AdminView from '../AdminView/AdminView';
+import PostFeedView from '../BlogPosts/PostFeedView';
 
-class AdminRouter {
+class RecentPostsRouter {
 
     getUniqueIdentifier = () => {
-        return "ADMINVIEW";
+        return "RECENTPOSTSVIEW";
     }
 
     render = () => {
         return (
             <div className={this.getUniqueIdentifier()}>
                 <MenuRouter />
-                <AdminView />
+                <PostFeedView />
             </div>
         );
     }
 }
 
-export default AdminRouter;
+export default RecentPostsRouter;

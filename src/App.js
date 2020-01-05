@@ -4,6 +4,18 @@ import AppContainer from './Routers/AppInternalRouter';
 import NotFoundPage from './NotFoundPage/NotFoundPage';
 import * as ViewConstants from './ViewConstants';
 import $ from 'jquery';
+import PredictGamesRouter from './Routers/PredictGamesRouter';
+import PastPredictionsRouter from './Routers/PastPredictionsRouter';
+import AdminRouter from './Routers/AdminRouter';
+import LeaderboardsRouter from './Routers/LeaderboardsRouter';
+import RecentPostsRouter from './Routers/RecentPostsRouter';
+import AboutRouter from './Routers/AboutRouter';
+import PredictionPostRouter from './Routers/PredictionPostRouter';
+import AnalysisRouter from './Routers/AnalysisRouter';
+import PostRouter from './Routers/PostRouter';
+import CreatePostRouter from './Routers/CreatePostRouter';
+import AddPredictionPostRouter from './Routers/AddPredictionPostRouter';
+import AddAnalysisPostRouter from './Routers/AddAnalysisPostRouter';
 const BrowserHistory = require('history').default;
 
 class App extends Component {
@@ -70,20 +82,20 @@ class App extends Component {
         return (
             <BrowserRouter history={BrowserHistory}>
                 <Switch>
-                    <Route exact path="/predictGames" render={(props) => this.renderAppContainer(ViewConstants.PREDICT_GAMES_VIEW, props)}/>
-                    <Route exact path="/results" render={(props) => this.renderAppContainer(ViewConstants.PAST_PREDICTIONS_VIEW, props)} />
-                    <Route exact path="/admin" render={(props) => this.renderAppContainer(ViewConstants.ADMIN_VIEW, props)} />
-                    <Route exact path="/leaderboard" render={(props) => this.renderAppContainer(ViewConstants.LEADERBOARDS_VIEW, props)} />
-                    <Route exact path="/recentPosts" render={(props) => this.renderAppContainer(ViewConstants.RECENT_POSTS_VIEW, props)} />
-                    <Route exact path="/about" render={(props) => this.renderAppContainer(ViewConstants.ABOUT_VIEW, props)} />
-                    <Route exact path="/posts/predictions/:gameId" render={(props) => this.renderAppContainer(ViewConstants.PREDICTION_POSTS_VIEW, props)} />
-                    <Route exact path="/posts/analysis/:gameId" render={(props) => this.renderAppContainer(ViewConstants.ANALYSIS_VIEW, props)} />
-                    <Route exact path="/posts/:postId" render={(props) => this.renderAppContainer(ViewConstants.BLOG_POST_VIEW, props)} />
-                    <Route exact path="/createPost" render={(props) => this.renderAppContainer(ViewConstants.CREATE_POST_VIEW, props)} />
-                    <Route exact path="/addPrediction/:gameId" render={(props) => this.renderAppContainer(ViewConstants.ADDED_PREDICTION_POST_VIEW, props)} />
-                    <Route exact path="/addAnalysis/:gameId" render={(props) => this.renderAppContainer(ViewConstants.ADD_ANALYSIS_VIEW, props)} />
+                    <Route exact path="/predictGames" render={(props) => this.renderAppContainer(new PredictGamesRouter().getUniqueIdentifier(), props)}/>
+                    <Route exact path="/results" render={(props) => this.renderAppContainer(new PastPredictionsRouter().getUniqueIdentifier(), props)} />
+                    <Route exact path="/admin" render={(props) => this.renderAppContainer(new AdminRouter().getUniqueIdentifier(), props)} />
+                    <Route exact path="/leaderboard" render={(props) => this.renderAppContainer(new LeaderboardsRouter().getUniqueIdentifier(), props)} />
+                    <Route exact path="/recentPosts" render={(props) => this.renderAppContainer(new RecentPostsRouter().getUniqueIdentifier(), props)} />
+                    <Route exact path="/about" render={(props) => this.renderAppContainer(new AboutRouter().getUniqueIdentifier(), props)} />
+                    <Route exact path="/posts/predictions/:gameId" render={(props) => this.renderAppContainer(new PredictionPostRouter().getUniqueIdentifier(), props)} />
+                    <Route exact path="/posts/analysis/:gameId" render={(props) => this.renderAppContainer(new AnalysisRouter().getUniqueIdentifier(), props)} />
+                    <Route exact path="/posts/:postId" render={(props) => this.renderAppContainer(new PostRouter().getUniqueIdentifier(), props)} />
+                    <Route exact path="/createPost" render={(props) => this.renderAppContainer(new CreatePostRouter().getUniqueIdentifier(), props)} />
+                    <Route exact path="/addPrediction/:gameId" render={(props) => this.renderAppContainer(new AddPredictionPostRouter().getUniqueIdentifier(), props)} />
+                    <Route exact path="/addAnalysis/:gameId" render={(props) => this.renderAppContainer(new AddAnalysisPostRouter().getUniqueIdentifier(), props)} />
                     <Route exact path="/logout" render={() => this.logout()} />
-                    <Route exact path="/" render={(props) => this.renderAppContainer(ViewConstants.PREDICT_GAMES_VIEW, props)} />
+                    <Route exact path="/" render={(props) => this.renderAppContainer(new PredictGamesRouter().getUniqueIdentifier(), props)} />
                     <Route path="/" render={() => <NotFoundPage />} />
                 </Switch>                
             </BrowserRouter>

@@ -1,4 +1,6 @@
+import React from 'react';
 import MenuRouter from "./MenuRouter";
+import PreviousPredictionsView from '../PastPredictions/PastPredictionsView';
 
 
 class PastPredictionsRouter {

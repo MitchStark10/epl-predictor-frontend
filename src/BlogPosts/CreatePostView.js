@@ -112,7 +112,7 @@ class CreatePostView extends React.Component {
                 </select>
                 <select id="PostType">
                     {this.renderNoneOption()}
-                    {this.state.gameOptions.map( (game) => <option key={game.gameId} id={game.gameId}>{game.homeTeamName} VS. {game.awayTeamName} - {this.formatDate(new Date(game.gameDate))}</option>)}
+                    {this.state.gameOptions.map( (game) => <option key={game.GameId} id={game.GameId}>{game.HomeTeamName} VS. {game.AwayTeamName} - {this.formatDate(new Date(game.GameDate))}</option>)}
                 </select>
                 <br />
                 <button className="SmBUtton" id="CreatePost" onClick={this.gotoAddBlogPostView}>CREATE POST</button>

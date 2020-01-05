@@ -1,21 +1,22 @@
 import React from 'react';
 import MenuRouter from './MenuRouter';
-import AdminView from '../AdminView/AdminView';
+import CreatePostView from '../BlogPosts/CreatePostView';
 
-class AdminRouter {
+class CreatePostRouter {
 
     getUniqueIdentifier = () => {
-        return "ADMINVIEW";
+        return "CREATEPOSTSVIEW";
     }
 
     render = () => {
         return (
             <div className={this.getUniqueIdentifier()}>
                 <MenuRouter />
-                <AdminView />
+                <CreatePostView />
             </div>
         );
     }
+
 }
 
-export default AdminRouter;
+export default CreatePostRouter;

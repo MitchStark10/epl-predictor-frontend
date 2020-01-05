@@ -1,30 +1,37 @@
 import React, { Component } from 'react';
-import logo from '../soccerball.png';
 import '../App.css';
-import AdminView from '../AdminView/AdminView';
-import PreviousPredictionsView from '../PastPredictions/PastPredictionsView';
-import LoginApp from '../LoginPage/LoginApp';
-import LeaderboardsView from '../Leaderboards/LeaderboardsView';
-import AboutView from '../AboutView/AboutView';
 import { Redirect } from 'react-router-dom';
-import PredictionPostsView from '../BlogPosts/PredictionPostsView';
-import AddBlogPostView from '../BlogPosts/AddBlogPostView';
-import BlogPostView from '../BlogPosts/BlogPostView';
-import PostFeedView from '../BlogPosts/PostFeedView';
-import CreatePostView from '../BlogPosts/CreatePostView';
 import PredictGamesRouter from './PredictGamesRouter';
-import MenuRouter from './MenuRouter';
 import PastPredictionsRouter from './PastPredictionsRouter';
 import AdminRouter from './AdminRouter';
 import LeaderboardsRouter from './LeaderboardsRouter';
 import AboutRouter from './AboutRouter';
+import PredictionPostRouter from './PredictionPostRouter';
+import AddPredictionPostRouter from './AddPredictionPostRouter';
+import AddAnalysisPostRouter from './AddAnalysisPostRouter';
+import AnalysisRouter from './AnalysisRouter';
+import PostRouter from './PostRouter';
+import RecentPostsRouter from './RecentPostsRouter';
+import LoginRouter from './LoginRouter';
+import CreatePostRouter from './CreatePostRouter';
 
 class AppContainer extends Component {
 	constructor() {
 		super();
 
 		this.viewRouters = [
-			
+			new LoginRouter(),
+			new PredictGamesRouter(),
+			new PastPredictionsRouter(),
+			new AdminRouter(),
+			new LeaderboardsRouter(),
+			new AboutRouter(),
+			new PredictionPostRouter(),
+			new AddAnalysisPostRouter(),
+			new AnalysisRouter(),
+			new PostRouter(),
+			new RecentPostsRouter(),
+			new CreatePostRouter()
 		];
 
 		this.state = {
@@ -32,93 +39,20 @@ class AppContainer extends Component {
 		};
 	}
 
-	createDefaultMainMenu() {
-		return <MenuRouter />
-	}
-
 	displayView = () => {
-		//TODO: This desperately needs to be refactored
-		console.log(this.props.view);
-		if (this.props.view === "LOGINVIEW") {
-			return (
-				<div>
-					<header className="App-header">
-					<img src={logo} className="App-logo" alt="logo" />
-					<p className="Header-Text">ScoreMaster</p>
-					</header>
-					<LoginApp setLoggedIn={this.props.setLoggedIn} />
-				</div>
-			);
-		} else if (this.props.view === "PREDICTGAMESVIEW") {
-			console.log("here: " + this.props.userToken);
-			return new PredictGamesRouter().render(this.props.userToken);
-		} else if (this.props.view === "PASTPREDICTIONSVIEW") {
-			console.log("returning past predictons view")
-			return new PastPredictionsRouter().render(this.props.userToken);
-		} else if (this.props.view === "ADMINVIEW") {
-			return new AdminRouter().render();
-		} else if (this.props.view === "LEADERBOARDSVIEW") {
-			return new LeaderboardsRouter().render();
-		} else if (this.props.view === "ABOUTVIEW") {
-			return new AboutRouter().render();
-		} else if (this.props.view === "PREDICTIONPOSTSVIEW") {
-			return (
-				<div className={this.props.view}>	
-					{this.createDefaultMainMenu()}
-					<PredictionPostsView postType="PREDICTION" gameId={this.props.match.params.gameId}/>
-				</div>
-			);
-		} else if (this.props.view === "ADDPREDICTIONPOSTVIEW") {
-			return (
-				<div className={this.props.view}>	
-					{this.createDefaultMainMenu()}
-					<AddBlogPostView userToken={this.props.userToken} postType="PREDICTION" gameId={this.props.match.params.gameId} />
-				</div>
-			);
-		} else if (this.props.view === "ADDANALYSISVIEW") {
-			console.log("here");
-			return (
-				<div className={this.props.view}>
-					{this.createDefaultMainMenu()}
-					<AddBlogPostView userToken={this.props.userToken} postType="ANALYSIS" gameId={this.props.match.params.gameId} />
-				</div>
-			);
-		} else if (this.props.view === "ANALYSISVIEW") {
-			return (
-				<div className={this.props.view}>
-					{this.createDefaultMainMenu()}
-					<PredictionPostsView postType="ANALYSIS" gameId={this.props.match.params.gameId}/>
-				</div>
-			);
-		} else if (this.props.view === "BLOGPOSTVIEW") {
-			return (
-				<div className={this.props.view}>
-					{this.createDefaultMainMenu()}
-					<BlogPostView userToken={this.props.userToken} postId={this.props.match.params.postId} />
-				</div>
-			)
+		const matchingRouter = this.viewRouters.find( (router) => {
+			return router.getUniqueIdentifier() === this.props.view;
+		});
 
-		} else if (this.props.view === "RECENTPOSTSVIEW") {
+		if (matchingRouter === null || matchingRouter === undefined) {
 			return (
-				<div className={this.props.view}>
-					{this.createDefaultMainMenu()}
-					<PostFeedView />
-				</div>
+				<h4>Router could not be matched for {this.props.view}. Please contact support.</h4>
 			);
-		} else if (this.props.view === "CREATEPOSTVIEW") {
-			return (
-				<div className={this.props.view}>
-					{this.createDefaultMainMenu()}
-					<CreatePostView />
-				</div>
-			);
-		} else if (this.props.view === "LOGOUT") {
-			this.setState({redirectUrl: "/"});
-			
-		} else {
-			console.warn("Unknown view: " + this.props.view);
-			this.setState({redirectUrl: "/"});
 		}
+
+		return matchingRouter.render(this.props.userToken, 
+			this.props.match.params.gameId, 
+			this.props.match.params.gameId);
 	}
 
 	render() {

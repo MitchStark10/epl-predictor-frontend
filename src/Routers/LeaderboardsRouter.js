@@ -1,14 +1,16 @@
+import React from 'react';
 import MenuRouter from './MenuRouter';
+import LeaderboardsView from '../Leaderboards/LeaderboardsView';
 
 class LeaderboardsRouter {
 
-    getUniquerIdentifier = () => {
+    getUniqueIdentifier = () => {
         return "LEADERBOARDSVIEW";
     }
 
     render = () => {
         return (
-            <div className={this.props.view}>
+            <div className={this.getUniqueIdentifier()}>
                 <MenuRouter />
                 <LeaderboardsView />
             </div>
