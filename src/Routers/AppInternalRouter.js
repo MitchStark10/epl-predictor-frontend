@@ -13,7 +13,11 @@ import BlogPostView from '../BlogPosts/BlogPostView';
 import PostFeedView from '../BlogPosts/PostFeedView';
 import CreatePostView from '../BlogPosts/CreatePostView';
 import PredictGamesRouter from './PredictGamesRouter';
-import MenuRouter from './DefaultMenu';
+import MenuRouter from './MenuRouter';
+import PastPredictionsRouter from './PastPredictionsRouter';
+import AdminRouter from './AdminRouter';
+import LeaderboardsRouter from './LeaderboardsRouter';
+import AboutRouter from './AboutRouter';
 
 class AppContainer extends Component {
 	constructor() {
@@ -47,36 +51,16 @@ class AppContainer extends Component {
 			);
 		} else if (this.props.view === "PREDICTGAMESVIEW") {
 			console.log("here: " + this.props.userToken);
-			return new PredictGamesRouter().render(this.props.view, this.props.userToken);
+			return new PredictGamesRouter().render(this.props.userToken);
 		} else if (this.props.view === "PASTPREDICTIONSVIEW") {
 			console.log("returning past predictons view")
-			return (
-				<div className={this.props.view}>
-					{this.createDefaultMainMenu()}
-					<PreviousPredictionsView userToken={this.props.userToken}/>
-				</div>
-			);
+			return new PastPredictionsRouter().render(this.props.userToken);
 		} else if (this.props.view === "ADMINVIEW") {
-			return (
-				<div className={this.props.view}>
-					{this.createDefaultMainMenu()}
-					<AdminView />
-				</div>
-			);
+			return new AdminRouter().render();
 		} else if (this.props.view === "LEADERBOARDSVIEW") {
-			return (
-				<div className={this.props.view}>
-					{this.createDefaultMainMenu()}
-					<LeaderboardsView />
-				</div>
-			);
+			return new LeaderboardsRouter().render();
 		} else if (this.props.view === "ABOUTVIEW") {
-			return (
-				<div className={this.props.view}>
-					{this.createDefaultMainMenu()}
-					<AboutView />
-				</div>
-			);
+			return new AboutRouter().render();
 		} else if (this.props.view === "PREDICTIONPOSTSVIEW") {
 			return (
 				<div className={this.props.view}>	

@@ -1,4 +1,4 @@
-import DefaultMenu from './DefaultMenu';
+import DefaultMenu from './MenuRouter';
 import React from 'react';
 import PredictGamesView from '../PredictGames/PredictGames'
 
@@ -10,9 +10,9 @@ class PredictGamesRouter {
 
     render = (view, userToken) => {
         return (
-            <div className={this.view}>
+            <div className={this.getUniqueIdentifier()}>
                 <DefaultMenu />
-                <PredictGamesView userToken={this.userToken} />
+                <PredictGamesView userToken={userToken} />
             </div>
         );
     }
