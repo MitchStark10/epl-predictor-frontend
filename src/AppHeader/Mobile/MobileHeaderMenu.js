@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import $ from 'jquery';
 import { slide as Menu } from "react-burger-menu";
 import './MobileHeaderMenu.css'
-import { Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 class MobileHeaderMenu extends Component {
     constructor(props) {
@@ -55,7 +55,8 @@ class MobileHeaderMenu extends Component {
 
     render() {
         if (this.state.redirectUrl !== "") {
-            return <Redirect to={this.state.redirectUrl} />
+            this.props.history.push(this.state.redirectUrl);
+            return null;
         }
 
         return (
@@ -74,4 +75,4 @@ class MobileHeaderMenu extends Component {
     }
 }
 
-export default MobileHeaderMenu;
+export default withRouter(MobileHeaderMenu);

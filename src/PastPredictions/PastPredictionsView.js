@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './PastPredictionsView.css';
-import { Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 class PastPredictionsView extends Component {
 
@@ -206,7 +206,7 @@ class PastPredictionsView extends Component {
 
     render() {
         if (this.state.redirectUrl !== "") {
-            return <Redirect to={this.state.redirectUrl} />
+            this.props.history.push(this.state.redirectUrl);
         }
 
         return (
@@ -219,4 +219,4 @@ class PastPredictionsView extends Component {
     }
 }
 
-export default PastPredictionsView;
+export default withRouter(PastPredictionsView);

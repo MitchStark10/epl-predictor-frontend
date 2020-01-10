@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PostHeader from './PostHeader';
-import { Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 class PredictionPostsView extends Component {
 
@@ -67,9 +67,8 @@ class PredictionPostsView extends Component {
 
     render() {
         if (this.state.redirectUrl !== "") {
-            return (
-                <Redirect to={this.state.redirectUrl} />
-            );
+            this.props.history.push(this.state.redirectUrl);
+            return null;
         }
 
         return (
@@ -83,4 +82,4 @@ class PredictionPostsView extends Component {
     }
 }
 
-export default PredictionPostsView;
+export default withRouter(PredictionPostsView);

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import './PostHeader.css';
 
 class PostHeader extends Component {
@@ -19,7 +19,8 @@ class PostHeader extends Component {
     render() {
 
         if (this.state.redirectUrl !== "") {
-            return <Redirect to={this.state.redirectUrl} />;
+            this.props.history.push(this.state.redirectUrl);
+            return null;
         }
         
         return (
@@ -31,4 +32,4 @@ class PostHeader extends Component {
     }
 }
 
-export default PostHeader;
+export default withRouter(PostHeader);

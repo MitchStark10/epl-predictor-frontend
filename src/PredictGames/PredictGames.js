@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import './PredictGames.css';
-import { Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 class PredictGamesView extends Component {
 
@@ -165,7 +165,8 @@ class PredictGamesView extends Component {
 
     render() {
         if (this.state.redirectUrl !== "") {
-            return <Redirect to={this.state.redirectUrl} />
+            this.props.history.push(this.state.redirectUrl);
+            return null;
         }
 
         return (
@@ -177,4 +178,4 @@ class PredictGamesView extends Component {
     }
 }
 
-export default PredictGamesView;
+export default withRouter(PredictGamesView);

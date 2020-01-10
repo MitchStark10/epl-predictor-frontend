@@ -8,10 +8,10 @@ class RecentPostsRouter {
         return "RECENTPOSTSVIEW";
     }
 
-    render = () => {
+    render = (userToken) => {
         return (
             <div className={this.getUniqueIdentifier()}>
-                <MenuRouter userToken={this.props.userToken}/>
+                <MenuRouter userToken={userToken}/>
                 <PostFeedView />
             </div>
         );

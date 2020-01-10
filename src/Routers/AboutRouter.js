@@ -8,10 +8,10 @@ class AboutRouter {
         return "ABOUTVIEW";
     }
 
-    render = () => {
+    render = (userToken) => {
         return (
             <div className={this.getUniqueIdentifier()}>
-                <MenuRouter userToken={this.props.userToken}/>
+                <MenuRouter userToken={userToken}/>
                 <AboutView />
             </div>
         );

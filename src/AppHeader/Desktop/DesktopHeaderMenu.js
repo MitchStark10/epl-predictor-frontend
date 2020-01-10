@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import './DesktopHeaderMenu.css'
-import { Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 class DesktopHeaderMenu extends Component {
     constructor(props) {
@@ -102,7 +102,8 @@ class DesktopHeaderMenu extends Component {
     render() {
 
         if (this.state.redirectUrl !== "") {
-            return <Redirect to={this.state.redirectUrl} />
+            this.props.history.push(this.state.redirectUrl);
+            return null;
         }
 
         return (
@@ -142,4 +143,4 @@ class DesktopHeaderMenu extends Component {
     }
 }
 
-export default DesktopHeaderMenu;
+export default withRouter(DesktopHeaderMenu);

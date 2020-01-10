@@ -66,7 +66,8 @@ class App extends Component {
             console.log(error);
             this.setState({userToken: ""});
         })
-        return <Redirect to="/" />;
+
+        history.push('/');
     }
 
     render() {

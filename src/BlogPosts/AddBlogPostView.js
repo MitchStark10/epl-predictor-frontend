@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import $ from 'jquery';
 import './BlogPostView.css';
 
@@ -74,7 +74,8 @@ class AddBlogPostView extends Component {
 
     render() {
         if (this.state.redirectUrl !== "") {
-            return <Redirect to={this.state.redirectUrl} />;
+            this.props.history.push(this.state.redirectUrl);
+            return null;
         }
 
         if (this.state.viewType === "RENDER") {
@@ -100,4 +101,4 @@ class AddBlogPostView extends Component {
     }
 }
 
-export default AddBlogPostView;
+export default withRouter(AddBlogPostView);

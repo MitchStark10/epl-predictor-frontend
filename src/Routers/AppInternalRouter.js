@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../App.css';
-import { Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import PredictGamesRouter from './PredictGamesRouter';
 import PastPredictionsRouter from './PastPredictionsRouter';
 import AdminRouter from './AdminRouter';
@@ -64,7 +64,8 @@ class AppInternalRouter extends Component {
 
 	render() {
 		if (this.state.redirectUrl !== "") {
-			return <Redirect to={this.state.redirectUrl} />
+			this.props.history.push(this.state.redirectUrl);
+			return null;
 		}
 
 		return (
@@ -76,5 +77,5 @@ class AppInternalRouter extends Component {
 		
 }
 	
-export default AppInternalRouter;
+export default withRouter(AppInternalRouter);
 	
