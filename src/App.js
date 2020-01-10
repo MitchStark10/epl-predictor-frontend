@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
-import AppContainer from './Routers/AppInternalRouter';
+import { Router, Route, Redirect, Switch } from 'react-router-dom';
 import NotFoundPage from './NotFoundPage/NotFoundPage';
-import * as ViewConstants from './ViewConstants';
 import $ from 'jquery';
 import PredictGamesRouter from './Routers/PredictGamesRouter';
 import PastPredictionsRouter from './Routers/PastPredictionsRouter';
@@ -16,7 +14,9 @@ import PostRouter from './Routers/PostRouter';
 import CreatePostRouter from './Routers/CreatePostRouter';
 import AddPredictionPostRouter from './Routers/AddPredictionPostRouter';
 import AddAnalysisPostRouter from './Routers/AddAnalysisPostRouter';
-const BrowserHistory = require('history').default;
+import history from './History';
+import LoginRouter from './Routers/LoginRouter';
+import AppInternalRouter from './Routers/AppInternalRouter';
 
 class App extends Component {
     constructor() {
@@ -51,7 +51,7 @@ class App extends Component {
             match = props.match;
         }
 
-        return <AppContainer userToken={this.state.userToken} 
+        return <AppInternalRouter userToken={this.state.userToken} 
                             match={match} 
                             view={viewName} 
                             currentUrl={match.url} />
@@ -72,7 +72,7 @@ class App extends Component {
     render() {
         if (this.state.userToken === "") {
             if (this.state.useLoginPage) {
-                return <AppContainer view={ViewConstants.LOGIN_VIEW} setLoggedIn={this.setLoggedIn}/>
+                return new LoginRouter().render(this.setLoggedIn);
             } else {
                 return null;
             }
@@ -80,7 +80,7 @@ class App extends Component {
         }
 
         return (
-            <BrowserRouter history={BrowserHistory}>
+            <Router history={history}>
                 <Switch>
                     <Route exact path="/predictGames" render={(props) => this.renderAppContainer(new PredictGamesRouter().getUniqueIdentifier(), props)}/>
                     <Route exact path="/results" render={(props) => this.renderAppContainer(new PastPredictionsRouter().getUniqueIdentifier(), props)} />
@@ -98,7 +98,7 @@ class App extends Component {
                     <Route exact path="/" render={(props) => this.renderAppContainer(new PredictGamesRouter().getUniqueIdentifier(), props)} />
                     <Route path="/" render={() => <NotFoundPage />} />
                 </Switch>                
-            </BrowserRouter>
+            </Router>
         );
     }
 }

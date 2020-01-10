@@ -8,10 +8,10 @@ class CreatePostRouter {
         return "CREATEPOSTSVIEW";
     }
 
-    render = () => {
+    render = (userToken) => {
         return (
             <div className={this.getUniqueIdentifier()}>
-                <MenuRouter />
+                <MenuRouter userToken={userToken}/>
                 <CreatePostView />
             </div>
         );

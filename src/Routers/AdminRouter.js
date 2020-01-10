@@ -8,10 +8,10 @@ class AdminRouter {
         return "ADMINVIEW";
     }
 
-    render = () => {
+    render = (userToken) => {
         return (
             <div className={this.getUniqueIdentifier()}>
-                <MenuRouter />
+                <MenuRouter userToken={userToken}/>
                 <AdminView />
             </div>
         );

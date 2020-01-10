@@ -25,6 +25,7 @@ class MobileHeaderMenu extends Component {
     }
 
     retrieveIsAdmin() {
+        console.log(this.props.userToken)
         let getUserStatusUrl = "/api/auth/getUserStatus";
         $.post(getUserStatusUrl, this.state)
         .done((statusResponse) => {
@@ -34,7 +35,7 @@ class MobileHeaderMenu extends Component {
             }
         })
         .fail((error) => {
-            console.log("error: " + error.status);
+            console.error("error: " + JSON.stringify(error));
         })
     }
 

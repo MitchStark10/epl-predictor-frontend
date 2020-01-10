@@ -12,7 +12,7 @@ class PastPredictionsRouter {
     render = (userToken) => {
         return (
             <div className={this.getUniqueIdentifier()}>
-                <MenuRouter />
+                <MenuRouter userToken={userToken}/>
                 <PreviousPredictionsView userToken={userToken} />
             </div>
         );

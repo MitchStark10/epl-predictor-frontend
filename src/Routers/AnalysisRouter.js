@@ -11,7 +11,7 @@ class AnalysisRouter {
     render = (userToken, gameId) => {
         return (
             <div className={this.getUniqueIdentifier()}>
-                <MenuRouter />
+                <MenuRouter userToken={userToken}/>
                 <PredictionPostsView postType="ANALYSIS" gameId={gameId} />
             </div>
         );

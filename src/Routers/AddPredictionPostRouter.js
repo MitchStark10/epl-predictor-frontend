@@ -11,7 +11,7 @@ class AddPredictionPostRouter {
     render = (userToken, gameId) => {
         return (
             <div className={this.getUniqueIdentifier()}>
-                <MenuRouter />
+                <MenuRouter userToken={userToken}/>
                 <AddBlogPostView userToken={userToken} postType="PREDICTION" gameId={gameId} />
             </div>
         );

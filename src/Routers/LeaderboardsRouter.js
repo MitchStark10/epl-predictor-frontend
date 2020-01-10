@@ -8,10 +8,10 @@ class LeaderboardsRouter {
         return "LEADERBOARDSVIEW";
     }
 
-    render = () => {
+    render = (userToken) => {
         return (
             <div className={this.getUniqueIdentifier()}>
-                <MenuRouter />
+                <MenuRouter userToken={userToken}/>
                 <LeaderboardsView />
             </div>
         );

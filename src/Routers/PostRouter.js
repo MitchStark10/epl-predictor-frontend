@@ -11,7 +11,7 @@ class PostRouter {
     render = (userToken, gameId, postId) => {
         return (
             <div className={this.getUniqueIdentifier()}>
-                <MenuRouter />
+                <MenuRouter userToken={userToken}/>
                 <BlogPostView userToken={userToken} postId={postId} />
             </div>
         );

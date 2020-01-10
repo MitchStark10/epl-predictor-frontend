@@ -36,7 +36,7 @@ class DesktopHeaderMenu extends Component {
             }
         })
         .fail((error) => {
-            console.log("error: " + error.status);
+            console.error("error: " + error);
         })
     }
 
@@ -93,7 +93,7 @@ class DesktopHeaderMenu extends Component {
 
     renderLoggedInUser = () => {
         if (this.props.showLoggedInUser) {
-            return <h4 id="userTag">Logged in: {this.state.userToken}</h4>
+            return <h4 id="userTag">Logged in: {this.props.userToken}</h4>
         }
 
         return null;

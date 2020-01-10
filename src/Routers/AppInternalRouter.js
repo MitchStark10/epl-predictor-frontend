@@ -15,7 +15,7 @@ import RecentPostsRouter from './RecentPostsRouter';
 import LoginRouter from './LoginRouter';
 import CreatePostRouter from './CreatePostRouter';
 
-class AppContainer extends Component {
+class AppInternalRouter extends Component {
 	constructor() {
 		super();
 
@@ -27,6 +27,7 @@ class AppContainer extends Component {
 			new LeaderboardsRouter(),
 			new AboutRouter(),
 			new PredictionPostRouter(),
+			new AddPredictionPostRouter(),
 			new AddAnalysisPostRouter(),
 			new AnalysisRouter(),
 			new PostRouter(),
@@ -49,10 +50,16 @@ class AppContainer extends Component {
 				<h4>Router could not be matched for {this.props.view}. Please contact support.</h4>
 			);
 		}
+		
+		let gameId = null;
+		let postId = null;
+		console.log(this.props.match)
+		if (this.props.match !== null && this.props.match !== undefined) {
+			gameId = this.props.match.params.gameId;
+			postId = this.props.match.params.postId;
+		}
 
-		return matchingRouter.render(this.props.userToken, 
-			this.props.match.params.gameId, 
-			this.props.match.params.gameId);
+		return matchingRouter.render(this.props.userToken, gameId, postId);
 	}
 
 	render() {
@@ -69,5 +76,5 @@ class AppContainer extends Component {
 		
 }
 	
-export default AppContainer;
+export default AppInternalRouter;
 	

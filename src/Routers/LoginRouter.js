@@ -8,14 +8,14 @@ class LoginRouter {
         return "LOGINVIEW";
     }
 
-    render = () => {
+    render = (setLoggedIn) => {
         return (
             <div>
                 <header className="App-header">
                     <img src={logo} className="App-logo" alt="logo" />
                     <p className="Header-Text">ScoreMaster</p>
                 </header>
-                <LoginApp setLoggedIn={this.props.setLoggedIn} />
+                <LoginApp setLoggedIn={setLoggedIn} />
             </div>
         );
     }

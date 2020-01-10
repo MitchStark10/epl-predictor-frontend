@@ -37,12 +37,12 @@ FROM USER
 WHERE Username = ?
 `;
 
-function createAndSetSessionCookie(username, password, res) {
-    const sessionCookie = PasswordHasher.hashPassword(req.body["username"] + req.body["password"]);
-    const insertSessionCookieParams = [sessionCookie, req.device.type.toUpperCase(), req.body["username"], sessionCookie];
+function createAndSetSessionCookie(username, password, deviceType, res) {
+    const sessionCookie = PasswordHasher.hashPassword(username + password);
+    const insertSessionCookieParams = [sessionCookie, deviceType, username, sessionCookie];
     const insertSessionCookieSql = mysql.format(UPDATE_SESSION_COOKIE_SQL, insertSessionCookieParams);
     QueryRunner.runQuery(insertSessionCookieSql);
-    res.cookie('SMLU', req.body["username"], cookieMetadata);
+    res.cookie('SMLU', username, cookieMetadata);
     res.cookie('SMLC', sessionCookie, cookieMetadata);
 }
 
@@ -77,7 +77,7 @@ app.post('/login', async (req, res) => {
         let userLoginResponse = userLoginResponseArray[0];
 
         if (bcrypt.compareSync(req.body["password"], userLoginResponse["Password"])) {
-            createSessionCookie(req.body["username"], req.body["password"]);
+            createAndSetSessionCookie(req.body["username"], req.body["password"], req.device.type.toUpperCase(), res);
             res.status(200).json({username: req.body["username"]});
         } else {
             console.warn("Password did not match for user: " + req.body["username"]);
@@ -103,7 +103,7 @@ app.post('/newUser', async (req, res) => {
 
     try {
         await QueryRunner.runQuery(newUserInsert);
-        createSessionCookie(req.body["username"], req.body["password"]);
+        createAndSetSessionCookie(req.body["username"], req.body["password"], req.device.type.toUpperCase(), res);
         res.status(200).json("New user created");
     } catch (error) {
         console.error("Error during new user: " + error);

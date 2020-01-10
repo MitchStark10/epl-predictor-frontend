@@ -11,7 +11,7 @@ class PredictGamesRouter {
     render = (userToken) => {
         return (
             <div className={this.getUniqueIdentifier()}>
-                <DefaultMenu />
+                <DefaultMenu userToken={userToken}/>
                 <PredictGamesView userToken={userToken} />
             </div>
         );

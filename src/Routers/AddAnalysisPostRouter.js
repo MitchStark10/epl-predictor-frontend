@@ -11,7 +11,7 @@ class AddAnalysisPostRouter {
         //ANALYSIS as a constant
         return (
             <div className={this.getUniqueIdentifier()}>
-                <MenuRouter />
+                <MenuRouter userToken={userToken}/>
                 <AddBlogPostView userToken={userToken} postType="ANALYSIS" gameId={gameId} />
             </div>
         );

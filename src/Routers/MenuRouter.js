@@ -29,12 +29,11 @@ class MenuRouter extends React.Component {
 
     render() {
         if (this.state.useMobileMenu) {
-			return <MobileHeaderMenu userToken={this.props.userToken} currentUrl={this.props.currentUrl} />;
+			return <MobileHeaderMenu userToken={this.props.userToken} />;
 		}
 
 		return <DesktopHeaderMenu 
 			userToken={this.props.userToken} 
-			currentUrl={this.props.currentUrl} 
 			showLoggedInUser={this.state.displayLoggedInUser}
 		/>;
     }
