@@ -6,6 +6,11 @@
     width: fit-content;
 }
 
+.TeamLogo {
+    width: 20px;
+    height: 20px;
+}
+
 @media only screen and (min-width: 1200px) {
     .UpcomingGame {
         width: 50vw;

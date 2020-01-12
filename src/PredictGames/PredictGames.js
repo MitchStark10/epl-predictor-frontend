@@ -2,11 +2,16 @@ import React, { Component } from 'react';
 import $ from 'jquery';
 import './PredictGames.css';
 import { withRouter } from 'react-router-dom';
+import liverpool from '../TeamImages/Liverpool.png';
 
 class PredictGamesView extends Component {
 
     constructor() {
         super();
+
+        this.imageMap = {
+            'Liverpool': liverpool
+        };
 
         this.state = {
             upcomingGames: [],
@@ -96,6 +101,15 @@ class PredictGamesView extends Component {
         this.setState({redirectUrl: event.target.value});
     }
 
+    renderTeamLogo = (teamName) => {
+        console.log(teamName in this.imageMap)
+        if (teamName in this.imageMap) {
+            return <img src={this.imageMap[teamName]} className="TeamLogo" alt={teamName} />
+        }
+
+        return null;
+    }
+
     renderUpcomingGames = () => {
         let jsxList = [];
 
@@ -115,7 +129,7 @@ class PredictGamesView extends Component {
                     id={game["GameId"]}
                     onClick={this.handlePredictionButtonClick}
                     value={game["HomeTeamName"]}>
-                        {game["HomeTeamName"]}
+                        {game["HomeTeamName"]} {this.renderTeamLogo(game["HomeTeamName"])}
                     </button>
 
                     <button className="SmButton"
@@ -132,6 +146,7 @@ class PredictGamesView extends Component {
                         {game["AwayTeamName"]}
                     </button>
                     <br />
+                    {this.renderTeamLogo(game["AwayTeamName"])}
                     {this.renderPrediction(game["GameId"])}
 
                     <button className="PredictionsButton"
@@ -153,7 +168,7 @@ class PredictGamesView extends Component {
 
             if (prediction["GameId"] === gameId) {
                 return (
-                    <h3>Predicted Winner: {prediction["WinningTeam"]}</h3>
+                    <h3>Predicted Winner: {prediction["WinningTeam"]} {this.renderTeamLogo(prediction["WinningTeam"])}</h3>
                 );
             }
         }
