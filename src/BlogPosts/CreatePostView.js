@@ -1,6 +1,5 @@
 import React from 'react';
 import $ from 'jquery';
-import { withRouter } from 'react-router-dom';
 import DateUtility from '../Utility/DateUtility';
 
 class CreatePostView extends React.Component {

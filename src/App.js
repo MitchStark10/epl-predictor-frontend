@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Router, Route, Redirect, Switch } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 import NotFoundPage from './NotFoundPage/NotFoundPage';
 import $ from 'jquery';
 import PredictGamesRouter from './Routers/PredictGamesRouter';

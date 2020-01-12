@@ -53,7 +53,6 @@ class AppInternalRouter extends Component {
 		
 		let gameId = null;
 		let postId = null;
-		console.log(this.props.match)
 		if (this.props.match !== null && this.props.match !== undefined) {
 			gameId = this.props.match.params.gameId;
 			postId = this.props.match.params.postId;

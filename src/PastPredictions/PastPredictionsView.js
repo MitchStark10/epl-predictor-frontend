@@ -116,7 +116,7 @@ class PastPredictionsView extends Component {
             let game = this.state.pastGames[i];
             let prediction = this.findPredictionByGameId(game["GameId"]);
 
-            let color = this.determineColor(game["HomeTeamScore"], game["AwayTeamScore"], game["HomeTeamName"], game["wwayTeamName"], prediction);
+            let color = this.determineColor(game["HomeTeamScore"], game["AwayTeamScore"], game["HomeTeamName"], game["AwayTeamName"], prediction);
 
             if (color === "green") {
                 correctPredictionCount++;
