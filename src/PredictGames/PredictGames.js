@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import $ from 'jquery';
 import './PredictGames.css';
 import { withRouter } from 'react-router-dom';
-import liverpool from '../TeamImages/Liverpool.png';
+import ImageRetrieverService from '../TeamImages/ImageRetrieverService';
+import TeamNameUtility from '../Utility/TeamNameUtility';
 
 class PredictGamesView extends Component {
 
     constructor() {
         super();
 
-        this.imageMap = {
-            'Liverpool': liverpool
-        };
+        this.imageRetrieverService = new ImageRetrieverService();
+        this.teamNameUtility = new TeamNameUtility();
 
         this.state = {
             upcomingGames: [],
@@ -101,15 +101,6 @@ class PredictGamesView extends Component {
         this.setState({redirectUrl: event.target.value});
     }
 
-    renderTeamLogo = (teamName) => {
-        console.log(teamName in this.imageMap)
-        if (teamName in this.imageMap) {
-            return <img src={this.imageMap[teamName]} className="TeamLogo" alt={teamName} />
-        }
-
-        return null;
-    }
-
     renderUpcomingGames = () => {
         let jsxList = [];
 
@@ -129,7 +120,7 @@ class PredictGamesView extends Component {
                     id={game["GameId"]}
                     onClick={this.handlePredictionButtonClick}
                     value={game["HomeTeamName"]}>
-                        {game["HomeTeamName"]} {this.renderTeamLogo(game["HomeTeamName"])}
+                        {this.teamNameUtility.mapTeamNames(game["HomeTeamName"])} {this.imageRetrieverService.renderTeamLogo(game["HomeTeamName"])}
                     </button>
 
                     <button className="SmButton"
@@ -143,10 +134,9 @@ class PredictGamesView extends Component {
                     id={game["GameId"]} 
                     onClick={this.handlePredictionButtonClick}
                     value={game["AwayTeamName"]}>
-                        {game["AwayTeamName"]}
+                        {this.teamNameUtility.mapTeamNames(game["AwayTeamName"])} {this.imageRetrieverService.renderTeamLogo(game["AwayTeamName"])}
                     </button>
                     <br />
-                    {this.renderTeamLogo(game["AwayTeamName"])}
                     {this.renderPrediction(game["GameId"])}
 
                     <button className="PredictionsButton"
@@ -168,7 +158,7 @@ class PredictGamesView extends Component {
 
             if (prediction["GameId"] === gameId) {
                 return (
-                    <h3>Predicted Winner: {prediction["WinningTeam"]} {this.renderTeamLogo(prediction["WinningTeam"])}</h3>
+                    <h3>Predicted Winner: {this.teamNameUtility.mapTeamNames(prediction["WinningTeam"])} {this.imageRetrieverService.renderTeamLogo(prediction["WinningTeam"])}</h3>
                 );
             }
         }
