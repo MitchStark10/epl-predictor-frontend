@@ -3,9 +3,9 @@ table, th, td {
     padding: 10px;
     border-style: solid;
     border-radius: 1px;
-    overflow-y:scroll;
+    overflow-y: scroll;
 }
 
 table {
-    display:block;
+    display: block;
 }
