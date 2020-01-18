@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import './PastPredictionsView.css';
+import ImageRetrieverService from '../TeamImages/ImageRetrieverService';
 import { withRouter } from 'react-router-dom';
 
 class PastPredictionsView extends Component {
 
     constructor() {
         super();
+
+        this.imageRetrieverService = new ImageRetrieverService();
 
         this.state = {
             pastGames: [],
@@ -168,9 +171,9 @@ class PastPredictionsView extends Component {
             jsxList.push(
                 <div className="PastGame" key={game["GameId"]} style={style}>
                     <h2>{monthIndex}/{day}/{year} - {game["Competition"]}</h2>
-                    <h3>{this.renderPrediction(prediction)}</h3>
-                    <p>{game["HomeTeamName"]}: {game["HomeTeamScore"]}</p>
-                    <p>{game["AwayTeamName"]}: {game["AwayTeamScore"]}</p>
+                    {this.renderPrediction(prediction)}
+                    <p>{this.imageRetrieverService.renderTeamLogo(game["HomeTeamName"])} {game["HomeTeamName"]}: {game["HomeTeamScore"]}</p>
+                    <p>{this.imageRetrieverService.renderTeamLogo(game["AwayTeamName"])} {game["AwayTeamName"]}: {game["AwayTeamScore"]}</p>
 
                     <button className="PredictionsButton"
                         id={game["GameId"]}
@@ -194,10 +197,10 @@ class PastPredictionsView extends Component {
 
     renderPrediction = (prediction) => {
         if (prediction === null) {
-            return "Prediction Not Made";
+            return <h3>Prediction Not Made</h3>;
         }
 
-        return "Predicted Winner: " + prediction["WinningTeam"];
+        return <h3>Predicted Winner: {prediction["WinningTeam"]} {this.imageRetrieverService.renderTeamLogo(prediction["WinningTeam"])}</h3>;
     }
 
     handleBlogButtonClick = (event) => {
