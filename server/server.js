@@ -22,9 +22,7 @@ app.use("/api", routes);
 
 // the catch all route
 if (process.env.NODE_ENV === "production") {
-    console.log("Setting all route");
     app.all('*', (req, res) => {
-        console.log("in here yo");
         res.sendFile(path.join(__dirname + '/../build/index.html'));
     });
 }
