@@ -23,22 +23,26 @@ app.get('/', async (req, res) => {
     var leaderboardStatsList = [];
     let usernameList = await QueryRunner.runQuery(RETRIEVE_ALL_USERNAMES);
     
-    for (var i = 0; i < usernameList.length; i++) {
+    for (let i = 0; i < usernameList.length; i++) {
         let username = usernameList[i]["Username"];
         let predictionsQuery = mysql.format(RETRIEVE_ALL_PREDICTIONS_BY_USER, username);
         let predictionList = await QueryRunner.runQuery(predictionsQuery);
         
-        leaderboardStatsList.push(processPredictions(predictionList, username, i + 1));
+        leaderboardStatsList.push(processPredictions(predictionList, username));
     }
 
     leaderboardStatsList = leaderboardStatsList.sort(function(a, b) {
         return b["correctPredictionRate"] - a["correctPredictionRate"];
     });
 
+    for (let i in leaderboardStatsList) {
+        leaderboardStatsList[i]['place'] = parseInt(i) + 1;
+    }
+
     res.status(200).json(leaderboardStatsList);
 });
 
-processPredictions = (predictionList, username, place) => {
+processPredictions = (predictionList, username) => {
     var correctPredictionsCount = 0;
     let totalPredictionsCount = predictionList.length;
     var streakSymbol = "";
@@ -84,7 +88,6 @@ processPredictions = (predictionList, username, place) => {
         "correctPredictionCount": correctPredictionsCount,
         "totalPredictionCount": totalPredictionsCount,
         "streak": streakSymbol + streakCount,
-        "correctPredictionRate": correctPredictionRate,
-        "place": place
+        "correctPredictionRate": correctPredictionRate
     };
 };
