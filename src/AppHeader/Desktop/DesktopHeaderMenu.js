@@ -69,7 +69,6 @@ class DesktopHeaderMenu extends Component {
                     <div id="GamesDropDownList" className="DropDownList">
                         <button className="SmButton DropDownListButton GameDropDownButton" id="/predictGames" onClick={this.handleButtonClick}>PREDICT GAMES</button><br />
                         <button className="SmButton DropDownListButton GameDropDownButton" id="/results" onClick={this.handleButtonClick}>RESULTS</button><br />
-                        <button className="SmButton DropDownListButton GameDropDownButton" id="/leaderboard" onClick={this.handleButtonClick}>LEADERBOARD</button><br />
                         {this.renderAdminButton()}
                     </div>
                 );

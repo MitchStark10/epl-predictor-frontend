@@ -63,7 +63,6 @@ class MobileHeaderMenu extends Component {
                 <Menu pageWrapId={"page-wrap"} outerContainerId={"App"} isOpen={ false }>
                     <button className="SmButton" id="/predictGames" onClick={this.handleButtonClick}>PREDICT GAMES</button>
                     <button className="SmButton" id="/results" onClick={this.handleButtonClick}>RESULTS</button>
-                    <button className="SmButton" id="/leaderboard" onClick={this.handleButtonClick}>LEADERBOARD</button>
                     <button className="SmButton" id="/about" onClick={this.handleButtonClick}>ABOUT</button>
                     {this.renderAdminView()}
                     <button className="SmButton" id="/logout" onClick={this.handleButtonClick}>LOGOUT</button>
