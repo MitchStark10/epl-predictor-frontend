@@ -1,4 +1,5 @@
 const mysql = require('mysql');
+const QueryRunner = require('./QueryRunner').buildQueryRunner();
 
 const LOGIN_WITH_COOKIE_SQL = `
 SELECT COUNT(*) AS USER_COUNT
@@ -16,7 +17,7 @@ WHERE Username = ?
     AND Device = ?
 `;
 
-authorizeUserCredentialsViaCookie = function(req, res, next) {
+module.exports.authorizeUserCredentialsViaCookie = async (req, res, next) => {
     if (req.cookies !== undefined) {
         console.log("Attempting to login with cookies: " + JSON.stringify(req.cookies));
         let cookieParams = [req.cookies["SMLU"], req.cookies["SMLC"], req.device.type.toUpperCase()];
@@ -27,10 +28,11 @@ authorizeUserCredentialsViaCookie = function(req, res, next) {
             return;
         }
     }
-    res.status(401).json({ errorMsg: "User [" + req.cookies["SMLU"] + "could not be authenticated" });
+
+    res.status(401).json({ errorMsg: "User [" + req.cookies["SMLU"] + "] could not be authenticated" });
 }
 
-authorizeCredentialsForUserModification = function(req, res, username, next) {
+module.exports.authorizeCredentialsForUserModification = async (req, res, username, next) => {
     if (req.cookies !== undefined) {
         console.log("Attempting to login with cookies: " + JSON.stringify(req.cookies));
         let cookieParams = [req.cookies["SMLU"], req.cookies["SMLC"], req.device.type.toUpperCase()];
@@ -41,5 +43,6 @@ authorizeCredentialsForUserModification = function(req, res, username, next) {
             return;
         }
     }
+
     res.status(403).json({ errorMsg: "User [" + req.cookies["SMLU"] + "not authorized for " + username });
 }
