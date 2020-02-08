@@ -1,5 +1,5 @@
 const app = module.exports = require('express')();
-const Security = require('../service/Security');
+const Security = require('../../service/Security');
 
 app.get('/ping', (req, res) => {
     const pingLogic = (req, res) => {

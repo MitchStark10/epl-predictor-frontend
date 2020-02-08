@@ -1,5 +1,5 @@
 const app = module.exports = require('express')();
-const QueryRunner = require('../../service/QueryRunner').buildQueryRunner();
+const QueryRunner = require('../../../service/QueryRunner').buildQueryRunner();
 const mysql = require('mysql');
 
 const INSERT_NEW_BLOG_POST_SQL = `

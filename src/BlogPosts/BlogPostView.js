@@ -23,7 +23,7 @@ class BlogPostView extends Component {
     }
 
     retrieveBlogPostData(postId) {
-        fetch("/api/blog/retrieveBlogPost/" + postId)
+        fetch("/public/api/blog/retrieveBlogPost/" + postId)
         .then( response => response.json())
         .then( 
             (response) => {
@@ -36,7 +36,7 @@ class BlogPostView extends Component {
     }
 
     retrievePostLikeStatus(postId) {
-        fetch("/api/blog/userBlogLikeStatus/" + postId + "/" + this.props.userToken)
+        fetch("/public/api/blog/userBlogLikeStatus/" + postId + "/" + this.props.userToken)
         .then( response => response.json())
         .then(
             (response) => {
@@ -59,7 +59,7 @@ class BlogPostView extends Component {
     }
 
     toggleLikeBlogPost = () => {
-        $.post("/api/blog/toggleBlogLikeStatus/" + this.state.postId + "/" + this.props.userToken)
+        $.post("/public/api/blog/toggleBlogLikeStatus/" + this.state.postId + "/" + this.props.userToken)
         .done((response) => {
             this.setState({hasUserLikedBlogPost: !this.state.hasUserLikedBlogPost});
         });

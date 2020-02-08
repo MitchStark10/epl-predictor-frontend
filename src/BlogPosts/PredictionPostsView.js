@@ -21,14 +21,14 @@ class PredictionPostsView extends Component {
     componentDidMount() {
         console.log("Prediction Posts view component did mount: " + this.props.gameId);
 
-        fetch("/api/blog/retrieveTeamNames/" + this.props.gameId)
+        fetch("/public/api/blog/retrieveTeamNames/" + this.props.gameId)
         .then( result => result.json() )
         .then( (teamNames) => {
             console.log("here: " + JSON.stringify(teamNames));
             this.setState({homeTeamName: teamNames["HomeTeamName"], awayTeamName: teamNames["AwayTeamName"]});
         })
 
-        fetch("/api/blog/retrieveAllBlogPostHeaders/" + this.props.postType + "/" + this.props.gameId)
+        fetch("/public/api/blog/retrieveAllBlogPostHeaders/" + this.props.postType + "/" + this.props.gameId)
         .then( result => result.json() )
         .then(
             (predictionPosts) => {

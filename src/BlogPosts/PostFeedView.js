@@ -14,7 +14,7 @@ class PostFeedView extends React.Component {
     }
     
     componentDidMount() {
-        $.get("/api/blog/retrieveAllBlogPostHeaders")
+        $.get("/public/api/blog/retrieveAllBlogPostHeaders")
         .done( (response) => {
             console.log(response)
             this.setState({blogPostHeaders: response});

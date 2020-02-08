@@ -40,7 +40,7 @@ class PredictGamesView extends Component {
     }
 
     retrieveGames = () => {
-        fetch("/api/games/retrieveAllUpcomingGames")
+        fetch("/public/api/games/retrieveAllUpcomingGames")
         .then( result => result.json() )
         .then(
             (upcomingGames) => {
@@ -58,7 +58,7 @@ class PredictGamesView extends Component {
 
     retrievePredictions = () => {
         console.log("fetching : " + this.props.userToken);
-        fetch("/api/predictions/upcomingPredictions/" + this.props.userToken)
+        fetch("/public/api/predictions/upcomingPredictions/" + this.props.userToken)
         .then ( result => result.json() )
         .then(
             (upcomingPredictions) => {
@@ -80,7 +80,7 @@ class PredictGamesView extends Component {
     }
 
     handlePredictionButtonClick = (event) => {
-        let url = "/api/predictions/addOrUpdatePrediction";
+        let url = "/public/api/predictions/addOrUpdatePrediction";
 
         let postData = {
             username: this.props.userToken,

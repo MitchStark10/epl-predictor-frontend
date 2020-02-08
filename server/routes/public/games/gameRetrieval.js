@@ -1,5 +1,5 @@
 const app = module.exports = require('express')();
-const QueryRunner = require('../../service/QueryRunner').buildQueryRunner();
+const QueryRunner = require('../../../service/QueryRunner').buildQueryRunner();
 const mysql = require('mysql');
 
 const RETRIEVE_ALL_GAMES_SQL = `

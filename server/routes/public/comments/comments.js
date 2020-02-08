@@ -1,6 +1,6 @@
 const app = module.exports = require('express')();
 const mysql = require('mysql');
-const QueryRunner = require('../../service/QueryRunner').buildQueryRunner();
+const QueryRunner = require('../../../service/QueryRunner').buildQueryRunner();
 
 const RETRIEVE_ALL_COMMENTS_SQL = `
 SELECT *

@@ -27,7 +27,7 @@ class CommentsView extends Component {
             return;
         }
 
-        $.get("/api/comments/retrieveAllComments/" + this.props.postId)
+        $.get("/public/api/comments/retrieveAllComments/" + this.props.postId)
             .done((response) => {
                 console.log("Received response: " + response);
                 this.setState({comments: response, needsCommentReload: false});
@@ -51,7 +51,7 @@ class CommentsView extends Component {
             commentText: this.state.commentText
         };
 
-        $.post("/api/comments/addComment", commentToAdd)
+        $.post("/public/api/comments/addComment", commentToAdd)
         .done( (response) => {
             this.setState({commentText: "", needsCommentReload: true});
         })
