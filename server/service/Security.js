@@ -17,6 +17,15 @@ WHERE Username = ?
     AND Device = ?
 `;
 
+const LOGIN_AND_RETRIEVE_STATUS_SQL = `
+SELECT USER.Status
+FROM SESSION_COOKIE 
+    INNER JOIN USER ON USER.Username = SESSION_COOKIE.Username
+WHERE Username = ?
+    AND SessionCookie = ?
+    AND Device = ?
+`;
+
 module.exports.authorizeUserCredentialsViaCookie = async (req, res, next) => {
     if (req.cookies !== undefined) {
         console.log("Attempting to login with cookies: " + JSON.stringify(req.cookies));
@@ -44,5 +53,21 @@ module.exports.authorizeCredentialsForUserModification = async (req, res, userna
         }
     }
 
-    res.status(403).json({ errorMsg: "User [" + req.cookies["SMLU"] + "not authorized for " + username });
+    //TODO: This will cause a problem if the req.cookies is not defined
+    res.status(403).json({ errorMsg: "User [" + req.cookies["SMLU"] + "] not authorized for " + username});
+}
+
+module.exports.authorizeAdminForAction = async (req, res, next) => {
+    if (req.cookies !== undefined) {
+        console.log("Attempting to login with cookies: " + JSON.stringify(req.cookies));
+        let cookieParams = [req.cookies["SMLU"], req.cookies["SMLC"], req.device.type.toUpperCase()];
+        let retrieveUserInfoQuery = mysql.format(LOGIN_AND_RETRIEVE_STATUS_SQL, cookieParams);
+        let userInfoResponse = await QueryRunner.runQuery(retrieveUserInfoQuery);
+        if (userInfoResponse[0]["Status"] && userInfoResponse[0]["Status"] === "admin") {
+            next(req, res);
+            return;
+        }
+    }
+
+    res.status(403).json({ errorMsg: "User [" + req.cookies["SMLU"] + "] is not authorized as admin"});
 }

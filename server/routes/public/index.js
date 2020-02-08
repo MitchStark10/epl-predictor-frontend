@@ -2,11 +2,7 @@ const app = module.exports = require('express')();
 const Security = require('../../service/Security');
 
 app.get('/ping', (req, res) => {
-    const pingLogic = (req, res) => {
-        res.send({ msg: 'Server is up and running' });
-    };
-
-    Security.authorizeUserCredentialsViaCookie(req, res, pingLogic);
+    res.send({ msg: 'Server is up and running' });
 });
 
 app.use('/admin', require('./admin/games'));
