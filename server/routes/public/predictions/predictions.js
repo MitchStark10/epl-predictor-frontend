@@ -1,6 +1,6 @@
-
 const app = module.exports = require('express')();
 const QueryRunner = require('../../../service/QueryRunner').buildQueryRunner();
+const Security = require('../../../service/Security');
 const mysql = require('mysql');
 
 const RETRIEVE_PREVIOUS_PREDICTION = `
@@ -75,15 +75,18 @@ let updatePrediction = async (params, res) => {
 }
 
 app.post('/addOrUpdatePrediction', async (req, res) => {
-    let retrievePreviousPredictionParams = [req.body["username"], req.body["gameId"]];
-    let insertParams = [req.body["username"], req.body["gameId"], req.body["winningTeam"]];
-    let updateParams = [req.body["winningTeam"], req.body["username"], req.body["gameId"]];
+    const putPrediction = async (req, res) => {
+        let retrievePreviousPredictionParams = [req.body["username"], req.body["gameId"]];
+        let insertParams = [req.body["username"], req.body["gameId"], req.body["winningTeam"]];
+        let updateParams = [req.body["winningTeam"], req.body["username"], req.body["gameId"]];
 
-    if (await predictionAlreadyExists(retrievePreviousPredictionParams)) {
-        updatePrediction(updateParams, res);
-    } else {
-        insertNewPrediction(insertParams, res);
-    }
+        if (await predictionAlreadyExists(retrievePreviousPredictionParams)) {
+            updatePrediction(updateParams, res);
+        } else {
+            insertNewPrediction(insertParams, res);
+        }
+    };
+    Security.authorizeCredentialsForUserModification(req, res, req.body["username"], putPrediction);
 });
 
 app.get('/upcomingPredictions/:username', async (req, res) => {

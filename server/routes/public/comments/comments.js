@@ -1,6 +1,7 @@
 const app = module.exports = require('express')();
 const mysql = require('mysql');
 const QueryRunner = require('../../../service/QueryRunner').buildQueryRunner();
+const Security = require('../../../service/Security');
 
 const RETRIEVE_ALL_COMMENTS_SQL = `
 SELECT *
@@ -30,17 +31,22 @@ app.get('/retrieveAllComments/:postId', async (req, res) => {
 });
 
 app.post('/addComment', async (req, res) => {
-    console.log("Entering /addcomment");
+    const addComment = (req, res) => {
+        console.log("Entering /addcomment");
 
-    try {
-        const params = [req.body.username, req.body.postId, req.body.commentText];
-        const insertQuery = mysql.format(INSERT_NEW_COMMENT_SQL, params);
-        await QueryRunner.runQuery(insertQuery);
-        res.status(200).json("Succesfully added new comment");
-    } catch (exception) {
-        console.error("Caught unexpected exception during add comment: " + exception);
-        res.status(500).json({errorMsg: "Unable to add new comment. Please try again later."});
-    }
+        try {
+            const params = [req.body.username, req.body.postId, req.body.commentText];
+            const insertQuery = mysql.format(INSERT_NEW_COMMENT_SQL, params);
+            await QueryRunner.runQuery(insertQuery);
+            res.status(200).json("Succesfully added new comment");
+        } catch (exception) {
+            console.error("Caught unexpected exception during add comment: " + exception);
+            res.status(500).json({ errorMsg: "Unable to add new comment. Please try again later." });
+        }
 
-    console.log("Exiting /addcomment");
+        console.log("Exiting /addcomment");
+
+    };
+
+    Security.authorizeCredentialsForUserModification(req, res, req.body.username, addComment);
 });

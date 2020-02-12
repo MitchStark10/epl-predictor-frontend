@@ -1,5 +1,6 @@
 const app = module.exports = require('express')();
 const QueryRunner = require('../../../service/QueryRunner').buildQueryRunner();
+const Security = require('../../../service/Security');
 const mysql = require('mysql');
 
 const SELECT_TEAM_NAMES = `
@@ -61,34 +62,38 @@ let checkIfPredictionTeamNamesNeedToUpdate = async (req) => {
 }
 
 app.post('/updateGame/:gameId', async (req, res) => {
-    try {
-        await checkIfPredictionTeamNamesNeedToUpdate(req);
-    } catch (error) {
-        console.log("Issue occured updating team names for predictions: " + error);
-        res.status(500).json("Error updating game");
-        return 
-    }
+    const updateGame = async (req, res) => {
+        try {
+            await checkIfPredictionTeamNamesNeedToUpdate(req);
+        } catch (error) {
+            console.log("Issue occured updating team names for predictions: " + error);
+            res.status(500).json("Error updating game");
+            return
+        }
 
-    let homeTeamScore = determineScoreQueryParam(req.body["homeTeamScore"]);
-    let awayTeamScore = determineScoreQueryParam(req.body["awayTeamScore"]);
+        let homeTeamScore = determineScoreQueryParam(req.body["homeTeamScore"]);
+        let awayTeamScore = determineScoreQueryParam(req.body["awayTeamScore"]);
 
-    let params = [
-        req.body["homeTeamName"],
-        req.body["awayTeamName"],
-        homeTeamScore,
-        awayTeamScore,
-        req.body["gameDate"] + " 06:00:00",
-        req.body["competition"],
-        req.params["gameId"]
-    ];
+        let params = [
+            req.body["homeTeamName"],
+            req.body["awayTeamName"],
+            homeTeamScore,
+            awayTeamScore,
+            req.body["gameDate"] + " 06:00:00",
+            req.body["competition"],
+            req.params["gameId"]
+        ];
 
-    let updateSql = mysql.format(UPDATE_GAME_SQL, params);
+        let updateSql = mysql.format(UPDATE_GAME_SQL, params);
 
-    try {
-        await QueryRunner.runQuery(updateSql);
-        res.status(200).json("Successfully updated game: " + req.params.gameId)
-    } catch (error) {
-        console.error("Error updating game: " + req.params["gameId"] + ": " + error);
-        res.status(500).json("Error updating game");
-    }
+        try {
+            await QueryRunner.runQuery(updateSql);
+            res.status(200).json("Successfully updated game: " + req.params.gameId)
+        } catch (error) {
+            console.error("Error updating game: " + req.params["gameId"] + ": " + error);
+            res.status(500).json("Error updating game");
+        }
+    };
+
+    Security.authorizeAdminForAction(req, res, updateGame);
 });
