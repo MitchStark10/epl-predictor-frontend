@@ -31,7 +31,7 @@ app.get('/retrieveAllComments/:postId', async (req, res) => {
 });
 
 app.post('/addComment', async (req, res) => {
-    const addComment = (req, res) => {
+    const addComment = async (req, res) => {
         console.log("Entering /addcomment");
 
         try {

@@ -86,6 +86,7 @@ app.post('/addOrUpdatePrediction', async (req, res) => {
             insertNewPrediction(insertParams, res);
         }
     };
+    console.log("testing: " + req.body["username"])
     Security.authorizeCredentialsForUserModification(req, res, req.body["username"], putPrediction);
 });
 

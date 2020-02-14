@@ -67,7 +67,7 @@ WHERE GameId = ?
 `;
 
 app.post('/addNewBlogPost', async (req, res) => {
-    let addNewBlogPost = (req, res) => {
+    let addNewBlogPost = async (req, res) => {
         console.log("Entered add new blog post");
 
         try {
@@ -117,7 +117,7 @@ app.post('/addNewBlogPost', async (req, res) => {
 });
 
 app.post('/updateBlogPost', async (req, res) => {
-    let updateBlogPost = (req, res) => {
+    let updateBlogPost = async (req, res) => {
         console.log("Entering updateBlogPost");
 
         try {
@@ -137,7 +137,7 @@ app.post('/updateBlogPost', async (req, res) => {
 });
 
 app.post('/likeBlogPost', async (req, rexs) => {
-    let likeBlogPost = (req, res) => {
+    let likeBlogPost = async (req, res) => {
         console.log("Entering likeBlogPost/");
 
         try {
