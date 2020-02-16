@@ -27,7 +27,7 @@ class DesktopHeaderMenu extends Component {
     }
 
     retrieveIsAdmin() {
-        let getUserStatusUrl = "/api/auth/getUserStatus";
+        let getUserStatusUrl = "/public/api/auth/getUserStatus";
         $.post(getUserStatusUrl, this.state)
         .done((statusResponse) => {
             console.log("Status response: " + JSON.stringify(statusResponse));

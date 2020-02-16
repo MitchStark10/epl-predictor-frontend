@@ -3,7 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const path = require("path");
-const routes = require('./routes');
+const publicRoutes = require('./routes/public');
 const device = require('express-device');
 
 // parse application/x-www-9form-urlencoded
@@ -18,7 +18,8 @@ if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "../build/")));
 }
 
-app.use("/api", routes);
+//TODO: Change to /public/public/api/
+app.use("/public/api", publicRoutes);
 
 // the catch all route
 if (process.env.NODE_ENV === "production") {

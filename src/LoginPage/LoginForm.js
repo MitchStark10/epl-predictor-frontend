@@ -22,7 +22,7 @@ class LoginForm extends Component {
     }
 
     loginWithCookies() {
-        let url = "/api/auth/login";
+        let url = "/public/api/auth/login";
 
         $.post(url)
         .done((response) => {
@@ -34,7 +34,7 @@ class LoginForm extends Component {
     }
 
     login() {
-        let url = "/api/auth/login";
+        let url = "/public/api/auth/login";
 
         $.post(url, this.state)
         .done((response) => {

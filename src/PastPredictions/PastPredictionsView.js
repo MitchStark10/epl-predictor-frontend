@@ -65,7 +65,7 @@ class PastPredictionsView extends Component {
     }
 
     retrieveGames = () => {
-        fetch("/api/games/retrieveAllPastGames")
+        fetch("/public/api/games/retrieveAllPastGames")
         .then( result => result.json() )
         .then(
             (previousGames) => {
@@ -94,7 +94,7 @@ class PastPredictionsView extends Component {
     }
 
     retrievePredictions = () => {
-        fetch("/api/predictions/previousPredictions/" + this.props.userToken)
+        fetch("/public/api/predictions/previousPredictions/" + this.props.userToken)
         .then ( result => result.json() )
         .then(
             (previousPredictions) => {

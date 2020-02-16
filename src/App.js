@@ -33,7 +33,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-        let url = "/api/auth/login";
+        let url = "/public/api/auth/login";
 
         $.post(url)
         .done((response) => {
@@ -58,7 +58,7 @@ class App extends Component {
     }
 
     logout = () => {
-        $.post("/api/auth/logout")
+        $.post("/public/api/auth/logout")
         .done((data) => {
             this.setState({userToken: ""});
         })

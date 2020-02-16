@@ -24,7 +24,7 @@ class EditGames extends Component {
     }
 
     retrieveGames = () => {
-        fetch("/api/games/retrieveAllGames")
+        fetch("/public/api/games/retrieveAllGames")
         .then( result => result.json() )
         .then(
             (previousGames) => {

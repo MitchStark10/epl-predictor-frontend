@@ -1,7 +1,8 @@
 const app = module.exports = require('express')();
+const Security = require('../../service/Security');
 
 app.get('/ping', (req, res) => {
-  res.send({msg: 'Server is up and running'});
+    res.send({ msg: 'Server is up and running' });
 });
 
 app.use('/admin', require('./admin/games'));
@@ -15,5 +16,5 @@ app.use('/comments', require('./comments/comments'));
 
 // the catch all route
 app.all('*', (req, res) => {
-  res.status(404).send({errorMsg: 'not found'});
+	res.status(404).send({ errorMsg: 'not found' });
 });

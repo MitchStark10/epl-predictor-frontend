@@ -3,6 +3,9 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 import re
 import requests
+import os
+
+requestCookies = {'SMLU': os.environ['GP_SCOREMASTER_USERNAME'], 'SMLC': os.environ['GP_SCOREMASTER_COOKIE']}
 
 host = "http://scoremaster-frontend.herokuapp.com"
 monthList = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
@@ -59,7 +62,7 @@ def retrieveAndUpdateGames(month):
             gameToAdd["gameDate"] = dateToBeInserted
             gameToAdd["competition"] = "English Premier League"
     
-            gameAlreadyExistingResponse = json.loads(requests.post(url = "/api/games/searchForGame", data = gameToAdd).text)
+            gameAlreadyExistingResponse = json.loads(requests.post(url = host + "/public/api/games/searchForGame", data = gameToAdd).text)
             print(str(gameAlreadyExistingResponse))
     
             #Add the score to the gameToAdd object after the search, so that we do not disclude results that have not been
@@ -72,12 +75,12 @@ def retrieveAndUpdateGames(month):
                 print("Game already exists in DB...")
     
                 if "homeTeamScore" in gameToAdd and gameAlreadyExistingResponse[0]["HomeTeamScore"] == None:
-                    requests.post(url = host + "/api/games/updateGame/" + str(gameAlreadyExistingResponse[0]["GameId"]), data = gameToAdd)
+                    requests.post(url = host + "/public/api/games/updateGame/" + str(gameAlreadyExistingResponse[0]["GameId"]), data = gameToAdd, cookies = requestCookies)
                     print("Updated game with score in DB")
     
                 continue
 
-            requests.post(url = host + "/api/admin/addNewGame", data = gameToAdd)
+            requests.post(url = host + "/public/api/admin/addNewGame", data = gameToAdd, cookies = requestCookies)
             print("Added game to DB")
         
 

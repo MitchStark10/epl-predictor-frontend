@@ -1,5 +1,6 @@
 const app = module.exports = require('express')();
-const QueryRunner = require('../../service/QueryRunner').buildQueryRunner();
+const QueryRunner = require('../../../service/QueryRunner').buildQueryRunner();
+const Security = require('../../../service/Security');
 const mysql = require('mysql');
 
 const INSERT_NEW_BLOG_POST_SQL = `
@@ -66,79 +67,94 @@ WHERE GameId = ?
 `;
 
 app.post('/addNewBlogPost', async (req, res) => {
-    console.log("Entered add new blog post");
+    let addNewBlogPost = async (req, res) => {
+        console.log("Entered add new blog post");
 
-    try {
+        try {
 
-        if (req.body.blogPostType === "PREDICTION") {
-            let currentDate = new Date();
-            currentDate.setHours(0, 0, 0, 0);
+            if (req.body.blogPostType === "PREDICTION") {
+                let currentDate = new Date();
+                currentDate.setHours(0, 0, 0, 0);
 
-            let getDateParams = [req.body.gameId];
-            let getGameDateSql = mysql.format(GET_GAME_DATE_SQL, getDateParams);
-            let gameDateResponse = await QueryRunner.runQuery(getGameDateSql);
+                let getDateParams = [req.body.gameId];
+                let getGameDateSql = mysql.format(GET_GAME_DATE_SQL, getDateParams);
+                let gameDateResponse = await QueryRunner.runQuery(getGameDateSql);
 
-            let gameDate = new Date(Date.parse(gameDateResponse[0]["GameDate"]));
-            gameDate.setHours(0, 0, 0, 0);
+                let gameDate = new Date(Date.parse(gameDateResponse[0]["GameDate"]));
+                gameDate.setHours(0, 0, 0, 0);
 
-            if (currentDate >= gameDate) {
-                res.status(400).json({errorMsg: "You cannot add a prediction post on or after they day of the game"});
-                return;
+                if (currentDate >= gameDate) {
+                    res.status(400).json({ errorMsg: "You cannot add a prediction post on or after they day of the game" });
+                    return;
+                }
             }
+
+            let checkPredictionParams = [req.body.gameId, req.body.username];
+            let checkPredictionSql = mysql.format(CHECK_IF_PREDICTION_EXISTS_FOR_USER_AND_GAME_SQL, checkPredictionParams);
+            let countResponse = await QueryRunner.runQuery(checkPredictionSql);
+            let count = countResponse[0]["PREDICTION_COUNT"];
+
+            if (count === 1) {
+                let params = [req.body.blogPostTitle, req.body.blogPostData, req.body.username, req.body.gameId, req.body.blogPostType];
+                let insertBlogPostSql = mysql.format(INSERT_NEW_BLOG_POST_SQL, params);
+                await QueryRunner.runQuery(insertBlogPostSql);
+                res.status(200).json("Successfully added new blog post")
+            } else {
+                res.status(400).json({ errorMsg: "You cannot add a new blog post for a game that you have not predicted." })
+            }
+
+        } catch (error) {
+            console.log(error)
+            res.status(500).json("Unable to insert new blog post");
         }
 
-        let checkPredictionParams = [req.body.gameId, req.body.username];
-        let checkPredictionSql = mysql.format(CHECK_IF_PREDICTION_EXISTS_FOR_USER_AND_GAME_SQL, checkPredictionParams);
-        let countResponse = await QueryRunner.runQuery(checkPredictionSql);
-        let count = countResponse[0]["PREDICTION_COUNT"];
+        console.log("Exiting add new blog post");
 
-        if (count === 1) {
-            let params = [req.body.blogPostTitle, req.body.blogPostData, req.body.username, req.body.gameId, req.body.blogPostType];
-            let insertBlogPostSql = mysql.format(INSERT_NEW_BLOG_POST_SQL, params);
-            await QueryRunner.runQuery(insertBlogPostSql);
-            res.status(200).json("Successfully added new blog post")
-        } else {
-            res.status(400).json({errorMsg: "You cannot add a new blog post for a game that you have not predicted."})
-        }
-        
-    } catch (error) {
-        console.log(error)
-        res.status(500).json("Unable to insert new blog post");
-    }
+    };
 
-    console.log("Exiting add new blog post");
+    Security.authorizeUserCredentialsViaCookie(req, res, addNewBlogPost);
+
 });
 
 app.post('/updateBlogPost', async (req, res) => {
-    console.log("Entering updateBlogPost");
+    let updateBlogPost = async (req, res) => {
+        console.log("Entering updateBlogPost");
 
-    try {
-        let params = [req.body.blogPostTitle, req.body.blogPostData, req.body.blogPostId];
-        let editGameSql = mysql.format(EDIT_BLOG_POST_SQL, params);
-        await QueryRunner.runQuery(editGameSql);
-        res.status(200).json("Successfully saved blog post edits");
-    } catch (error) {
-        console.log(error);
-        res.status(500).json("Unable to edit blog post");
-    }
-    
-    console.log("Exiting updateBlogPost");
+        try {
+            let params = [req.body.blogPostTitle, req.body.blogPostData, req.body.blogPostId];
+            let editGameSql = mysql.format(EDIT_BLOG_POST_SQL, params);
+            await QueryRunner.runQuery(editGameSql);
+            res.status(200).json("Successfully saved blog post edits");
+        } catch (error) {
+            console.log(error);
+            res.status(500).json("Unable to edit blog post");
+        }
+
+        console.log("Exiting updateBlogPost");
+    };
+
+    Security.authorizeUserCredentialsViaCookie(req, res, updateBlogPost);
 });
 
 app.post('/likeBlogPost', async (req, rexs) => {
-    console.log("Entering likeBlogPost/");
+    let likeBlogPost = async (req, res) => {
+        console.log("Entering likeBlogPost/");
 
-    try {
-        let params = [req.body.blogPostId, req.body.username];
-        let insertLikeSql = mysql.format(ADD_LIKE_SQL, params);
-        await QueryRunner.runQuery(insertLikeSql);
-        res.status(200).json("Successfully liked blog post");
-    } catch (error) {
-        console.log(error);
-        res.status(500).json("Unable to like post");
-    }
+        try {
+            let params = [req.body.blogPostId, req.body.username];
+            let insertLikeSql = mysql.format(ADD_LIKE_SQL, params);
+            await QueryRunner.runQuery(insertLikeSql);
+            res.status(200).json("Successfully liked blog post");
+        } catch (error) {
+            console.log(error);
+            res.status(500).json("Unable to like post");
+        }
 
-    console.log("Exiting likeBlogPost");
+        console.log("Exiting likeBlogPost");
+    };
+
+    Security.authorizeUserCredentialsViaCookie(req, res, likeBlogPost);
+
 });
 
 app.get('/retrieveAllBlogPostHeaders/:blogPostType/:blogPostGameId', async (req, res) => {

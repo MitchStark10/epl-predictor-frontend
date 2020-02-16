@@ -1,8 +1,8 @@
 const app = module.exports = require('express')();
 const mysql = require('mysql');
-const QueryRunner = require('../../service/QueryRunner').buildQueryRunner();
+const QueryRunner = require('../../..//service/QueryRunner').buildQueryRunner();
 const bcrypt = require('bcrypt-nodejs');
-const PasswordHasher = require('../../service/PasswordHasher')();
+const PasswordHasher = require('../../../service/PasswordHasher')();
 const cookieMetadata = { httpOnly: true, sameSite: 'lax', expires: false, maxAge: new Date(253402300000000) }
 
 const LOGIN_SQL = `

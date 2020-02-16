@@ -33,9 +33,9 @@ class CreatePostView extends React.Component {
         let url; 
         
         if (this.state.postType === "PREDICTION") {
-            url = "/api/games/retrieveAllUpcomingGames";
+            url = "/public/api/games/retrieveAllUpcomingGames";
         } else {
-            url = "/api/games/retrieveAllPastGames";
+            url = "/public/api/games/retrieveAllPastGames";
         } 
 
         console.log("Retrieving url: " + url);
