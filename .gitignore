@@ -26,3 +26,6 @@ yarn-error.log*
 scripts/*
 !scripts/*.py
 !scripts/*.cfg
+
+# VS Code
+.vscode/
