@@ -62,7 +62,7 @@ def retrieveAndUpdateGames(month):
             gameToAdd["gameDate"] = dateToBeInserted
             gameToAdd["competition"] = "English Premier League"
     
-            gameAlreadyExistingResponse = json.loads(requests.post(url = "/public/api/games/searchForGame", data = gameToAdd).text)
+            gameAlreadyExistingResponse = json.loads(requests.post(url = host + "/public/api/games/searchForGame", data = gameToAdd).text)
             print(str(gameAlreadyExistingResponse))
     
             #Add the score to the gameToAdd object after the search, so that we do not disclude results that have not been
