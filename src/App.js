@@ -96,7 +96,7 @@ class App extends Component {
                     <Route exact path="/addPrediction/:gameId" render={(props) => this.renderAppContainer(new AddPredictionPostRouter().getUniqueIdentifier(), props)} />
                     <Route exact path="/addAnalysis/:gameId" render={(props) => this.renderAppContainer(new AddAnalysisPostRouter().getUniqueIdentifier(), props)} />
                     <Route exact path="/logout" render={() => this.logout()} />
-                    <Route exact path="/" render={(props) => this.renderAppContainer(new PredictGamesRouter().getUniqueIdentifier(), props)} />
+                    <Route exact path="/" render={(props) => this.renderAppContainer(new RecentPostsRouter().getUniqueIdentifier(), props)} />
                     <Route path="/" render={() => <NotFoundPage />} />
                 </Switch>                
             </Router>

@@ -1,6 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
 import DateUtility from '../Utility/DateUtility';
+import { withRouter } from 'react-router-dom';
 
 class CreatePostView extends React.Component {
 
@@ -41,8 +42,8 @@ class CreatePostView extends React.Component {
         console.log("Retrieving url: " + url);
         $.get(url)
         .done( (response) => {
-            console.log(response);
-            this.setState({gameOptions: response, needsUpdate: false});
+            let gameId = this.state.postType === "PREDICTION" ? response[0]['GameId'] : "none";
+            this.setState({gameOptions: response, selectedGameId: gameId, needsUpdate: false});
         })
         .fail( (error) => {
             console.error("Encountered error retrieving all games: " + error);
@@ -94,7 +95,7 @@ class CreatePostView extends React.Component {
                     <option id="ANALYSIS">ANALYSIS</option>
                     <option id="PREDICTION">PREDICTION</option>
                 </select>
-                <select id="PostType">
+                <select id="GameSelection" onChange={this.onGameChange}>
                     {this.renderNoneOption()}
                     {this.state.gameOptions.map( (game) => <option key={game.GameId} id={game.GameId}>{game.HomeTeamName} VS. {game.AwayTeamName} - {new DateUtility().formatDate(new Date(game.GameDate))}</option>)}
                 </select>
@@ -105,4 +106,4 @@ class CreatePostView extends React.Component {
     }
 }
 
-export default CreatePostView;
+export default withRouter(CreatePostView);

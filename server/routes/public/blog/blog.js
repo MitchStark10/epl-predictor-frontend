@@ -30,6 +30,13 @@ FROM BLOG_POST
 WHERE PostId = ?
 `;
 
+const RETRIEVE_ALL_BLOG_POSTS_SQL = `
+SELECT PostId, PostTitle, Username
+FROM BLOG_POST
+ORDER BY EditTime DESC
+LIMIT 50
+`;
+
 const EDIT_BLOG_POST_SQL = `
 UPDATE BLOG_POST
 SET PostTitle = ?,
@@ -136,7 +143,7 @@ app.post('/updateBlogPost', async (req, res) => {
     Security.authorizeUserCredentialsViaCookie(req, res, updateBlogPost);
 });
 
-app.post('/likeBlogPost', async (req, rexs) => {
+app.post('/likeBlogPost', async (req, res) => {
     let likeBlogPost = async (req, res) => {
         console.log("Entering likeBlogPost/");
 
@@ -171,6 +178,18 @@ app.get('/retrieveAllBlogPostHeaders/:blogPostType/:blogPostGameId', async (req,
     }
 
     console.log("Exiting retrieveAllBlogPostHeaders");
+});
+ 
+app.get('/retrieveAllBlogPostHeaders', async (req, res) => {
+    console.log('Entering retrieveAllBlogPostHeaders')
+    try {
+        let response = await QueryRunner.runQuery(RETRIEVE_ALL_BLOG_POSTS_SQL);
+        res.status(200).json(response);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({errorMsg: "Unable to retrieve all blog post headers"});
+    }
+    console.log('Entering retrieveAllBlogPostHeaders')
 });
 
 app.get('/retrieveTeamNames/:gameId', async (req, res) => {
