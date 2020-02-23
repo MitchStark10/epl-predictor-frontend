@@ -16,7 +16,7 @@
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
 }
 
-#\/logout.DesktopLogout {
+#\/login.DesktopLogout, #\/logout.DesktopLogout {
   background-color: #25274D;
   position: absolute;
   right: 10px;

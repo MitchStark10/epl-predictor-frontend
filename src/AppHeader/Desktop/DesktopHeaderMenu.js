@@ -91,11 +91,25 @@ class DesktopHeaderMenu extends Component {
     }
 
     renderLoggedInUser = () => {
-        if (this.props.showLoggedInUser) {
+        if (this.props.showLoggedInUser && this.props.userToken) {
             return <h4 id="userTag">Logged in: {this.props.userToken}</h4>
         }
 
         return null;
+    }
+
+    renderLoginOrLogoutButton = () => {
+        let buttonText, buttonId;
+
+        if (this.props.userToken) {
+            buttonText = "LOGOUT";
+            buttonId = "/logout";
+        } else {
+            buttonText = "LOGIN";
+            buttonId = "/login";
+        }
+
+        return (<button className="SmButton DesktopLogout" id={buttonId} onClick={this.handleButtonClick}>{buttonText}</button>);
     }
 
     render() {
@@ -135,7 +149,7 @@ class DesktopHeaderMenu extends Component {
 
                     {this.renderDropDownList()}
                     {this.renderLoggedInUser()}
-                    <button className="SmButton DesktopLogout" id="/logout" onClick={this.handleButtonClick}>LOGOUT</button>
+                    {this.renderLoginOrLogoutButton()}
                 </div>
             </div>
         );

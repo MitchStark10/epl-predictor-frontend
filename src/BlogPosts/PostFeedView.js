@@ -16,7 +16,6 @@ class PostFeedView extends React.Component {
     componentDidMount() {
         $.get("/public/api/blog/retrieveAllBlogPostHeaders")
         .done( (response) => {
-            console.log(response)
             this.setState({blogPostHeaders: response});
         })
         .fail( (error) => {
@@ -29,7 +28,7 @@ class PostFeedView extends React.Component {
         return (
             <div id="PostFeed">
                 <h1>Posts</h1>
-                {this.state.blogPostHeaders.map( (header) => <PostHeader predictionPost={header} /> )}
+                {this.state.blogPostHeaders.map( (header) => <PostHeader key={header["PostId"]} predictionPost={header} /> )}
             </div>
         );
     }
