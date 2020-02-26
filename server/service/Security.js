@@ -21,9 +21,9 @@ const LOGIN_AND_RETRIEVE_STATUS_SQL = `
 SELECT USER.Status
 FROM SESSION_COOKIE 
     INNER JOIN USER ON USER.Username = SESSION_COOKIE.Username
-WHERE Username = ?
-    AND SessionCookie = ?
-    AND Device = ?
+WHERE USER.Username = ?
+    AND SESSION_COOKIE.SessionCookie = ?
+    AND SESSION_COOKIE.Device = ?
 `;
 
 module.exports.authorizeUserCredentialsViaCookie = async (req, res, next) => {
