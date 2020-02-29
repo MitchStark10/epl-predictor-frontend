@@ -24,18 +24,11 @@ class App extends Component {
         this.state = {
             userToken: ""
         };
-        
-        this.pagesRequiringLogin = [
-            "/addPrediction",
-            "/addAnalysis",
-            "/createPost",
-            "/predictGames",
-            "/results"
-        ];
     }
 
     setLoggedIn = (userToken) => {
         console.log("Setting logged in: " + userToken);
+        history.push('/');
         this.setState({userToken: userToken});
     }
 
@@ -76,17 +69,7 @@ class App extends Component {
         history.push('/');
     }
 
-    doesPageRequireLogin = () => {
-        return window.location.pathname !== "/" 
-            && this.pagesRequiringLogin.find( page => page.startsWith(window.location.pathname) );
-    }
-
     render() {
-        console.log("Enter App.render()")
-        if (this.state.userToken === "" && this.doesPageRequireLogin()) {
-                return new LoginRouter().render(this.setLoggedIn);
-        }
-
         return (
             <Router history={history}>
                 <Switch>

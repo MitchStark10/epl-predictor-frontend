@@ -22,7 +22,8 @@ class DesktopHeaderMenu extends Component {
 
     componentDidUpdate() {
         if (this.state.redirectUrl !== "") {
-            this.setState({redirectUrl: ""})
+            this.props.history.push(this.state.redirectUrl);
+            this.setState({redirectUrl: ""});
         }
     }
 
@@ -98,6 +99,7 @@ class DesktopHeaderMenu extends Component {
         return null;
     }
 
+    //TODO: Should make a general class with common methods between desktop and mobile headers
     renderLoginOrLogoutButton = () => {
         let buttonText, buttonId;
 
@@ -113,12 +115,6 @@ class DesktopHeaderMenu extends Component {
     }
 
     render() {
-
-        if (this.state.redirectUrl !== "") {
-            this.props.history.push(this.state.redirectUrl);
-            return null;
-        }
-
         return (
             <div>
                 <div className="DesktopHeaderBar" onMouseLeave={this.hanldeDropDownButtonMouseLeave}>

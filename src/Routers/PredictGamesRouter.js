@@ -8,7 +8,13 @@ class PredictGamesRouter {
         return "PREDICTGAMESVIEW";
     }
 
+    userRequiresLogin = (userToken) => {
+        return !userToken || userToken === ""; 
+    }
+
     render = (userToken) => {
+        
+
         return (
             <div className={this.getUniqueIdentifier()}>
                 <DefaultMenu userToken={userToken}/>

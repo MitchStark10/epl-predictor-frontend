@@ -23,13 +23,27 @@ class PredictGamesView extends Component {
     }
 
     componentDidMount() {
-        this.retrieveGames();
+        if (this.isUserLoggedIn()) {
+            this.retrieveGames();
+        } else {
+            this.forwardToLoginPage();
+        }
     }
 
     componentDidUpdate() {
-        if (this.state.needsGameRefresh) {
+        if (this.state.redirectUrl !== "") {
+            this.setState({redirectUrl: "", needsGameRefresh: false});
+        } else if (this.state.needsGameRefresh) {
             this.retrieveGames();
         }
+    }
+
+    isUserLoggedIn() {
+        return this.props.userToken && this.props.userToken !== "";
+    }
+
+    forwardToLoginPage() {
+        this.props.history.push('/login');
     }
 
     retrieveGames = () => {
@@ -135,11 +149,6 @@ class PredictGamesView extends Component {
     }
 
     render() {
-        if (this.state.redirectUrl !== "") {
-            this.props.history.push(this.state.redirectUrl);
-            return null;
-        }
-
         return (
             <div className="PredictGamesView">
                 <h1>Click on a team for each game to submit your predictions!</h1>
