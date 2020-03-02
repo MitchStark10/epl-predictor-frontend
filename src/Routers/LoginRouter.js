@@ -1,6 +1,7 @@
 import React from 'react';
 import LoginApp from '../LoginPage/LoginApp';
 import logo from '../soccerball.png';
+import MenuRouter from './MenuRouter';
 
 class LoginRouter {
 
@@ -11,10 +12,7 @@ class LoginRouter {
     render = (setLoggedIn) => {
         return (
             <div>
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo" />
-                    <p className="Header-Text">ScoreMaster</p>
-                </header>
+                <MenuRouter />
                 <LoginApp setLoggedIn={setLoggedIn} />
             </div>
         );

@@ -39,6 +39,13 @@ class AppInternalRouter extends Component {
 			redirectUrl: ""
 		};
 	}
+	
+	componentDidUpdate() {
+		if (this.state.redirectUrl !== "") {
+			this.props.history.push(this.state.redirectUrl);
+			this.setState({redirectUrl: ""});
+		}
+	}
 
 	displayView = () => {
 		const matchingRouter = this.viewRouters.find( (router) => {
@@ -62,11 +69,6 @@ class AppInternalRouter extends Component {
 	}
 
 	render() {
-		if (this.state.redirectUrl !== "") {
-			this.props.history.push(this.state.redirectUrl);
-			return null;
-		}
-
 		return (
 			<div className="App">
 				{this.displayView()}
