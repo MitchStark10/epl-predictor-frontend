@@ -17,6 +17,27 @@ class AddBlogPostView extends Component {
         };
     }
 
+    componentDidMount() {
+        if (!this.isUserLoggedIn()) {
+            this.forwardToLoginPage();
+        }
+    }
+
+    componentDidUpdate() {
+        if (this.state.redirectUrl !== "") {
+            this.props.history.push(this.state.redirectUrl);
+            this.setState({redirectUrl: ""});
+        }
+    }
+
+    isUserLoggedIn() {
+        return this.props.userToken && this.props.userToken !== "";
+    }
+
+    forwardToLoginPage() {
+        this.props.history.push('/login');
+    }
+
     submitPost = () => {
         let postData = {            
             "blogPostTitle": this.state.postTitle,
@@ -73,11 +94,6 @@ class AddBlogPostView extends Component {
     }
 
     render() {
-        if (this.state.redirectUrl !== "") {
-            this.props.history.push(this.state.redirectUrl);
-            return null;
-        }
-
         if (this.state.viewType === "RENDER") {
             return (
                 <div id="PostForm">

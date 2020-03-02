@@ -22,17 +22,34 @@ class PastPredictionsView extends Component {
     }
 
     componentDidMount() {
-        this.retrieveGames();
-        this.retrievePredictions();
+        if (this.isUserLoggedIn()) {
+            this.retrievePredictions();
+            this.retrieveGames();
+        } else {
+            this.forwardToLoginPage();       
+        }
+    }
+
+    isUserLoggedIn() {
+        return this.props.userToken && this.props.userToken !== "";
+    }
+
+    forwardToLoginPage() {
+        this.props.history.push('/login');
     }
 
     componentDidUpdate() {
-        if (this.state.needsGameRefresh) {
-            this.retrieveGames();
-        }
+        if (this.state.redirectUrl !== "") {
+            this.props.history.push(this.state.redirectUrl);
+            this.setState({ needsGameRefresh: false, needsPredictionRefresh: false, redirectUrl: "" });
+        } else {
+            if (this.state.needsGameRefresh) {
+                this.retrieveGames();
+            }
 
-        if (this.state.needsPredictionRefresh) {
-            this.retrievePredictions();
+            if (this.state.needsPredictionRefresh) {
+                this.retrievePredictions();
+            }
         }
     }
 

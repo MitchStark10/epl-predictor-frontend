@@ -4,7 +4,22 @@ import EditGames from './EditGames';
 import './AdminView.css';
 
 class AdminView extends Component {
+    
+    componentDidMount() {
+        if (this.isUserLoggedIn()) {
+            this.forwardToLoginPage();
+        }
+    }
 
+    isUserLoggedIn() {
+        return this.props.userToken && this.props.userToken !== "";
+    }
+
+    forwardToLoginPage() {
+        this.props.history.push('/login');
+    }
+
+    //TODO: Check that the user is not only logged in, but also has the correct role
     render() {
         return (
             <div id="AdminView">

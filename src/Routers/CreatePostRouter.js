@@ -12,7 +12,7 @@ class CreatePostRouter {
         return (
             <div className={this.getUniqueIdentifier()}>
                 <MenuRouter userToken={userToken}/>
-                <CreatePostView />
+                <CreatePostView userToken={userToken}/>
             </div>
         );
     }

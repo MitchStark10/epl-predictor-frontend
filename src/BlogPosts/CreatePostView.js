@@ -19,11 +19,29 @@ class CreatePostView extends React.Component {
     }
 
     componentDidMount() {
-        this.retrieveGameList();
+        if (this.isUserLoggedIn()) {
+            this.retrieveGameList();
+        } else {
+            this.forwardToLoginPage();
+        }
     }
 
     componentDidUpdate() {
-        this.retrieveGameList();
+        console.log("testing in update component");
+        if (this.state.redirectUrl !== "") {
+            this.setState({redirectUrl: ""})
+            this.props.history.push(this.state.redirectUrl);
+        } else {
+            this.retrieveGameList();
+        }
+    }
+
+    isUserLoggedIn() {
+        return this.props.userToken && this.props.userToken !== "";
+    }
+
+    forwardToLoginPage() {
+        this.props.history.push('/login');
     }
 
    retrieveGameList = () => {
@@ -82,10 +100,7 @@ class CreatePostView extends React.Component {
     }
 
     render() {
-        if (this.state.redirectUrl !== "") {
-            this.props.history.push(this.state.redirectUrl);
-            return null;
-        }
+        
 
         //TODO: the selects are ugly, fix them
         return (
