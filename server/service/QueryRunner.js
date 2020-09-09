@@ -20,7 +20,7 @@ QueryRunner.prototype.logError = function(sql_query, error) {
 	console.error("Error performing: " + sql_query + "\n" + error + "\n\n");
 };
 
-QueryRunner.prototype.runQuery = function (sql_query) {
+QueryRunner.prototype.runQuery = function(sql_query) {
 	return new Promise((resolve, reject) => {
 		this.pool.getConnection( (err, connection) => {
 			if (err) {
@@ -51,6 +51,6 @@ QueryRunner.prototype.runQuery = function (sql_query) {
 };
 
 
-exports.buildQueryRunner = function () {
+exports.buildQueryRunner = function() {
 	return new QueryRunner();
 };
