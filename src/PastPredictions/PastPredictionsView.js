@@ -192,19 +192,19 @@ class PastPredictionsView extends Component {
                     <p>{this.imageRetrieverService.renderTeamLogo(game["HomeTeamName"])} {game["HomeTeamName"]}: {game["HomeTeamScore"]}</p>
                     <p>{this.imageRetrieverService.renderTeamLogo(game["AwayTeamName"])} {game["AwayTeamName"]}: {game["AwayTeamScore"]}</p>
 
-                    <button className="PredictionsButton"
+                    {/* <button className="PredictionsButton"
                         id={game["GameId"]}
                         onClick={this.handleBlogButtonClick}
                         value={"/posts/predictions/" + game["GameId"]}>
                             View Predictions
-                    </button>
+                    </button> */}
 
-                    <button className="AnalysisButton"
+                    {/* <button className="AnalysisButton"
                         id={game["GameId"]}
                         onClick={this.handleBlogButtonClick}
                         value={"/posts/analysis/" + game["GameId"]}>
                             View Game Analysis
-                    </button>
+                    </button> */}
                 </div>
             );
         }

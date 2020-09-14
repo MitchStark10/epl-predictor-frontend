@@ -22,7 +22,8 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
-            userToken: ""
+            userToken: "",
+            isCheckingLogin: true
         };
     }
 
@@ -37,14 +38,18 @@ class App extends Component {
 
         $.post(url)
         .done((response) => {
-            this.setState({userToken: response["username"]});
+            this.setState({userToken: response["username"], isCheckingLogin: false});
         })
-        .fail((error) => {
-            console.log("Error during cookie login: " + error.responseText);
+        .fail(() => {
+            this.setState({isCheckingLogin: false});
         });
     }
 
     renderAppContainer = (viewName, props) => {
+        if (this.state.isCheckingLogin) {
+            return null;
+        }
+
         var match = null;
         if (props !== null && props !== undefined) {
             match = props.match;
@@ -60,13 +65,14 @@ class App extends Component {
         $.post("/public/api/auth/logout")
         .done((data) => {
             this.setState({userToken: ""});
+            history.push('/');
         })
         .fail((error) => {
             console.log(error);
             this.setState({userToken: ""});
+            history.push('/');
         })
 
-        history.push('/');
     }
 
     render() {
@@ -87,7 +93,7 @@ class App extends Component {
                     <Route exact path="/addAnalysis/:gameId" render={(props) => this.renderAppContainer(new AddAnalysisPostRouter().getUniqueIdentifier(), props)} />
                     <Route exact path="/logout" render={() => this.logout()} />
                     <Route exact path="/login" render={() => new LoginRouter().render(this.setLoggedIn)} />
-                    <Route exact path="/" render={(props) => this.renderAppContainer(new RecentPostsRouter().getUniqueIdentifier(), props)} />
+                    <Route exact path="/" render={(props) => this.renderAppContainer(new PredictGamesRouter().getUniqueIdentifier(), props)} />
                     <Route path="/" render={() => <NotFoundPage />} />
                 </Switch>                
             </Router>

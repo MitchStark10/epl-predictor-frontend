@@ -113,12 +113,17 @@ app.post('/newUser', async (req, res) => {
 });
 
 app.post('/getUserStatus', async (req, res) => {
+    console.log('entered getUserStatus');
     let params = [req.body["userToken"]];
     let getStatusQuery = mysql.format(GET_STATUS_SQL, params);
 
     try {
         let statusJson = await QueryRunner.runQuery(getStatusQuery);
-        res.status(200).json(statusJson[0]);
+        if (statusJson[0]) {
+            res.status(200).json(statusJson[0]);
+        } else {
+            res.status(200).json("");
+        }
     } catch (error) {
         console.log("Error retrieving status: " + error);
         res.status(500).json("Unable to retrieve user status");

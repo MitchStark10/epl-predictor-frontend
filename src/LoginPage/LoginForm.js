@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { withRouter } from 'react-router-dom';
 import $ from 'jquery';
 
 class LoginForm extends Component {
@@ -39,6 +40,8 @@ class LoginForm extends Component {
         $.post(url, this.state)
         .done((response) => {
             this.props.setLoggedIn(this.state.username);
+            //TODO: Use a redirect parameter to determine where to send the user
+            this.props.history.push('/');
         })
         .fail((error) => {
             this.setState({statusMessage: "Unable to login: " + error.responseText});
@@ -58,4 +61,4 @@ class LoginForm extends Component {
     }
 }
 
-export default LoginForm;
+export default withRouter(LoginForm);

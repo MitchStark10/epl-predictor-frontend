@@ -29,6 +29,7 @@ class MobileHeaderMenu extends Component {
         let getUserStatusUrl = "/public/api/auth/getUserStatus";
         $.post(getUserStatusUrl, this.state)
         .done((statusResponse) => {
+            console.log('here');
             if (statusResponse["Status"] === "admin") {
                 this.setState({isAdmin: true, redirectUrl: ""});
             }

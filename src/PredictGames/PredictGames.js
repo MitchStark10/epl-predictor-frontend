@@ -123,12 +123,12 @@ class PredictGamesView extends Component {
                     <br />
                     {this.renderPrediction(game)}
 
-                    <button className="PredictionsButton"
+                    {/* <button className="PredictionsButton"
                         id={game["GameId"]}
                         onClick={this.handleBlogButtonClick}
                         value={"/posts/predictions/" + game["GameId"]}>
                         View Predictions
-                    </button>
+                    </button> */}
                 </div>
             );
         }

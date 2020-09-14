@@ -37,8 +37,8 @@ class DesktopHeaderMenu extends Component {
             }
         })
         .fail((error) => {
-            console.error("error: " + error);
-        })
+            console.error("error: " + JSON.stringify(error));
+        });
     }
 
     handleButtonClick = (event) => {
@@ -46,7 +46,7 @@ class DesktopHeaderMenu extends Component {
     }
 
     handleDropDownButtonHover = (e) => {
-        this.setState({ "selectedDropDownButton": e.target.id });
+        this.setState({"selectedDropDownButton": e.target.id});
     }
 
     hanldeDropDownButtonMouseLeave = () => {
@@ -54,6 +54,7 @@ class DesktopHeaderMenu extends Component {
     }
 
     renderAdminButton = () => {
+        console.log(this.state.isAdmin);
         if (this.state.isAdmin) {
             return (
                 <button className="SmButton" id="/admin" onClick={this.handleButtonClick}>ADMIN</button>
@@ -61,34 +62,6 @@ class DesktopHeaderMenu extends Component {
         }
 
         return null;
-    }
-
-    renderDropDownList = () => {
-        switch (this.state.selectedDropDownButton) {
-            case "games":
-                return (
-                    <div id="GamesDropDownList" className="DropDownList">
-                        <button className="SmButton DropDownListButton GameDropDownButton" id="/predictGames" onClick={this.handleButtonClick}>PREDICT GAMES</button><br />
-                        <button className="SmButton DropDownListButton GameDropDownButton" id="/results" onClick={this.handleButtonClick}>RESULTS</button><br />
-                        {this.renderAdminButton()}
-                    </div>
-                );
-            case "posts":
-                return (
-                    <div id="PostsDropDownList" className="DropDownList">
-                        <button className="SmButton DropDownListButton GameDropDownButton" id="/recentPosts" onClick={this.handleButtonClick}>RECENT POSTS</button><br />
-                        <button className="SmButton DropDownListButton GameDropDownButton" id="/createPost" onClick={this.handleButtonClick}>CREATE POST</button><br />
-                    </div>
-                );
-            case "about":
-                return (
-                    <div id="AboutDropDownList" className="DropDownList">
-                        <button className="SmButton DropDownListButton GameDropDownButton" id="/about" onClick={this.handleButtonClick}>ABOUT</button><br />
-                    </div>
-                );
-            default:
-                break;
-        }
     }
 
     renderLoggedInUser = () => {
@@ -111,39 +84,54 @@ class DesktopHeaderMenu extends Component {
             buttonId = "/login";
         }
 
-        return (<button className="SmButton DesktopLogout" id={buttonId} onClick={this.handleButtonClick}>{buttonText}</button>);
+        return (
+            <button className="SmButton DesktopLogout" id={buttonId} onClick={this.handleButtonClick}>{buttonText}</button>
+        );
     }
 
     render() {
         return (
             <div>
                 <div className="DesktopHeaderBar" onMouseLeave={this.hanldeDropDownButtonMouseLeave}>
-                <h1 className="MainMenuHeaderText">ScoreMaster</h1>
-                    <button
-                        className="DropDownButton"
-                        id="games"
-                        onMouseEnter={this.handleDropDownButtonHover}
-                    >
-                        GAMES
-                    </button>
+                <a href="/"><h1 className="MainMenuHeaderText">ScoreMaster</h1></a>
+                    <div className="DropDownContainer">
+                        <button
+                            className="DropDownButton"
+                            id="games"
+                            onMouseEnter={this.handleDropDownButtonHover}
+                        >
+                            GAMES
+                        </button>
+                        {this.state.selectedDropDownButton === "games" ? (
+                        <div className="DropDownList">
+                            <button className="SmButton DropDownListButton GameDropDownButton" id="/predictGames" onClick={this.handleButtonClick}>PREDICT GAMES</button><br />
+                            <button className="SmButton DropDownListButton GameDropDownButton" id="/results" onClick={this.handleButtonClick}>RESULTS</button><br />
+                            <button className="SmButton DropDownListbutton GameDropDownButton" id="/leaderboard" onClick={this.handleButtonClick}>LEADERBOARDS</button><br />
+                            {this.renderAdminButton()}
+                        </div>
+                        ) : null}
+                    </div>
 
-                    <button
+                    {/* Commented out until better post support <button
                         className="DropDownButton"
                         id="posts"
                         onMouseEnter={this.handleDropDownButtonHover}
                     >
                         POSTS
-                    </button>
+                    </button> */}
 
-                    <button
-                        className="DropDownButton"
-                        id="about"
-                        onMouseEnter={this.handleDropDownButtonHover}
-                    >
-                        ABOUT
-                    </button>
+                    <div className="DropDownContainer">
+                        <a href="/about">
+                        <button
+                            className="DropDownButton"
+                            id="about"
+                            onMouseEnter={this.handleDropDownButtonHover}
+                        >
+                            ABOUT
+                        </button>
+                        </a>
+                    </div>
 
-                    {this.renderDropDownList()}
                     {this.renderLoggedInUser()}
                     {this.renderLoginOrLogoutButton()}
                 </div>

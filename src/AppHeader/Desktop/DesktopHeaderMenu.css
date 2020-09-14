@@ -1,6 +1,9 @@
 .DesktopHeaderBar, .DropDownList {
   background-color: #25274D;
-  display: inline-block;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
   width: 100%;
   min-height: 40px;
 }
@@ -40,15 +43,25 @@
   font-size: 25px;
 }
 
-.GameDropDownButton {
-  /* position: absolute; */
-  left: 50px;
+.DropDownButton:hover, #\/logout:hover {
+  background-color: #2E9CCA;
+}
+
+.DropDownContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+}
+
+.DropDownList {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .DropDownListButton {
-  display: inline-block;
-}
-
-.DropDownButton:hover, #\/logout:hover {
-  background-color: #2E9CCA;
+  margin-top: 2px;
 }
