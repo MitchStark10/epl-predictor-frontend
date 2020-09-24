@@ -1,6 +1,7 @@
 import React from 'react';
 import NewUserForm from './NewUserForm';
 import LoginForm from './LoginForm';
+import { withRouter } from 'react-router-dom';
 import './Login.css'
 
 class LoginApp extends React.Component {
@@ -38,16 +39,28 @@ class LoginApp extends React.Component {
         }
     }
 
+    onGoogleLoginClick = () => {
+        this.props.history.push('/todo'); //TODO: Backend route for google login
+    }
+
     render() {
         return (
-            <div id="loginApp">
-                <h1>Login</h1>
-                {this.getForm()}
-                <button className="SmButton" id="toggleFormButton" onClick={this.toggleForm.bind(this)}>{this.state.buttonText}</button>
+            <div id="loginAppContainer">
+                <div id="loginApp">
+                    <h1>Login</h1>
+                    {this.getForm()}
+                    <button className="SmButton" id="toggleFormButton" onClick={this.toggleForm.bind(this)}>{this.state.buttonText}</button>
+
+                </div>
+                <p>Or</p>
+                <div id="GoogleLogin" onClick={this.onGoogleLoginClick}>
+                    <img alt="Google sign-in" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
+                    Login with Google
+                </div>
             </div>
         );
         
     }
 }
 
-export default LoginApp;
+export default withRouter(LoginApp);

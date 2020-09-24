@@ -25,3 +25,25 @@ input[type="text"], input[type="password"], input[type="int"] {
 .SmButton {
     min-width: 200px;
 }
+
+#GoogleLogin {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 200px;
+    color: black;
+    background-color: white;
+    padding: 5px;
+    box-shadow: 0 3px 5px black;
+}
+
+#GoogleLogin > img {
+    width: 20px;
+}
+
+#loginAppContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
