@@ -5,6 +5,8 @@ const cookieParser = require('cookie-parser');
 const path = require("path");
 const publicRoutes = require('./routes/public');
 const device = require('express-device');
+const session = require('express-session');
+const passport = require('passport');
 
 // parse application/x-www-9form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -14,12 +16,43 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(device.capture());
 
+//Oauth
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const GOOGLE_CLIENT_ID = process.env.OAUTH_CLIENT_ID;
+const GOOGLE_CLIENT_SECRET = process.env.OAUTH_CLIENT_SECRET;
+
+passport.use(new GoogleStrategy({
+    clientID: GOOGLE_CLIENT_ID,
+    clientSecret: GOOGLE_CLIENT_SECRET,
+    callbackURL: 'http://localhost:8080/auth/google/callback' //TODO: use environment variable for the callback
+}, function(accessToken, refreshToken, profile, done) {
+    userProfile = profile;
+    return done(null, userProfile);
+}));
+
+app.use(session({
+    resave: false,
+    saveUninitialized: false,
+    secret: process.env.OAUTH_CLIENT_SECRET
+}));
+
 if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "../build/")));
 }
 
 //TODO: Change to /public/public/api/
 app.use("/public/api", publicRoutes);
+
+
+//Auth Routes
+app.get('/auth/google', passport.authenticate('google', { scope: ['email']}));
+
+app.get('/auth/google/callback', 
+    passport.authenticate('google', { failureRedirect: '/login?redirect=googleAuthFailure' }), 
+    (req, res) => {
+        //TODO: Upsert user into database
+        res.redirect('/');
+});
 
 // the catch all route
 if (process.env.NODE_ENV === "production") {
