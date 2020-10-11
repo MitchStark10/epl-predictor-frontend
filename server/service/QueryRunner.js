@@ -10,17 +10,17 @@ function QueryRunner() {
 	});
 }
 
-QueryRunner.prototype.logQueryResponse = function(query_text, rows) {
+QueryRunner.prototype.logQueryResponse = function (query_text, rows) {
 	console.log("For query: " + query_text);
 	console.log(JSON.stringify(rows) + ' row(s) returned');
 	console.log("\n\n\n");
 };
 
-QueryRunner.prototype.logError = function(sql_query, error) {
+QueryRunner.prototype.logError = function (sql_query, error) {
 	console.error("Error performing: " + sql_query + "\n" + error + "\n\n");
 };
 
-QueryRunner.prototype.runQuery = function(sql_query) {
+QueryRunner.prototype.runQuery = function (sql_query) {
 	return new Promise((resolve, reject) => {
 		this.pool.getConnection( (err, connection) => {
 			if (err) {
@@ -50,6 +50,17 @@ QueryRunner.prototype.runQuery = function(sql_query) {
 	});
 };
 
+QueryRunner.prototype.runQueryWithErrorHandling = async function (sqlQuery, res) {
+	try {
+		return await this.runQuery(sqlQuery);
+	} catch (error) {
+		console.error('Error caught during query:' + error);
+		res.status(500, {
+			success: false,
+			error: error
+		});
+	}
+};
 
 exports.buildQueryRunner = function() {
 	return new QueryRunner();

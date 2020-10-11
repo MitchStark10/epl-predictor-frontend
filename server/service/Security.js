@@ -26,6 +26,12 @@ WHERE USER.Username = ?
     AND SESSION_COOKIE.Device = ?
 `;
 
+const CHECK_IF_USER_EXISTS_SQL = `
+SELECT COUNT(*) AS USER_COUNT
+FROM USER
+WHERE USER.Email = ?
+`;
+
 module.exports.authorizeUserCredentialsViaCookie = async (req, res, next) => {
     if (req.cookies !== undefined) {
         console.log("Attempting to login with cookies: " + JSON.stringify(req.cookies));
@@ -56,7 +62,7 @@ module.exports.authorizeCredentialsForUserModification = async (req, res, userna
 
     //TODO: This will cause a problem if the req.cookies is not defined
     res.status(403).json({ errorMsg: "User [" + req.cookies["SMLU"] + "] not authorized for " + username});
-}
+};
 
 module.exports.authorizeAdminForAction = async (req, res, next) => {
     if (req.cookies !== undefined) {
@@ -71,4 +77,11 @@ module.exports.authorizeAdminForAction = async (req, res, next) => {
     }
 
     res.status(403).json({ errorMsg: "User [" + req.cookies["SMLU"] + "] is not authorized as admin"});
-}
+};
+
+module.exports.doesUserExistWithEmail = async (userEmail) => {
+    const userExistsQuery = mysql.format(CHECK_IF_USER_EXISTS_SQL, userEmail);
+    const userExistsResponse = await QueryRunner.runQueryWithErrorHandling(userExistsQuery);
+    
+    return userExistsResponse && userExistsResponse[0] && userExistsResponse[0].USER_COUNT === 1;
+};

@@ -7,6 +7,7 @@ const publicRoutes = require('./routes/public');
 const device = require('express-device');
 const session = require('express-session');
 const passport = require('passport');
+const security = require('./service/Security');
 
 // parse application/x-www-9form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -50,7 +51,11 @@ app.get('/auth/google', passport.authenticate('google', { scope: ['email']}));
 app.get('/auth/google/callback', 
     passport.authenticate('google', { failureRedirect: '/login?redirect=googleAuthFailure' }), 
     (req, res) => {
-        //TODO: Upsert user into database
+        if (Security.doesUserExist(req.session.email, res)) {
+            //Update Login
+        } else {
+            //Insert new user
+        }
         res.redirect('/');
 });
 
