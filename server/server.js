@@ -7,7 +7,8 @@ const publicRoutes = require('./routes/public');
 const device = require('express-device');
 const session = require('express-session');
 const passport = require('passport');
-const security = require('./service/Security');
+const PassportWrapper = require('./service/PassportWrapper');
+const Security = require('./service/Security');
 
 // parse application/x-www-9form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -22,6 +23,14 @@ const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const GOOGLE_CLIENT_ID = process.env.OAUTH_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.OAUTH_CLIENT_SECRET;
 
+passport.serializeUser(function(user, done) {
+    done(null, user);
+});
+  
+passport.deserializeUser(function(user, done) {
+    done(null, user);
+});
+
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
@@ -30,6 +39,8 @@ passport.use(new GoogleStrategy({
     userProfile = profile;
     return done(null, userProfile);
 }));
+
+app.use(passport.initialize());
 
 app.use(session({
     resave: false,
@@ -50,13 +61,19 @@ app.get('/auth/google', passport.authenticate('google', { scope: ['email']}));
 
 app.get('/auth/google/callback', 
     passport.authenticate('google', { failureRedirect: '/login?redirect=googleAuthFailure' }), 
-    (req, res) => {
-        if (Security.doesUserExist(req.session.email, res)) {
+    async (req, res) => {
+
+        const userEmail = PassportWrapper.getUserEmail(req);
+        if (await Security.doesUserExistWithEmail(userEmail)) {
             //Update Login
+            console.log('user exists:', userEmail);
+            await Security.createAndSetSessionCookie(userEmail, 'GOOGLEPASS', req.device.type.toUpperCase(), res);
         } else {
             //Insert new user
+            console.log('user does not exist');
+            await Security.createNewUser(userEmail, 'GOOGLEPASS', userEmail, req.device.type.toUpperCase(), res);
         }
-        res.redirect('/');
+        res.redirect('http://localhost:3000/');
 });
 
 // the catch all route

@@ -1,5 +1,8 @@
 const mysql = require('mysql');
 const QueryRunner = require('./QueryRunner').buildQueryRunner();
+const PasswordHasher = require('./PasswordHasher')();
+
+const cookieMetadata = { httpOnly: true, sameSite: 'lax', expires: false, maxAge: new Date(253402300000000) };
 
 const LOGIN_WITH_COOKIE_SQL = `
 SELECT COUNT(*) AS USER_COUNT
@@ -30,6 +33,18 @@ const CHECK_IF_USER_EXISTS_SQL = `
 SELECT COUNT(*) AS USER_COUNT
 FROM USER
 WHERE USER.Email = ?
+`;
+
+const UPDATE_SESSION_COOKIE_SQL =`
+INSERT INTO SESSION_COOKIE(SessionCookie, Device, Username)
+VALUES (?, ?, ?)
+ON DUPLICATE KEY UPDATE 
+SessionCookie = ?
+`;
+
+const NEW_USER_SQL = `
+INSERT INTO USER (Username, Password, eMail)
+VALUES (?, ?, ?)
 `;
 
 module.exports.authorizeUserCredentialsViaCookie = async (req, res, next) => {
@@ -85,3 +100,27 @@ module.exports.doesUserExistWithEmail = async (userEmail) => {
     
     return userExistsResponse && userExistsResponse[0] && userExistsResponse[0].USER_COUNT === 1;
 };
+
+module.exports.createNewUser = async (username, rawPass, email, deviceType, res) => {
+    let password = PasswordHasher.hashPassword(rawPass);
+    let params = [username, password, email];
+    let newUserInsert = mysql.format(NEW_USER_SQL, params);
+
+    try {
+        await QueryRunner.runQuery(newUserInsert);
+        createAndSetSessionCookie(username, rawPass, deviceType, res);
+    } catch (error) {
+        console.error("Error during new user: " + error);
+    }
+};
+
+const createAndSetSessionCookie = (username, password, deviceType, res) => {
+    const sessionCookie = PasswordHasher.hashPassword(username + password);
+    const insertSessionCookieParams = [sessionCookie, deviceType, username, sessionCookie];
+    const insertSessionCookieSql = mysql.format(UPDATE_SESSION_COOKIE_SQL, insertSessionCookieParams);
+    QueryRunner.runQuery(insertSessionCookieSql);
+    res.cookie('SMLU', username, cookieMetadata);
+    res.cookie('SMLC', sessionCookie, cookieMetadata);
+}
+
+module.exports.createAndSetSessionCookie = createAndSetSessionCookie;

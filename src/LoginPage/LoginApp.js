@@ -40,7 +40,7 @@ class LoginApp extends React.Component {
     }
 
     onGoogleLoginClick = () => {
-        this.props.history.push('/todo'); //TODO: Backend route for google login
+        window.location.href = '/auth/google';
     }
 
     render() {
