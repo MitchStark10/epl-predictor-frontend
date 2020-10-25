@@ -60,7 +60,7 @@ app.post('/login', async (req, res) => {
 
         let userLoginResponse = userLoginResponseArray[0];
 
-        if (bcrypt.compareSync(req.body["password"], userLoginResponse["Password"])) {
+        if (bcrypt.compareSync(req.body["password"], userLoginResponse["Password"]) && req.body.password !== 'GOOGLEPASS') {
             Security.createAndSetSessionCookie(req.body["username"], req.body["password"], req.device.type.toUpperCase(), res);
             res.status(200).json({username: req.body["username"]});
         } else {
@@ -81,6 +81,10 @@ app.post('/logout', async (req, res) => {
 });
 
 app.post('/newUser', async (req, res) => {
+    if (req.body["password"] === 'GOOGLEPASS') {
+        res.status(400).json("Invalid password text");
+    }
+
     let password = PasswordHasher.hashPassword(req.body["password"]);
     let params = [req.body["username"], password, req.body["email"]];
     let newUserInsert = mysql.format(NEW_USER_SQL, params);
