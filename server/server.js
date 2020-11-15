@@ -73,7 +73,7 @@ app.get('/auth/google/callback',
             console.log('user does not exist');
             await Security.createNewUser(userEmail, 'GOOGLEPASS', userEmail, req.device.type.toUpperCase(), res);
         }
-        res.redirect('http://localhost:3000/');
+        res.redirect('/');
 });
 
 // the catch all route
