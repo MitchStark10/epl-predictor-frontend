@@ -10,7 +10,8 @@ class MobileHeaderMenu extends Component {
         this.state = {
             "userToken": props.userToken,
             "isAdmin": false,
-            "redirectUrl": ""
+            "redirectUrl": "",
+            "isMenuOpen": false
         }
     }
 
@@ -40,7 +41,10 @@ class MobileHeaderMenu extends Component {
     }
 
     handleButtonClick = (event) => {
-        this.setState({redirectUrl: event.target.id});
+        this.setState({
+            redirectUrl: event.target.id,
+            isMenuOpen: false
+        });
     }
 
     renderAdminView = () => {
@@ -68,11 +72,10 @@ class MobileHeaderMenu extends Component {
     }
 
     render() {
-        //TODO: Recent posts, create posts
         return (
             <div className="MobileHeaderBar">
                 <h1 className="MainMenuHeader">ScoreMaster</h1>
-                <Menu pageWrapId={"page-wrap"} outerContainerId={"App"} isOpen={ false }>
+                <Menu pageWrapId={"page-wrap"} outerContainerId={"App"} isOpen={ this.state.isMenuOpen }>
                     <button className="SmButton" id="/predictGames" onClick={this.handleButtonClick}>PREDICT GAMES</button>
                     <button className="SmButton" id="/results" onClick={this.handleButtonClick}>RESULTS</button>
                     <button className="SmButton" id="/about" onClick={this.handleButtonClick}>ABOUT</button>
