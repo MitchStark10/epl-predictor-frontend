@@ -22,6 +22,7 @@ app.use(device.capture());
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const GOOGLE_CLIENT_ID = process.env.OAUTH_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.OAUTH_CLIENT_SECRET;
+const GOOGLE_REDIRECT_URL = process.env.OAUTH_REDIRECT_URL;
 
 passport.serializeUser(function(user, done) {
     done(null, user);
@@ -34,7 +35,7 @@ passport.deserializeUser(function(user, done) {
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: '/auth/google/callback' //TODO: use environment variable for the callback
+    callbackURL:  GOOGLE_REDIRECT_URL //TODO: use environment variable for the callback
 }, function(accessToken, refreshToken, profile, done) {
     userProfile = profile;
     return done(null, userProfile);
