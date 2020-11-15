@@ -1,1 +1,7 @@
 release.py
+.git/
+.gitignore
+.DS_Store/
+scripts/
+src/
+node_modules/
