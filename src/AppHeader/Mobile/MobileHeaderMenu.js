@@ -11,7 +11,8 @@ class MobileHeaderMenu extends Component {
             "userToken": props.userToken,
             "isAdmin": false,
             "redirectUrl": "",
-            "isMenuOpen": false
+            "isMenuOpen": false,
+            "refreshCount": 0
         }
     }
 
@@ -30,7 +31,6 @@ class MobileHeaderMenu extends Component {
         let getUserStatusUrl = "/public/api/auth/getUserStatus";
         $.post(getUserStatusUrl, this.state)
         .done((statusResponse) => {
-            console.log('here');
             if (statusResponse["Status"] === "admin") {
                 this.setState({isAdmin: true, redirectUrl: ""});
             }
@@ -43,7 +43,8 @@ class MobileHeaderMenu extends Component {
     handleButtonClick = (event) => {
         this.setState({
             redirectUrl: event.target.id,
-            isMenuOpen: false
+            isMenuOpen: false,
+            refreshCount: this.state.refreshCount + 1
         });
     }
 
@@ -71,11 +72,17 @@ class MobileHeaderMenu extends Component {
         return (<button className="SmButton" id={buttonId} onClick={this.handleButtonClick}>{buttonText}</button>);
     }
 
+    handleStateChange = (menuState) => {
+        this.setState({
+            isMenuOpen: menuState.isOpen
+        });
+    }
+
     render() {
         return (
             <div className="MobileHeaderBar">
                 <h1 className="MainMenuHeader">ScoreMaster</h1>
-                <Menu pageWrapId={"page-wrap"} outerContainerId={"App"} isOpen={ this.state.isMenuOpen }>
+                <Menu pageWrapId={"page-wrap"} outerContainerId={"App"} isOpen={ this.state.isMenuOpen } onStateChange={(state) => this.handleStateChange(state)} >
                     <button className="SmButton" id="/predictGames" onClick={this.handleButtonClick}>PREDICT GAMES</button>
                     <button className="SmButton" id="/results" onClick={this.handleButtonClick}>RESULTS</button>
                     <button className="SmButton" id="/about" onClick={this.handleButtonClick}>ABOUT</button>
