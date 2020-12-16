@@ -85,6 +85,9 @@ class App extends Component {
                     <Route exact path="/leaderboard" render={(props) => this.renderAppContainer(new LeaderboardsRouter().getUniqueIdentifier(), props)} />
                     <Route exact path="/recentPosts" render={(props) => this.renderAppContainer(new RecentPostsRouter().getUniqueIdentifier(), props)} />
                     <Route exact path="/about" render={(props) => this.renderAppContainer(new AboutRouter().getUniqueIdentifier(), props)} />
+										<Route exact path="/about" render={(props) => {
+											this.renderAppContainer(new RulesRouter().getUniqueIdentifier())
+										}} />
                     <Route exact path="/posts/predictions/:gameId" render={(props) => this.renderAppContainer(new PredictionPostRouter().getUniqueIdentifier(), props)} />
                     <Route exact path="/posts/analysis/:gameId" render={(props) => this.renderAppContainer(new AnalysisRouter().getUniqueIdentifier(), props)} />
                     <Route exact path="/posts/:postId" render={(props) => this.renderAppContainer(new PostRouter().getUniqueIdentifier(), props)} />
