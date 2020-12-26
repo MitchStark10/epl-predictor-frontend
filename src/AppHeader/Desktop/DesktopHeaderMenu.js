@@ -42,7 +42,7 @@ class DesktopHeaderMenu extends Component {
     }
 
     handleButtonClick = (event) => {
-        this.setState({redirectUrl: event.target.id});
+        this.setState({redirectUrl: event.target.id, selectedDropDownButton: null});
     }
 
     handleDropDownButtonHover = (e) => {
