@@ -30,6 +30,12 @@ FROM USER
 WHERE Username = ?
 `;
 
+const UPDATE_USERNAME_SQL = `
+UPDATE USER
+SET Username = ?
+WHERE eMail = ?
+`;
+
 app.post('/login', async (req, res) => {
     try {
         console.log("Logging in with device: " + JSON.stringify(req.device));
@@ -98,6 +104,30 @@ app.post('/newUser', async (req, res) => {
         res.status(500).json("Error occurred creating the new user");
     }
 
+});
+
+app.post('/updateUsername', async (req, res) => {
+	
+	const updateUsernameFn = (req, res) => {
+	    console.log('Requested username update: ' + req.body.newUsername);
+	    const params = [req.body.userToken, req.body.newUsername];
+	    const updateUsernameQuery = mysql.format(UPDATE_USERNAME_SQL, params);
+	    try {
+	        await QueryRunner.runQuery(updateUsernameQuery);
+	        res.status(200).json({
+	            success: true
+	        });
+	    } catch (error) {
+	        // Todo: Catch error related to existing username
+	        console.error('Error updating username: ' + error);
+	        res.status(500).json({
+	            success: false,
+	            message: 'Unknown server error'
+	        });
+	    }	
+	};
+	
+    Security.authorizeCredentialsForUserModification(req, res, req.body["username"], updateUsernameFn);
 });
 
 app.post('/getUserStatus', async (req, res) => {
