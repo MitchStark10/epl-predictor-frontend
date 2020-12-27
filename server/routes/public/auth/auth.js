@@ -110,7 +110,7 @@ app.post('/updateUsername', async (req, res) => {
 	
 	const updateUsernameFn = (req, res) => {
 	    console.log('Requested username update: ' + req.body.newUsername);
-	    const params = [req.body.userToken, req.body.newUsername];
+	    const params = [req.body.currentUsername, req.body.newUsername];
 	    const updateUsernameQuery = mysql.format(UPDATE_USERNAME_SQL, params);
 	    try {
 	        await QueryRunner.runQuery(updateUsernameQuery);
@@ -127,7 +127,7 @@ app.post('/updateUsername', async (req, res) => {
 	    }	
 	};
 	
-    Security.authorizeCredentialsForUserModification(req, res, req.body["username"], updateUsernameFn);
+    Security.authorizeCredentialsForUserModification(req, res, req.body["currentUsername"], updateUsernameFn);
 });
 
 app.post('/getUserStatus', async (req, res) => {
