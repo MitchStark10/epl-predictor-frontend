@@ -14,6 +14,7 @@ import PostRouter from './PostRouter';
 import RecentPostsRouter from './RecentPostsRouter';
 import LoginRouter from './LoginRouter';
 import CreatePostRouter from './CreatePostRouter';
+import UpdateUsernameRouter from './UpdateUsernameRouter';
 
 class AppInternalRouter extends Component {
 	constructor() {
@@ -32,7 +33,8 @@ class AppInternalRouter extends Component {
 			new AnalysisRouter(),
 			new PostRouter(),
 			new RecentPostsRouter(),
-			new CreatePostRouter()
+			new CreatePostRouter(),
+            new UpdateUsernameRouter(),
 		];
 
 		this.state = {

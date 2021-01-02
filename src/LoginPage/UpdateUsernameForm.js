@@ -1,30 +1,44 @@
 import React from 'react';
-import $ from 'jQuery';
+import $ from 'jquery';
 
-export default function UpdateUsernameForm(props) {
+export default class UpdateUsernameForm extends React.Component {
 
-    const [usernameValue, setUsernameValue] = React.useState(props.username);
-    const [errorMessage, setErrorMessage] = React.useState('');
-    
-    const submitUsernameUpdateClickHandler = () => {
+    constructor(props) {
+        super();
+
+        this.originalUsername = props.username;
+
+        this.setState({
+            username: props.username,
+            errorMessage: ''
+        });
+    }
+
+    submitUsernameUpdateClickHandler() {
         $.post('/public/api/auth/updateUsername', {
-            currentUsername: props.username,
-            newUsername: usernameValue
+            currentUsername: this.originalUsername,
+            newUsername: this.state.username
         }).then(() => {
             //TODO: redirect home
         }).fail((error) => {
-            setErrorMessage(error);
+            this.setState({errorMessage: error});
         });
-    };
-    
-    
-    return (
-        <div id="UpdateUsernameForm">
-            {errorMesssage ? (<p className='error'>{errorMessage}</p>) : null}
-            <input placeholder="Username" value={usernameValue} />
-            <button id="SubmitUsernameUpdateButton">SUBMIT</button>
-        </div>
-    );
-};
+    }
 
+    onUsernmaeChange(e) {
+        this.setState({username: e.target.value});
+    }
 
+    render() {
+//         return (
+//             <div id="UpdateUsernameForm">
+//                 {this.state.errorMessage ? (<p className='error'>{this.state.errorMessage}</p>) : null}
+//                 <input placeholder="Username" value={this.state.username} onChange={this.onUsernmaeChange}/>
+//                 <button id="SubmitUsernameUpdateButton" onClick={this.submitUsernameUpdateClickHandler}>SUBMIT</button>
+//             </div> 
+//         );
+        return (
+
+        )
+    }
+}

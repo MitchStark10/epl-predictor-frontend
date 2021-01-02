@@ -37,8 +37,7 @@ passport.use(new GoogleStrategy({
     clientSecret: GOOGLE_CLIENT_SECRET,
     callbackURL:  GOOGLE_REDIRECT_URL //TODO: use environment variable for the callback
 }, function(accessToken, refreshToken, profile, done) {
-    userProfile = profile;
-    return done(null, userProfile);
+    return done(null, profile);
 }));
 
 app.use(passport.initialize());
@@ -56,7 +55,6 @@ if (process.env.NODE_ENV === "production") {
 //TODO: Change to /public/public/api/
 app.use("/public/api", publicRoutes);
 
-
 //Auth Routes
 app.get('/auth/google', passport.authenticate('google', { scope: ['email']}));
 
@@ -73,6 +71,7 @@ app.get('/auth/google/callback',
             //Insert new user
             console.log('user does not exist');
             await Security.createNewUser(userEmail, 'GOOGLEPASS', userEmail, req.device.type.toUpperCase(), res);
+            return res.redirect('/updateUsername');
         }
         res.redirect('/');
 });

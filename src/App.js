@@ -16,6 +16,7 @@ import AddPredictionPostRouter from './Routers/AddPredictionPostRouter';
 import AddAnalysisPostRouter from './Routers/AddAnalysisPostRouter';
 import history from './History';
 import LoginRouter from './Routers/LoginRouter';
+import UpdateUsernameRouter from './Routers/UpdateUsernameRouter';
 import AppInternalRouter from './Routers/AppInternalRouter';
 
 class App extends Component {
@@ -93,6 +94,7 @@ class App extends Component {
                     <Route exact path="/addAnalysis/:gameId" render={(props) => this.renderAppContainer(new AddAnalysisPostRouter().getUniqueIdentifier(), props)} />
                     <Route exact path="/logout" render={() => this.logout()} />
                     <Route exact path="/login" render={() => new LoginRouter().render(this.setLoggedIn)} />
+                    <Route exact path="/updateUsername" render={(props) => this.renderAppContainer(new UpdateUsernameRouter().getUniqueIdentifier(), props)} />
                     <Route exact path="/" render={(props) => this.renderAppContainer(new PredictGamesRouter().getUniqueIdentifier(), props)} />
                     <Route path="/" render={() => <NotFoundPage />} />
                 </Switch>                
