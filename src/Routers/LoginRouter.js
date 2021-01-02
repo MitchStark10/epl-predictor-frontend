@@ -1,6 +1,5 @@
 import React from 'react';
 import LoginApp from '../LoginPage/LoginApp';
-import logo from '../soccerball.png';
 import MenuRouter from './MenuRouter';
 
 class LoginRouter {

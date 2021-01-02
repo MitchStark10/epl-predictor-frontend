@@ -8,10 +8,10 @@ export default class UpdateUsernameForm extends React.Component {
 
         this.originalUsername = props.username;
 
-        this.setState({
+        this.state = {
             username: props.username,
             errorMessage: ''
-        });
+        };
     }
 
     submitUsernameUpdateClickHandler() {
@@ -30,15 +30,12 @@ export default class UpdateUsernameForm extends React.Component {
     }
 
     render() {
-//         return (
-//             <div id="UpdateUsernameForm">
-//                 {this.state.errorMessage ? (<p className='error'>{this.state.errorMessage}</p>) : null}
-//                 <input placeholder="Username" value={this.state.username} onChange={this.onUsernmaeChange}/>
-//                 <button id="SubmitUsernameUpdateButton" onClick={this.submitUsernameUpdateClickHandler}>SUBMIT</button>
-//             </div> 
-//         );
         return (
-
-        )
+            <div id="UpdateUsernameForm">
+                {this.state.errorMessage ? (<p className='error'>{this.state.errorMessage}</p>) : null}
+                <input placeholder="Username" value={this.state.username} onChange={this.onUsernmaeChange}/>
+                <button id="SubmitUsernameUpdateButton" onClick={this.submitUsernameUpdateClickHandler}>SUBMIT</button>
+            </div>
+        );
     }
 }
