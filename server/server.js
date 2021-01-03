@@ -63,14 +63,13 @@ app.get('/auth/google/callback',
     async (req, res) => {
 
         const userEmail = PassportWrapper.getUserEmail(req);
-        if (await Security.doesUserExistWithEmail(userEmail)) {
+        const existingUsername = await Security.doesUserExistWithEmail(userEmail);
+        if (existingUsername) {
             //Update Login
-            console.log('user exists:', userEmail);
-            await Security.createAndSetSessionCookie(userEmail, 'GOOGLEPASS', req.device.type.toUpperCase(), res);
+            await Security.createAndSetSessionCookie(existingUsername, 'GOOGLEPASS', req.device.type.toUpperCase(), res);
         } else {
             //Insert new user
-            console.log('user does not exist');
-            await Security.createNewUser(userEmail, 'GOOGLEPASS', userEmail, req.device.type.toUpperCase(), res);
+            await Security.createNewUser(userEmail, 'GOOGLEPASS', userEmail, req.device.type.toUpperCase(), res, true);
             return res.redirect('/updateUsername');
         }
         res.redirect('/');

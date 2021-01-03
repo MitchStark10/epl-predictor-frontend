@@ -21,7 +21,7 @@ export default withRouter(class UpdateUsernameForm extends React.Component {
             currentUsername: this.originalUsername,
             newUsername: this.state.username
         }).then(() => {
-            this.props.history.push('/');
+            this.props.setLoggedIn(this.state.username);
         }).fail((error) => {
             this.setState({errorMessage: error.statusText});
             setTimeout(() => {

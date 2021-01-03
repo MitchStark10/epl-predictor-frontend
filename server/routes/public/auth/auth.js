@@ -34,6 +34,7 @@ const UPDATE_USERNAME_SQL = `
 UPDATE USER
 SET Username = ?
 WHERE eMail = ?
+    AND IsGoogleUser = 1
 `;
 
 app.post('/login', async (req, res) => {
@@ -112,9 +113,9 @@ app.post('/updateUsername', async (req, res) => {
 	    console.log('Requested username update: ' + req.body.newUsername);
 	    const params = [req.body.newUsername, req.body.currentUsername];
 	    const updateUsernameQuery = mysql.format(UPDATE_USERNAME_SQL, params);
-        const updatePredictionsQuery = mysql.format(UPDATE_PREDICTIONS_TO_NEW_USERNAME, params);
 	    try {
 	        await QueryRunner.runQuery(updateUsernameQuery);
+            Security.createAndSetSessionCookie(req.body.newUsername, 'GOOGLEPASS', req.device.type.toUpperCase(), res);
 	        res.status(200).json({
 	            success: true
 	        });
