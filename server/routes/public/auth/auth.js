@@ -110,19 +110,20 @@ app.post('/updateUsername', async (req, res) => {
 	
 	const updateUsernameFn = async (req, res) => {
 	    console.log('Requested username update: ' + req.body.newUsername);
-	    const params = [req.body.currentUsername, req.body.newUsername];
+	    const params = [req.body.newUsername, req.body.currentUsername];
 	    const updateUsernameQuery = mysql.format(UPDATE_USERNAME_SQL, params);
+        const updatePredictionsQuery = mysql.format(UPDATE_PREDICTIONS_TO_NEW_USERNAME, params);
 	    try {
 	        await QueryRunner.runQuery(updateUsernameQuery);
 	        res.status(200).json({
 	            success: true
 	        });
 	    } catch (error) {
-	        // Todo: Catch error related to existing username
+	        // TODO: Catch error related to existing username
 	        console.error('Error updating username: ' + error);
 	        res.status(500).json({
 	            success: false,
-	            message: 'Unknown server error'
+	            message: error.toString()
 	        });
 	    }	
 	};

@@ -8,10 +8,11 @@ class UpdateUsernameRouter {
     }
 
     render = (userToken) => {
+        console.log('user token:', userToken);
         return (
             <div className={this.getUniqueIdentifier()}>
                 <MenuRouter userToken={userToken}/>
-                <UpdateUsernameForm />
+                <UpdateUsernameForm userToken={userToken}/>
             </div>
         );
     }

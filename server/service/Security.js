@@ -68,8 +68,7 @@ module.exports.authorizeCredentialsForUserModification = async (req, res, userna
         let cookieParams = [req.cookies["SMLU"], req.cookies["SMLC"], req.device.type.toUpperCase()];
         let loginWithCookieQuery = mysql.format(LOGIN_AND_RETRIEVE_USERNAME_SQL, cookieParams);
         let cookieLoginResponse = await QueryRunner.runQuery(loginWithCookieQuery);
-        console.log("here: " + JSON.stringify(cookieLoginResponse) + " = " + username);
-        if (cookieLoginResponse[0]["Username"] && cookieLoginResponse[0]["Username"] === username) {
+        if (cookieLoginResponse[0] && cookieLoginResponse[0]["Username"] === username) {
             next(req, res);
             return;
         }

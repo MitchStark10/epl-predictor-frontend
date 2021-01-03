@@ -57,3 +57,7 @@ button:hover {
     transform: rotate(360deg);
   }
 }
+
+.error {
+    color: #CC0000;
+}
