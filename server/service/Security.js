@@ -30,7 +30,7 @@ WHERE USER.Username = ?
 `;
 
 const CHECK_IF_USER_EXISTS_SQL = `
-SELECT COUNT(*) AS USER_COUNT
+SELECT Username
 FROM USER
 WHERE USER.Email = ?
 `;
@@ -43,8 +43,8 @@ SessionCookie = ?
 `;
 
 const NEW_USER_SQL = `
-INSERT INTO USER (Username, Password, eMail)
-VALUES (?, ?, ?)
+INSERT INTO USER (Username, Password, eMail, IsGoogleUser)
+VALUES (?, ?, ?, ?)
 `;
 
 module.exports.authorizeUserCredentialsViaCookie = async (req, res, next) => {
@@ -68,8 +68,7 @@ module.exports.authorizeCredentialsForUserModification = async (req, res, userna
         let cookieParams = [req.cookies["SMLU"], req.cookies["SMLC"], req.device.type.toUpperCase()];
         let loginWithCookieQuery = mysql.format(LOGIN_AND_RETRIEVE_USERNAME_SQL, cookieParams);
         let cookieLoginResponse = await QueryRunner.runQuery(loginWithCookieQuery);
-        console.log("here: " + JSON.stringify(cookieLoginResponse) + " = " + username);
-        if (cookieLoginResponse[0]["Username"] && cookieLoginResponse[0]["Username"] === username) {
+        if (cookieLoginResponse[0] && cookieLoginResponse[0]["Username"] === username) {
             next(req, res);
             return;
         }
@@ -98,12 +97,12 @@ module.exports.doesUserExistWithEmail = async (userEmail) => {
     const userExistsQuery = mysql.format(CHECK_IF_USER_EXISTS_SQL, userEmail);
     const userExistsResponse = await QueryRunner.runQueryWithErrorHandling(userExistsQuery);
     
-    return userExistsResponse && userExistsResponse[0] && userExistsResponse[0].USER_COUNT === 1;
+    return userExistsResponse && userExistsResponse.length === 1 && userExistsResponse[0].Username;
 };
 
-module.exports.createNewUser = async (username, rawPass, email, deviceType, res) => {
+module.exports.createNewUser = async (username, rawPass, email, deviceType, res, isNewUser = false) => {
     let password = PasswordHasher.hashPassword(rawPass);
-    let params = [username, password, email];
+    let params = [username, password, email, isNewUser];
     let newUserInsert = mysql.format(NEW_USER_SQL, params);
 
     try {

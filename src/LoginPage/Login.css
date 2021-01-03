@@ -43,9 +43,17 @@ input[type="text"], input[type="password"], input[type="int"] {
     height: 20px;
 }
 
-#loginAppContainer {
+#loginAppContainer, #UpdateUsernameForm {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+}
+
+#UpdateUsernameForm {
+    margin-top: 20px;
+}
+
+#UpdateUsernameForm > * {
+    margin-bottom: 20px;
 }
