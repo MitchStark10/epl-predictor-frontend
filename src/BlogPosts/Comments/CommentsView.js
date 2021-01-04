@@ -4,13 +4,13 @@ import $ from 'jquery';
 import './Comments.css';
 
 class CommentsView extends Component {
-    constructor(props) {
+    constructor() {
         super();
         this.state = {
             comments: [],
-            commentText: "",
+            commentText: '',
             needsCommentReload: true,
-            errorMsg: ""
+            errorMsg: ''
         };
     }
 
@@ -27,14 +27,14 @@ class CommentsView extends Component {
             return;
         }
 
-        $.get("/public/api/comments/retrieveAllComments/" + this.props.postId)
+        $.get('/public/api/comments/retrieveAllComments/' + this.props.postId)
             .done((response) => {
-                console.log("Received response: " + response);
+                console.log('Received response: ' + response);
                 this.setState({comments: response, needsCommentReload: false});
             })
             .fail((error) => {
-                console.error("Received error: " + error);
-                this.setState({errorMsg: error["errorMsg"], needsCommentReload: false});
+                console.error('Received error: ' + error);
+                this.setState({errorMsg: error['errorMsg'], needsCommentReload: false});
             });
     }
 
@@ -51,14 +51,14 @@ class CommentsView extends Component {
             commentText: this.state.commentText
         };
 
-        $.post("/public/api/comments/addComment", commentToAdd)
-        .done( (response) => {
-            this.setState({commentText: "", needsCommentReload: true});
-        })
-        .fail( (error) => {
-            console.error(error);
-            this.setState({errorMsg: error["errorMsg"]});
-        });
+        $.post('/public/api/comments/addComment', commentToAdd)
+            .done(() => {
+                this.setState({commentText: '', needsCommentReload: true});
+            })
+            .fail( (error) => {
+                console.error(error);
+                this.setState({errorMsg: error['errorMsg']});
+            });
     }
 
     renderComments = () => {

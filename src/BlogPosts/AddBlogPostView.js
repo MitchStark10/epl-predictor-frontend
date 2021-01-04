@@ -5,15 +5,15 @@ import './BlogPostView.css';
 
 class AddBlogPostView extends Component {
 
-    constructor()  {
+    constructor() {
         super();
 
         this.state = {
-            postTitle: "",
-            postContent: "",
-            viewType: "ADD_CONTENT",
-            errorMessage: "",
-            redirectUrl: ""
+            postTitle: '',
+            postContent: '',
+            viewType: 'ADD_CONTENT',
+            errorMessage: '',
+            redirectUrl: ''
         };
     }
 
@@ -24,14 +24,14 @@ class AddBlogPostView extends Component {
     }
 
     componentDidUpdate() {
-        if (this.state.redirectUrl !== "") {
+        if (this.state.redirectUrl !== '') {
             this.props.history.push(this.state.redirectUrl);
-            this.setState({redirectUrl: ""});
+            this.setState({redirectUrl: ''});
         }
     }
 
     isUserLoggedIn() {
-        return this.props.userToken && this.props.userToken !== "";
+        return this.props.userToken && this.props.userToken !== '';
     }
 
     forwardToLoginPage() {
@@ -39,40 +39,40 @@ class AddBlogPostView extends Component {
     }
 
     submitPost = () => {
-        let postData = {            
-            "blogPostTitle": this.state.postTitle,
-            "blogPostData": this.state.postContent,
-            "username": this.props.userToken,
-            "gameId": this.props.gameId,
-            "blogPostType": this.props.postType
-        }
+        let postData = {
+            'blogPostTitle': this.state.postTitle,
+            'blogPostData': this.state.postContent,
+            'username': this.props.userToken,
+            'gameId': this.props.gameId,
+            'blogPostType': this.props.postType
+        };
 
-        $.post("/public/api/blog/addNewBlogPost", postData)
-        .done((response) => {
-            if (this.props.postType === "PREDICTION") {
-                this.setState({redirectUrl: "/posts/predictions/" + this.props.gameId, errorMessage: ""});
-            } else if (this.props.postType === "ANALYSIS") {
-                if (this.props.gameId !== "none") {
-                    this.setState({ redirectUrl: "/posts/analysis/" + this.props.gameId, errorMessage: "" });
+        $.post('/public/api/blog/addNewBlogPost', postData)
+            .done(() => {
+                if (this.props.postType === 'PREDICTION') {
+                    this.setState({redirectUrl: '/posts/predictions/' + this.props.gameId, errorMessage: ''});
+                } else if (this.props.postType === 'ANALYSIS') {
+                    if (this.props.gameId !== 'none') {
+                        this.setState({ redirectUrl: '/posts/analysis/' + this.props.gameId, errorMessage: '' });
+                    } else {
+                        this.setState({ redirectUrl: '/recentPosts', errorMsg: '' });
+                    }
                 } else {
-                    this.setState({ redirectUrl: "/recentPosts", errorMsg: "" });
+                    console.error('Unknown post type: ' + this.props.postType);
+                    this.setState({errorMessage: 'Unknown post type: ' + this.props.postType});
                 }
-            } else {
-                console.error("Unknown post type: " + this.props.postType);
-                this.setState({errorMessage: "Unknown post type: " + this.props.postType});
-            }
-        })
-        .fail((error) => {
-            console.log("Unalbe to add new game: " + error.responseJSON.errorMsg);
-            this.setState({errorMessage: "Unable to add new game: " + error.responseJSON.errorMsg});
-        });
+            })
+            .fail((error) => {
+                console.log('Unalbe to add new game: ' + error.responseJSON.errorMsg);
+                this.setState({errorMessage: 'Unable to add new game: ' + error.responseJSON.errorMsg});
+            });
     }
 
     toggleViewType = () => {
-        if (this.state.viewType === "ADD_CONTENT") {
-            this.setState({viewType: "RENDER"});
+        if (this.state.viewType === 'ADD_CONTENT') {
+            this.setState({viewType: 'RENDER'});
         } else {
-            this.setState({viewType: "ADD_CONTENT"});
+            this.setState({viewType: 'ADD_CONTENT'});
         }
     }
 
@@ -90,11 +90,11 @@ class AddBlogPostView extends Component {
                 </div>
                 <div id="RenderedPostContent" dangerouslySetInnerHTML={{ __html: this.state.postContent }} />
             </div>
-       )
+        );
     }
 
     render() {
-        if (this.state.viewType === "RENDER") {
+        if (this.state.viewType === 'RENDER') {
             return (
                 <div id="PostForm">
                     {this.renderPostContent()}

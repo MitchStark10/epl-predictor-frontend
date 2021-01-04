@@ -14,10 +14,10 @@ class PastPredictionsView extends Component {
             pastGames: [],
             pastPredictions: [],
             predictedId: -1,
-            errorMessage: "",
+            errorMessage: '',
             needsPredictionRefresh: true,
             needsGameRefresh: true,
-            redirectUrl: ""
+            redirectUrl: ''
         };
     }
 
@@ -26,12 +26,12 @@ class PastPredictionsView extends Component {
             this.retrievePredictions();
             this.retrieveGames();
         } else {
-            this.forwardToLoginPage();       
+            this.forwardToLoginPage();
         }
     }
 
     isUserLoggedIn() {
-        return this.props.userToken && this.props.userToken !== "";
+        return this.props.userToken && this.props.userToken !== '';
     }
 
     forwardToLoginPage() {
@@ -39,9 +39,9 @@ class PastPredictionsView extends Component {
     }
 
     componentDidUpdate() {
-        if (this.state.redirectUrl !== "") {
+        if (this.state.redirectUrl !== '') {
             this.props.history.push(this.state.redirectUrl);
-            this.setState({ needsGameRefresh: false, needsPredictionRefresh: false, redirectUrl: "" });
+            this.setState({ needsGameRefresh: false, needsPredictionRefresh: false, redirectUrl: '' });
         } else {
             if (this.state.needsGameRefresh) {
                 this.retrieveGames();
@@ -54,20 +54,20 @@ class PastPredictionsView extends Component {
     }
 
     determineColor = (homeScore, awayScore, homeTeam, awayTeam, prediction) => {
-        if (prediction === null 
+        if (prediction === null
                 || homeScore === null
                 || awayScore === null
-                || homeScore === ""
-                || awayScore === "") {
-                    
-            return "black";
+                || homeScore === ''
+                || awayScore === '') {
+
+            return 'black';
         }
 
-        let predictedWinner = prediction["WinningTeam"];
+        let predictedWinner = prediction['WinningTeam'];
         let actualWinner;
 
         if (homeScore === awayScore) {
-            actualWinner = "Tie";
+            actualWinner = 'Tie';
         } else if (homeScore > awayScore) {
             actualWinner = homeTeam;
         } else {
@@ -75,34 +75,34 @@ class PastPredictionsView extends Component {
         }
 
         if (predictedWinner === actualWinner) {
-            return "green";
-        } else {
-            return "red";
+            return 'green';
         }
+        return 'red';
+
     }
 
     retrieveGames = () => {
-        fetch("/public/api/games/retrieveAllPastGames")
-        .then( result => result.json() )
-        .then(
-            (previousGames) => {
-                if (previousGames["errorMsg"]) {
-                    this.setState({errorMessage: previousGames["errorMsg"], needsGameRefresh: false});
-                } else {
-                    this.setState({pastGames: previousGames, needsGameRefresh: false});
+        fetch('/public/api/games/retrieveAllPastGames')
+            .then( result => result.json() )
+            .then(
+                (previousGames) => {
+                    if (previousGames['errorMsg']) {
+                        this.setState({errorMessage: previousGames['errorMsg'], needsGameRefresh: false});
+                    } else {
+                        this.setState({pastGames: previousGames, needsGameRefresh: false});
+                    }
+                },
+                (error) => {
+                    console.log('Error retrieving games: ' + error);
                 }
-            },
-            (error) => {
-                console.log("Error retrieving games: " + error);
-            }
-        );
+            );
     };
 
     findPredictionByGameId = (gameId) => {
         for (var i = 0; i < this.state.pastPredictions.length; i++) {
             let prediction = this.state.pastPredictions[i];
 
-            if (prediction["GameId"] === gameId) {
+            if (prediction['GameId'] === gameId) {
                 return prediction;
             }
         }
@@ -111,21 +111,21 @@ class PastPredictionsView extends Component {
     }
 
     retrievePredictions = () => {
-        fetch("/public/api/predictions/previousPredictions/" + this.props.userToken)
-        .then ( result => result.json() )
-        .then(
-            (previousPredictions) => {
-                if (previousPredictions["errorMsg"]) {
-                    this.setState({errorMessage: previousPredictions["errorMsg"], needsPredictionRefresh: false});
-                } else {
-                    this.setState({pastPredictions: previousPredictions, needsPredictionRefresh: false});
+        fetch('/public/api/predictions/previousPredictions/' + this.props.userToken)
+            .then( result => result.json() )
+            .then(
+                (previousPredictions) => {
+                    if (previousPredictions['errorMsg']) {
+                        this.setState({errorMessage: previousPredictions['errorMsg'], needsPredictionRefresh: false});
+                    } else {
+                        this.setState({pastPredictions: previousPredictions, needsPredictionRefresh: false});
+                    }
+                },
+                (error) => {
+                    console.log('Error retrieving predictions: ' + error);
+                    this.setState({needsPredictionRefresh: false});
                 }
-            },
-            (error) => {
-                console.log("Error retrieving predictions: " + error);
-                this.setState({needsPredictionRefresh: false});
-            }
-        );
+            );
     }
 
     renderStats = () => {
@@ -134,24 +134,24 @@ class PastPredictionsView extends Component {
 
         for (var i = 0; i < this.state.pastGames.length; i++) {
             let game = this.state.pastGames[i];
-            let prediction = this.findPredictionByGameId(game["GameId"]);
+            let prediction = this.findPredictionByGameId(game['GameId']);
 
-            let color = this.determineColor(game["HomeTeamScore"], game["AwayTeamScore"], game["HomeTeamName"], game["AwayTeamName"], prediction);
+            let color = this.determineColor(game['HomeTeamScore'], game['AwayTeamScore'], game['HomeTeamName'], game['AwayTeamName'], prediction);
 
-            if (color === "green") {
+            if (color === 'green') {
                 correctPredictionCount++;
                 totalPredictionCount++;
-            } else if (color === "red") {
+            } else if (color === 'red') {
                 totalPredictionCount++;
             }
         }
 
         var predictionSuccessRate;
-        
+
         if (totalPredictionCount > 0) {
             predictionSuccessRate = (correctPredictionCount / totalPredictionCount * 100).toFixed(2);
         } else {
-            predictionSuccessRate = "--";
+            predictionSuccessRate = '--';
         }
 
         return (
@@ -168,29 +168,29 @@ class PastPredictionsView extends Component {
 
         for (var i = 0; i < this.state.pastGames.length; i++) {
             let game = this.state.pastGames[i];
-            let prediction = this.findPredictionByGameId(game["GameId"]);
+            let prediction = this.findPredictionByGameId(game['GameId']);
 
-            let gameDate = new Date(game["GameDate"]);
+            let gameDate = new Date(game['GameDate']);
             var day = gameDate.getDate();
             var monthIndex = gameDate.getMonth() + 1;
             var year = gameDate.getFullYear();
 
 
             let style = {
-                "borderColor": this.determineColor(
-                        game["HomeTeamScore"], 
-                        game["AwayTeamScore"], 
-                        game["HomeTeamName"],
-                        game["AwayTeamName"],
-                        prediction)
-            }
+                'borderColor': this.determineColor(
+                    game['HomeTeamScore'],
+                    game['AwayTeamScore'],
+                    game['HomeTeamName'],
+                    game['AwayTeamName'],
+                    prediction)
+            };
 
             jsxList.push(
-                <div className="PastGame" key={game["GameId"]} style={style}>
-                    <h2>{monthIndex}/{day}/{year} - {game["Competition"]}</h2>
+                <div className="PastGame" key={game['GameId']} style={style}>
+                    <h2>{monthIndex}/{day}/{year} - {game['Competition']}</h2>
                     {this.renderPrediction(prediction)}
-                    <p>{this.imageRetrieverService.renderTeamLogo(game["HomeTeamName"])} {game["HomeTeamName"]}: {game["HomeTeamScore"]}</p>
-                    <p>{this.imageRetrieverService.renderTeamLogo(game["AwayTeamName"])} {game["AwayTeamName"]}: {game["AwayTeamScore"]}</p>
+                    <p>{this.imageRetrieverService.renderTeamLogo(game['HomeTeamName'])} {game['HomeTeamName']}: {game['HomeTeamScore']}</p>
+                    <p>{this.imageRetrieverService.renderTeamLogo(game['AwayTeamName'])} {game['AwayTeamName']}: {game['AwayTeamScore']}</p>
 
                     {/* <button className="PredictionsButton"
                         id={game["GameId"]}
@@ -217,7 +217,7 @@ class PastPredictionsView extends Component {
             return <h3>Prediction Not Made</h3>;
         }
 
-        return <h3>Predicted Winner: {prediction["WinningTeam"]} {this.imageRetrieverService.renderTeamLogo(prediction["WinningTeam"])}</h3>;
+        return <h3>Predicted Winner: {prediction['WinningTeam']} {this.imageRetrieverService.renderTeamLogo(prediction['WinningTeam'])}</h3>;
     }
 
     handleBlogButtonClick = (event) => {
@@ -225,7 +225,7 @@ class PastPredictionsView extends Component {
     }
 
     render() {
-        if (this.state.redirectUrl !== "") {
+        if (this.state.redirectUrl !== '') {
             this.props.history.push(this.state.redirectUrl);
         }
 

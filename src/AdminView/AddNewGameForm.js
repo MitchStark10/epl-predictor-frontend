@@ -3,15 +3,15 @@ import $ from 'jquery';
 
 class AddNewGameForm extends Component {
 
-    constructor(props) {
+    constructor() {
         super();
 
         this.state = {
-            homeTeamName: "",
-            awayTeamName: "",
-            gameDate: "",
-            competition: "English Premier League",
-            statusMessage: ""
+            homeTeamName: '',
+            awayTeamName: '',
+            gameDate: '',
+            competition: 'English Premier League',
+            statusMessage: ''
         };
     }
 
@@ -22,15 +22,15 @@ class AddNewGameForm extends Component {
     }
 
     submitGame = () => {
-        let url = "/public/api/admin/addNewGame";
+        let url = '/public/api/admin/addNewGame';
 
         $.post(url, this.state)
-        .done((response) => {
-            this.setState({statusMessage: "Successfully added new game!"});
-        })
-        .fail((error) => {
-            this.setState({statusMessage: "Unable to add new game: " + error.responseText});
-        });
+            .done(() => {
+                this.setState({statusMessage: 'Successfully added new game!'});
+            })
+            .fail((error) => {
+                this.setState({statusMessage: 'Unable to add new game: ' + error.responseText});
+            });
     }
 
     render() {

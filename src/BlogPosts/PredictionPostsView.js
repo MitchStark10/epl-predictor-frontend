@@ -10,40 +10,40 @@ class PredictionPostsView extends Component {
         this.state = {
             predictionPosts: [],
             needsPostsRefresh: true,
-            homeTeamName: "",
-            awayTeamName: "",
-            errorMessage: "",
-            redirectUrl: ""
+            homeTeamName: '',
+            awayTeamName: '',
+            errorMessage: '',
+            redirectUrl: ''
         };
-    } 
+    }
 
 
     componentDidMount() {
-        console.log("Prediction Posts view component did mount: " + this.props.gameId);
+        console.log('Prediction Posts view component did mount: ' + this.props.gameId);
 
-        fetch("/public/api/blog/retrieveTeamNames/" + this.props.gameId)
-        .then( result => result.json() )
-        .then( (teamNames) => {
-            console.log("here: " + JSON.stringify(teamNames));
-            this.setState({homeTeamName: teamNames["HomeTeamName"], awayTeamName: teamNames["AwayTeamName"]});
-        })
+        fetch('/public/api/blog/retrieveTeamNames/' + this.props.gameId)
+            .then( result => result.json() )
+            .then( (teamNames) => {
+                console.log('here: ' + JSON.stringify(teamNames));
+                this.setState({homeTeamName: teamNames['HomeTeamName'], awayTeamName: teamNames['AwayTeamName']});
+            });
 
-        fetch("/public/api/blog/retrieveAllBlogPostHeaders/" + this.props.postType + "/" + this.props.gameId)
-        .then( result => result.json() )
-        .then(
-            (predictionPosts) => {
-                if (predictionPosts["errorMsg"]) {
-                    this.setState({errorMessage: predictionPosts["errorMsg"], needsGameRefresh: false});
-                } else {
-                    this.setState({predictionPosts: predictionPosts, needsPostsRefresh: false});
+        fetch('/public/api/blog/retrieveAllBlogPostHeaders/' + this.props.postType + '/' + this.props.gameId)
+            .then( result => result.json() )
+            .then(
+                (predictionPosts) => {
+                    if (predictionPosts['errorMsg']) {
+                        this.setState({errorMessage: predictionPosts['errorMsg'], needsGameRefresh: false});
+                    } else {
+                        this.setState({predictionPosts: predictionPosts, needsPostsRefresh: false});
+                    }
+                },
+                (error) => {
+                    console.log('Error retrieving games: ' + error);
                 }
-            },
-            (error) => {
-                console.log("Error retrieving games: " + error);
-            }
-        );
+            );
 
-        console.log("Exiting prediction post view compoment mounting")
+        console.log('Exiting prediction post view compoment mounting');
     }
 
     renderPredictionPostHeaders = () => {
@@ -56,17 +56,17 @@ class PredictionPostsView extends Component {
     }
 
     addNewPredictionClick = () => {
-        if (this.props.postType === "PREDICTION") {
-            this.setState({redirectUrl: "/addPrediction/" + this.props.gameId});
-        } else if (this.props.postType === "ANALYSIS") {
-            this.setState({redirectUrl: "/addAnalysis/" + this.props.gameId});
+        if (this.props.postType === 'PREDICTION') {
+            this.setState({redirectUrl: '/addPrediction/' + this.props.gameId});
+        } else if (this.props.postType === 'ANALYSIS') {
+            this.setState({redirectUrl: '/addAnalysis/' + this.props.gameId});
         } else {
-            console.error("Unknown post type: " + this.props.postType);
+            console.error('Unknown post type: ' + this.props.postType);
         }
     }
 
     render() {
-        if (this.state.redirectUrl !== "") {
+        if (this.state.redirectUrl !== '') {
             this.props.history.push(this.state.redirectUrl);
             return null;
         }
@@ -78,7 +78,7 @@ class PredictionPostsView extends Component {
                 {this.renderPredictionPostHeaders()}
             </div>
         );
-        
+
     }
 }
 

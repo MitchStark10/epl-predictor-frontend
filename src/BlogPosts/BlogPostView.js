@@ -9,7 +9,7 @@ class BlogPostView extends Component {
 
         this.state = {
             postData: {},
-            errorMessage: "",
+            errorMessage: '',
             needsReRender: false,
             numLikes: 0,
             hasUserLikedBlogPost: false
@@ -18,57 +18,51 @@ class BlogPostView extends Component {
 
     componentDidMount() {
         this.retrieveBlogPostData(this.props.postId);
-        this.retrieveBlogPostData()
-        //TODO: Retrieve blog post likes
+        this.retrieveBlogPostData();
+        // TODO: Retrieve blog post likes
     }
 
     retrieveBlogPostData(postId) {
-        fetch("/public/api/blog/retrieveBlogPost/" + postId)
-        .then( response => response.json())
-        .then( 
-            (response) => {
-                this.setState({postData: response});
-            },
-            (error) => {
-                this.setState({errorMessage: error});
-            }
-        );
+        fetch('/public/api/blog/retrieveBlogPost/' + postId)
+            .then( response => response.json())
+            .then(
+                (response) => {
+                    this.setState({postData: response});
+                },
+                (error) => {
+                    this.setState({errorMessage: error});
+                }
+            );
     }
 
     retrievePostLikeStatus(postId) {
-        fetch("/public/api/blog/userBlogLikeStatus/" + postId + "/" + this.props.userToken)
-        .then( response => response.json())
-        .then(
-            (response) => {
-                if (response["userBlogLikeStatus"] === "LIKED") {
-                    this.setState({ hasUserLikedBlogPost: true});
-                } else {
-                    this.setState({ hasUserLikedBlogPost: false});
+        fetch('/public/api/blog/userBlogLikeStatus/' + postId + '/' + this.props.userToken)
+            .then( response => response.json())
+            .then(
+                (response) => {
+                    if (response['userBlogLikeStatus'] === 'LIKED') {
+                        this.setState({ hasUserLikedBlogPost: true});
+                    } else {
+                        this.setState({ hasUserLikedBlogPost: false});
+                    }
+                },
+                (error) => {
+                    this.setState({errorMessage: error});
                 }
-            },
-            (error) => {
-                this.setState({errorMessage: error});
-            }
-        );
-    }
-
-    componentWillReceiveProps(newProps) {
-        if (newProps.postId !== this.props.postId) {
-            this.retrieveBlogPostData(newProps.postId);
-        }
+            );
     }
 
     toggleLikeBlogPost = () => {
-        $.post("/public/api/blog/toggleBlogLikeStatus/" + this.state.postId + "/" + this.props.userToken)
-        .done((response) => {
-            this.setState({hasUserLikedBlogPost: !this.state.hasUserLikedBlogPost});
-        });
+        $.post('/public/api/blog/toggleBlogLikeStatus/' + this.state.postId + '/' + this.props.userToken)
+            .done(() => {
+                this.setState({hasUserLikedBlogPost: !this.state.hasUserLikedBlogPost});
+            });
     }
 
     render() {
-        let likeBlogPostLabel = "LIKE";
+        let likeBlogPostLabel = 'LIKE';
         if (this.state.hasUserLikedBlogPost) {
-            likeBlogPostLabel = "UNLIKE";
+            likeBlogPostLabel = 'UNLIKE';
         }
 
         return (
@@ -81,7 +75,7 @@ class BlogPostView extends Component {
                 <CommentsView forceReload={this.toggleCommentAdded} postId={this.props.postId} userToken={this.props.userToken}/>
             </div>
         );
-        
+
     }
 }
 

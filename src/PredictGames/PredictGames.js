@@ -16,9 +16,9 @@ class PredictGamesView extends Component {
         this.state = {
             upcomingGames: [],
             predictedId: -1,
-            errorMessage: "",
+            errorMessage: '',
             needsGameRefresh: true,
-            redirectUrl: ""
+            redirectUrl: ''
         };
     }
 
@@ -31,15 +31,15 @@ class PredictGamesView extends Component {
     }
 
     componentDidUpdate() {
-        if (this.state.redirectUrl !== "") {
-            this.setState({redirectUrl: "", needsGameRefresh: false});
+        if (this.state.redirectUrl !== '') {
+            this.setState({redirectUrl: '', needsGameRefresh: false});
         } else if (this.state.needsGameRefresh) {
             this.retrieveGames();
         }
     }
 
     isUserLoggedIn() {
-        return this.props.userToken && this.props.userToken !== "";
+        return this.props.userToken && this.props.userToken !== '';
     }
 
     forwardToLoginPage() {
@@ -47,37 +47,37 @@ class PredictGamesView extends Component {
     }
 
     retrieveGames = () => {
-        fetch("/public/api/games/retrieveAllUpcomingGamesWithPredictions/" + this.props.userToken)
+        fetch('/public/api/games/retrieveAllUpcomingGamesWithPredictions/' + this.props.userToken)
             .then(result => result.json())
             .then(
                 (upcomingGames) => {
-                    if (upcomingGames["errorMsg"]) {
-                        this.setState({ errorMessage: upcomingGames["errorMsg"], needsGameRefresh: false });
+                    if (upcomingGames['errorMsg']) {
+                        this.setState({ errorMessage: upcomingGames['errorMsg'], needsGameRefresh: false });
                     } else {
-                        this.setState({ upcomingGames: upcomingGames, needsGameRefresh: false, redirectUrl: "" });
+                        this.setState({ upcomingGames: upcomingGames, needsGameRefresh: false, redirectUrl: '' });
                     }
                 },
                 (error) => {
-                    console.log("Error retrieving games: " + error);
+                    console.log('Error retrieving games: ' + error);
                 }
             );
     };
 
     handlePredictionButtonClick = (event) => {
-        let url = "/public/api/predictions/addOrUpdatePrediction";
+        let url = '/public/api/predictions/addOrUpdatePrediction';
 
         let postData = {
             username: this.props.userToken,
             gameId: event.target.id,
             winningTeam: event.target.value
-        }
+        };
 
         $.post(url, postData)
-            .done((response) => {
+            .done(() => {
                 this.setState({ needsGameRefresh: true });
             })
             .fail((error) => {
-                this.setState({ errorMessage: "Unable to predict game: " + error.responseText });
+                this.setState({ errorMessage: 'Unable to predict game: ' + error.responseText });
             });
     }
 
@@ -91,34 +91,34 @@ class PredictGamesView extends Component {
         for (var i = 0; i < this.state.upcomingGames.length; i++) {
             let game = this.state.upcomingGames[i];
 
-            let gameDate = new Date(game["GameDate"]);
+            let gameDate = new Date(game['GameDate']);
             var day = gameDate.getDate();
             var monthIndex = gameDate.getMonth() + 1;
             var year = gameDate.getFullYear();
 
             jsxList.push(
-                <div className="UpcomingGame" key={game["GameId"]}>
-                    <h3>{monthIndex}/{day}/{year} - {game["Competition"]}</h3>
+                <div className="UpcomingGame" key={game['GameId']}>
+                    <h3>{monthIndex}/{day}/{year} - {game['Competition']}</h3>
 
                     <button className="SmButton"
-                        id={game["GameId"]}
+                        id={game['GameId']}
                         onClick={this.handlePredictionButtonClick}
-                        value={game["HomeTeamName"]}>
-                        {this.teamNameUtility.mapTeamNames(game["HomeTeamName"])} {this.imageRetrieverService.renderTeamLogo(game["HomeTeamName"])}
+                        value={game['HomeTeamName']}>
+                        {this.teamNameUtility.mapTeamNames(game['HomeTeamName'])} {this.imageRetrieverService.renderTeamLogo(game['HomeTeamName'])}
                     </button>
 
                     <button className="SmButton"
-                        id={game["GameId"]}
+                        id={game['GameId']}
                         onClick={this.handlePredictionButtonClick}
                         value="Tie">
                         Tie
                     </button>
 
                     <button className="SmButton"
-                        id={game["GameId"]}
+                        id={game['GameId']}
                         onClick={this.handlePredictionButtonClick}
-                        value={game["AwayTeamName"]}>
-                        {this.teamNameUtility.mapTeamNames(game["AwayTeamName"])} {this.imageRetrieverService.renderTeamLogo(game["AwayTeamName"])}
+                        value={game['AwayTeamName']}>
+                        {this.teamNameUtility.mapTeamNames(game['AwayTeamName'])} {this.imageRetrieverService.renderTeamLogo(game['AwayTeamName'])}
                     </button>
                     <br />
                     {this.renderPrediction(game)}
@@ -137,9 +137,9 @@ class PredictGamesView extends Component {
     }
 
     renderPrediction = (game) => {
-        if (game["PredictedWinningTeam"]) {
+        if (game['PredictedWinningTeam']) {
             return (
-                <h3>Predicted Winner: {this.teamNameUtility.mapTeamNames(game["PredictedWinningTeam"])} {this.imageRetrieverService.renderTeamLogo(game["PredictedWinningTeam"])}</h3>
+                <h3>Predicted Winner: {this.teamNameUtility.mapTeamNames(game['PredictedWinningTeam'])} {this.imageRetrieverService.renderTeamLogo(game['PredictedWinningTeam'])}</h3>
             );
         }
 

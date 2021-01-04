@@ -22,40 +22,40 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
-            userToken: "",
+            userToken: '',
             isCheckingLogin: true
         };
     }
 
     setLoggedIn = (userToken) => {
-        console.log("Setting logged in: " + userToken);
+        console.log('Setting logged in: ' + userToken);
         history.push('/');
         this.setState({userToken: userToken});
     }
 
     componentDidMount() {
-        let url = "/public/api/auth/login";
+        let url = '/public/api/auth/login';
 
         $.post(url)
-        .done((response) => {
-            this.setState({userToken: response["username"], isCheckingLogin: false});
-        })
-        .fail(() => {
-            this.setState({isCheckingLogin: false});
-        });
+            .done((response) => {
+                this.setState({userToken: response['username'], isCheckingLogin: false});
+            })
+            .fail(() => {
+                this.setState({isCheckingLogin: false});
+            });
     }
 
     logout = () => {
-        $.post("/public/api/auth/logout")
-        .done((data) => {
-            this.setState({userToken: ""});
-            history.push('/');
-        })
-        .fail((error) => {
-            console.log(error);
-            this.setState({userToken: ""});
-            history.push('/');
-        })
+        $.post('/public/api/auth/logout')
+            .done(() => {
+                this.setState({userToken: ''});
+                history.push('/');
+            })
+            .fail((error) => {
+                console.log(error);
+                this.setState({userToken: ''});
+                history.push('/');
+            });
 
     }
 
@@ -105,7 +105,7 @@ class App extends Component {
                         <PredictGamesView userToken={this.state.userToken} />
                     </Route>
                     <Route path="/" render={() => <NotFoundPage />} />
-                </Switch>                
+                </Switch>
             </Router>
         );
     }

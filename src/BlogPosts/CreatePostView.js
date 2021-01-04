@@ -9,13 +9,13 @@ class CreatePostView extends React.Component {
         super();
 
         this.state = {
-            postType: "ANALYSIS",
-            selectedGameId: "none",
+            postType: 'ANALYSIS',
+            selectedGameId: 'none',
             gameOptions: [],
             needsUpdate: true,
-            redirectUrl: "",
-            errorMsg: ""
-        }
+            redirectUrl: '',
+            errorMsg: ''
+        };
     }
 
     componentDidMount() {
@@ -27,9 +27,9 @@ class CreatePostView extends React.Component {
     }
 
     componentDidUpdate() {
-        console.log("testing in update component");
-        if (this.state.redirectUrl !== "") {
-            this.setState({redirectUrl: ""})
+        console.log('testing in update component');
+        if (this.state.redirectUrl !== '') {
+            this.setState({redirectUrl: ''});
             this.props.history.push(this.state.redirectUrl);
         } else {
             this.retrieveGameList();
@@ -37,7 +37,7 @@ class CreatePostView extends React.Component {
     }
 
     isUserLoggedIn() {
-        return this.props.userToken && this.props.userToken !== "";
+        return this.props.userToken && this.props.userToken !== '';
     }
 
     forwardToLoginPage() {
@@ -45,54 +45,54 @@ class CreatePostView extends React.Component {
     }
 
    retrieveGameList = () => {
-        if (!this.state.needsUpdate) {
-            return;
-        }
+       if (!this.state.needsUpdate) {
+           return;
+       }
 
-        let url; 
-        
-        if (this.state.postType === "PREDICTION") {
-            url = "/public/api/games/retrieveAllUpcomingGames";
-        } else {
-            url = "/public/api/games/retrieveAllPastGames";
-        } 
+       let url;
 
-        console.log("Retrieving url: " + url);
-        $.get(url)
-        .done( (response) => {
-            let gameId = this.state.postType === "PREDICTION" ? response[0]['GameId'] : "none";
-            this.setState({gameOptions: response, selectedGameId: gameId, needsUpdate: false});
-        })
-        .fail( (error) => {
-            console.error("Encountered error retrieving all games: " + error);
-            this.setState({errorMsg: error, needsUpdate: false});
-        });
+       if (this.state.postType === 'PREDICTION') {
+           url = '/public/api/games/retrieveAllUpcomingGames';
+       } else {
+           url = '/public/api/games/retrieveAllPastGames';
+       }
+
+       console.log('Retrieving url: ' + url);
+       $.get(url)
+           .done( (response) => {
+               let gameId = this.state.postType === 'PREDICTION' ? response[0]['GameId'] : 'none';
+               this.setState({gameOptions: response, selectedGameId: gameId, needsUpdate: false});
+           })
+           .fail( (error) => {
+               console.error('Encountered error retrieving all games: ' + error);
+               this.setState({errorMsg: error, needsUpdate: false});
+           });
    }
 
     onPostTypeChange = (e) => {
         this.setState({postType: e.target.selectedOptions[0].id, needsUpdate: true});
-    } 
+    }
 
     onGameChange = (e) => {
         this.setState({selectedGameId: e.target.selectedOptions[0].id});
     }
 
     gotoAddBlogPostView = () => {
-        let url = "";
-        if (this.state.postType === "PREDICTION") {
-            url += "/addPrediction"
+        let url = '';
+        if (this.state.postType === 'PREDICTION') {
+            url += '/addPrediction';
         } else {
-            url += "addAnalysis"
+            url += 'addAnalysis';
         }
 
-        url += "/" + this.state.selectedGameId;
+        url += '/' + this.state.selectedGameId;
 
         this.setState({redirectUrl: url});
-    
+
     }
 
     renderNoneOption = () => {
-        if (this.state.postType === "ANALYSIS") {
+        if (this.state.postType === 'ANALYSIS') {
             return <option key="none" id="none">None</option>;
         }
 
@@ -100,9 +100,9 @@ class CreatePostView extends React.Component {
     }
 
     render() {
-        
 
-        //TODO: the selects are ugly, fix them
+
+        // TODO: the selects are ugly, fix them
         return (
             <div className="CreatePost">
                 <h1>CREATE POST</h1>
@@ -117,7 +117,7 @@ class CreatePostView extends React.Component {
                 <br />
                 <button className="SmBUtton" id="CreatePost" onClick={this.gotoAddBlogPostView}>CREATE POST</button>
             </div>
-        )
+        );
     }
 }
 

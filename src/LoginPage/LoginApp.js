@@ -2,16 +2,16 @@ import React from 'react';
 import NewUserForm from './NewUserForm';
 import LoginForm from './LoginForm';
 import { withRouter } from 'react-router-dom';
-import './Login.css'
+import './Login.css';
 
 class LoginApp extends React.Component {
-    constructor(props) {
+    constructor() {
         super();
 
-        this.LOGIN_FORM = "login";
-        this.NEW_USER_FORM = "newUser";
-        this.CREATE_NEW_USER_TEXT = "NEW USER";
-        this.LOGIN_WITH_EXISTING_ACCOUNT_TEXT = "Login With Existing Account";
+        this.LOGIN_FORM = 'login';
+        this.NEW_USER_FORM = 'newUser';
+        this.CREATE_NEW_USER_TEXT = 'NEW USER';
+        this.LOGIN_WITH_EXISTING_ACCOUNT_TEXT = 'Login With Existing Account';
 
         this.state = {
             form: this.LOGIN_FORM,
@@ -19,7 +19,7 @@ class LoginApp extends React.Component {
         };
     }
 
-    toggleForm(e) {
+    toggleForm() {
         if (this.state.form === this.LOGIN_FORM) {
             this.setState({form: this.NEW_USER_FORM, buttonText: this.LOGIN_WITH_EXISTING_ACCOUNT_TEXT});
         } else {
@@ -32,11 +32,11 @@ class LoginApp extends React.Component {
             return (
                 <LoginForm setLoggedIn={this.props.setLoggedIn} />
             );
-        } else {
-            return (
-                <NewUserForm setLoggedIn={this.props.setLoggedIn} />
-            );
         }
+        return (
+            <NewUserForm setLoggedIn={this.props.setLoggedIn} />
+        );
+
     }
 
     onGoogleLoginClick = () => {
@@ -59,7 +59,7 @@ class LoginApp extends React.Component {
                 </div>
             </div>
         );
-        
+
     }
 }
 

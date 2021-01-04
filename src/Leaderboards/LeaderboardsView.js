@@ -3,12 +3,12 @@ import './LeaderboardsView.css';
 
 class LeaderboardsView extends Component {
 
-    constructor(props) {
+    constructor() {
         super();
 
         this.state = {
             leaderboardStats: [],
-            errorMessage: "",
+            errorMessage: '',
             needsLeaderboardsRefresh: true
         };
     }
@@ -24,20 +24,20 @@ class LeaderboardsView extends Component {
     }
 
     retrieveLeaderboardStats() {
-        fetch("/public/api/leaderboards/")
-        .then( result => result.json() )
-        .then(
-            (leaderboardStats) => {
-                if (leaderboardStats["errorMsg"]) {
-                    this.setState({errorMessage: leaderboardStats["errorMsg"], needsLeaderboardsRefresh: false});
-                } else {
-                    this.setState({leaderboardStats: leaderboardStats, needsLeaderboardsRefresh: false});
+        fetch('/public/api/leaderboards/')
+            .then( result => result.json() )
+            .then(
+                (leaderboardStats) => {
+                    if (leaderboardStats['errorMsg']) {
+                        this.setState({errorMessage: leaderboardStats['errorMsg'], needsLeaderboardsRefresh: false});
+                    } else {
+                        this.setState({leaderboardStats: leaderboardStats, needsLeaderboardsRefresh: false});
+                    }
+                },
+                (error) => {
+                    console.log('Error retrieving games: ' + error);
                 }
-            },
-            (error) => {
-                console.log("Error retrieving games: " + error);
-            }
-        );
+            );
     }
 
     renderLeaderboardStats() {
@@ -54,14 +54,14 @@ class LeaderboardsView extends Component {
                             <th>Streak</th>
                         </tr>
                         {this.state.leaderboardStats.map((userStats, index) => {
-                            return (<tr key={index}>
-                                <td>{userStats["place"]}</td>
-                                <td>{userStats["username"]}</td>
-                                <td>{userStats["correctPredictionRate"]}</td>
-                                <td>{userStats["totalPredictionCount"]}</td>
-                                <td>{userStats["correctPredictionCount"]}</td>
-                                <td>{userStats["streak"]}</td>
-                            </tr>);
+                            return <tr key={index}>
+                                <td>{userStats['place']}</td>
+                                <td>{userStats['username']}</td>
+                                <td>{userStats['correctPredictionRate']}</td>
+                                <td>{userStats['totalPredictionCount']}</td>
+                                <td>{userStats['correctPredictionCount']}</td>
+                                <td>{userStats['streak']}</td>
+                            </tr>;
                         })}
                     </tbody>
                 </table>

@@ -2,15 +2,15 @@ import React from 'react';
 import $ from 'jquery';
 
 class NewUserForm extends React.Component {
-    constructor(props) {
+    constructor() {
         super();
 
         this.state = {
-            username: "",
-            password: "",
-            confirmedPassword: "",
-            statusMessage: ""
-        }
+            username: '',
+            password: '',
+            confirmedPassword: '',
+            statusMessage: ''
+        };
     }
 
     handleTextChange(e) {
@@ -21,18 +21,18 @@ class NewUserForm extends React.Component {
 
     createNewUser() {
         if (this.state.password === this.state.confirmedPassword) {
-            //send to server
-            let url = "/public/api/auth/newUser";
+            // send to server
+            let url = '/public/api/auth/newUser';
 
             $.post(url, this.state)
-            .done((response) => {
-                this.props.setLoggedIn(this.state.username);
-            })
-            .fail((error) => {
-                this.setState({statusMessage: "Failed to create new user: " + error.responseText});
-            });
+                .done(() => {
+                    this.props.setLoggedIn(this.state.username);
+                })
+                .fail((error) => {
+                    this.setState({statusMessage: 'Failed to create new user: ' + error.responseText});
+                });
         } else {
-            this.setState({statusMessage: "Passwords did not match."})
+            this.setState({statusMessage: 'Passwords did not match.'});
         }
     }
 
@@ -45,7 +45,7 @@ class NewUserForm extends React.Component {
                 <button className="SmButton" id="createNewUser" onClick={this.createNewUser.bind(this)}>CREATE NEW USER</button>
                 <p>{this.state.statusMessage}</p>
             </div>
-        )
+        );
     }
 }
 

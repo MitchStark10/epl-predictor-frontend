@@ -4,13 +4,13 @@ import $ from 'jquery';
 
 class LoginForm extends Component {
 
-    constructor(props) {
+    constructor() {
         super();
 
         this.state = {
-            username: "",
-            password: "",
-            statusMessage: "",
+            username: '',
+            password: '',
+            statusMessage: '',
         };
 
         this.loginWithCookies();
@@ -23,29 +23,29 @@ class LoginForm extends Component {
     }
 
     loginWithCookies() {
-        let url = "/public/api/auth/login";
+        let url = '/public/api/auth/login';
 
         $.post(url)
-        .done((response) => {
-            this.props.setLoggedIn(response["username"]);
-        })
-        .fail((error) => {
-            console.log("Error during cookie login: " + error.responseText);
-        });
+            .done((response) => {
+                this.props.setLoggedIn(response['username']);
+            })
+            .fail((error) => {
+                console.log('Error during cookie login: ' + error.responseText);
+            });
     }
 
     login() {
-        let url = "/public/api/auth/login";
+        let url = '/public/api/auth/login';
 
         $.post(url, this.state)
-        .done((response) => {
-            this.props.setLoggedIn(this.state.username);
-            //TODO: Use a redirect parameter to determine where to send the user
-            this.props.history.push('/');
-        })
-        .fail((error) => {
-            this.setState({statusMessage: "Unable to login: " + error.responseText});
-        });
+            .done(() => {
+                this.props.setLoggedIn(this.state.username);
+                // TODO: Use a redirect parameter to determine where to send the user
+                this.props.history.push('/');
+            })
+            .fail((error) => {
+                this.setState({statusMessage: 'Unable to login: ' + error.responseText});
+            });
     }
 
     render() {

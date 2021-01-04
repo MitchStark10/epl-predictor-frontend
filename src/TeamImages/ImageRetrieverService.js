@@ -49,7 +49,7 @@ class ImageRetrieverService {
 
     renderTeamLogo = (teamName) => {
         if (teamName in this.imageMap) {
-            return <img src={this.imageMap[teamName]} className="TeamLogo" alt={teamName} />
+            return <img src={this.imageMap[teamName]} className="TeamLogo" alt={teamName} />;
         }
 
         return null;
