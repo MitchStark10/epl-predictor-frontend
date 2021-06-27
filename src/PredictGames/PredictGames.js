@@ -100,21 +100,21 @@ class PredictGamesView extends Component {
                 <div className="UpcomingGame" key={game['GameId']}>
                     <h3>{monthIndex}/{day}/{year} - {game['Competition']}</h3>
 
-                    <button className="SmButton"
+                    <button className="SmButton predict-games-button"
                         id={game['GameId']}
                         onClick={this.handlePredictionButtonClick}
                         value={game['HomeTeamName']}>
                         {this.teamNameUtility.mapTeamNames(game['HomeTeamName'])} {this.imageRetrieverService.renderTeamLogo(game['HomeTeamName'])}
                     </button>
 
-                    <button className="SmButton"
+                    <button className="SmButton predict-games-button"
                         id={game['GameId']}
                         onClick={this.handlePredictionButtonClick}
                         value="Tie">
                         Tie
                     </button>
 
-                    <button className="SmButton"
+                    <button className="SmButton predict-games-button"
                         id={game['GameId']}
                         onClick={this.handlePredictionButtonClick}
                         value={game['AwayTeamName']}>
@@ -139,7 +139,7 @@ class PredictGamesView extends Component {
     renderPrediction = (game) => {
         if (game['PredictedWinningTeam']) {
             return (
-                <h3>Predicted Winner: {this.teamNameUtility.mapTeamNames(game['PredictedWinningTeam'])} {this.imageRetrieverService.renderTeamLogo(game['PredictedWinningTeam'])}</h3>
+                <h3 className="prediction-text">Predicted Winner: {this.teamNameUtility.mapTeamNames(game['PredictedWinningTeam'])} {this.imageRetrieverService.renderTeamLogo(game['PredictedWinningTeam'])}</h3>
             );
         }
 

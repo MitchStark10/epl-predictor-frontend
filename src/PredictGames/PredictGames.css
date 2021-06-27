@@ -9,6 +9,7 @@
 .TeamLogo {
     width: 20px;
     height: 20px;
+    margin-left: 10px;
 }
 
 @media only screen and (min-width: 1200px) {
@@ -19,4 +20,15 @@
 
 .PredictGamesView {
     margin: 0px auto;
+}
+
+.predict-games-button {
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.prediction-text {
+    display: inline-flex;
+    align-items: center;
 }
