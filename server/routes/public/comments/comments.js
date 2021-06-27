@@ -15,7 +15,7 @@ VALUES (?, ?, ?, NOW())
 `;
 
 app.get('/retrieveAllComments/:postId', async (req, res) => {
-    console.log("Entering /retrieveAllComments/" + req.params.postId);
+    console.log('Entering /retrieveAllComments/' + req.params.postId);
 
     try {
         const params = [req.params.postId];
@@ -23,28 +23,28 @@ app.get('/retrieveAllComments/:postId', async (req, res) => {
         const response = await QueryRunner.runQuery(query);
         res.status(200).json(response);
     } catch (exception) {
-        console.error("Caught unexpected exception during comments retrieval: " + exception);
-        res.status(500).json({errorMsg: "Unable to retrieve comments. Please try again later."});
+        console.error('Caught unexpected exception during comments retrieval: ' + exception);
+        res.status(500).json({errorMsg: 'Unable to retrieve comments. Please try again later.'});
     }
 
-    console.log("Exiting /retrieveAllComments/" + req.params.postId);
+    console.log('Exiting /retrieveAllComments/' + req.params.postId);
 });
 
 app.post('/addComment', async (req, res) => {
     const addComment = async (req, res) => {
-        console.log("Entering /addcomment");
+        console.log('Entering /addcomment');
 
         try {
             const params = [req.body.username, req.body.postId, req.body.commentText];
             const insertQuery = mysql.format(INSERT_NEW_COMMENT_SQL, params);
             await QueryRunner.runQuery(insertQuery);
-            res.status(200).json("Succesfully added new comment");
+            res.status(200).json('Succesfully added new comment');
         } catch (exception) {
-            console.error("Caught unexpected exception during add comment: " + exception);
-            res.status(500).json({ errorMsg: "Unable to add new comment. Please try again later." });
+            console.error('Caught unexpected exception during add comment: ' + exception);
+            res.status(500).json({ errorMsg: 'Unable to add new comment. Please try again later.' });
         }
 
-        console.log("Exiting /addcomment");
+        console.log('Exiting /addcomment');
 
     };
 

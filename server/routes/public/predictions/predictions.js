@@ -30,41 +30,41 @@ WHERE PREDICTION.Username = ?
 app.post('/addOrUpdatePrediction', async (req, res) => {
     const putPrediction = async (req, res) => {
         try {
-            let upsertParams = [req.body["username"], req.body["gameId"], req.body["winningTeam"], req.body["winningTeam"]];
+            let upsertParams = [req.body['username'], req.body['gameId'], req.body['winningTeam'], req.body['winningTeam']];
             let upsertPrediction = mysql.format(UPSERT_PREDICION_SQL, upsertParams);
             QueryRunner.runQuery(upsertPrediction);
-            res.status(200).json("Prediction updated");
+            res.status(200).json('Prediction updated');
         } catch(error) {
-            console.error("Problem updating prediction: " + error);
-            res.status(500).json("Problem updating prediction");
+            console.error('Problem updating prediction: ' + error);
+            res.status(500).json('Problem updating prediction');
         }
     };
-    Security.authorizeCredentialsForUserModification(req, res, req.body["username"], putPrediction);
+    Security.authorizeCredentialsForUserModification(req, res, req.body['username'], putPrediction);
 });
 
 app.get('/upcomingPredictions/:username', async (req, res) => {
-    let params = [req.params["username"]];
+    let params = [req.params['username']];
     let retrievePreidctionsSql = mysql.format(RETRIEVE_UPCOMING_PREDICTIONS_SQL, params);
 
     try {
         let response = await QueryRunner.runQuery(retrievePreidctionsSql);
         res.status(200).json(response);
     } catch (error) {
-        console.error("Error retrieving upcoming predictions: " + error);
-        res.status(500).json("Error retrieving upcoming predictions");
+        console.error('Error retrieving upcoming predictions: ' + error);
+        res.status(500).json('Error retrieving upcoming predictions');
     }
 });
 
 app.get('/previousPredictions/:username', async (req, res) => {
-    let params = [req.params["username"]];
+    let params = [req.params['username']];
     let retrievePreidctionsSql = mysql.format(RETRIEVE_PAST_PREDICTIONS_SQL, params);
 
     try {
         let response = await QueryRunner.runQuery(retrievePreidctionsSql);
         res.status(200).json(response);
     } catch (error) {
-        console.error("Error retrieving past predictions: " + error);
-        res.status(500).json("Error retrieving past predictions");
+        console.error('Error retrieving past predictions: ' + error);
+        res.status(500).json('Error retrieving past predictions');
     }
 
 });

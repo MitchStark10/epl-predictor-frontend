@@ -6,37 +6,37 @@ class MenuRouter extends React.Component {
     constructor() {
         super();
 
-		this.minimumDesktopPixelWidth = 1050;
-		this.minimumDesktopPixelWidthToDisplayFullHeader = 1260;
+        this.minimumDesktopPixelWidth = 1050;
+        this.minimumDesktopPixelWidthToDisplayFullHeader = 1260;
 
         this.state = {
-			displayLoggedInUser: false,
+            displayLoggedInUser: false,
             useMobileMenu: true
         };
     }
 
 	componentDidMount = () => {
-		window.addEventListener("resize", this.resize.bind(this));
-		this.resize();
+	    window.addEventListener('resize', this.resize.bind(this));
+	    this.resize();
 	}
 
 	resize = () => {
-		this.setState({ 
-			useMobileMenu: window.innerWidth <= this.minimumDesktopPixelWidth, 
-			displayLoggedInUser: window.innerWidth >= this.minimumDesktopPixelWidthToDisplayFullHeader 
-		});
-    }
+	    this.setState({
+	        useMobileMenu: window.innerWidth <= this.minimumDesktopPixelWidth,
+	        displayLoggedInUser: window.innerWidth >= this.minimumDesktopPixelWidthToDisplayFullHeader
+	    });
+	}
 
-    render() {
-        if (this.state.useMobileMenu) {
-			return <MobileHeaderMenu userToken={this.props.userToken} />;
-		}
+	render() {
+	    if (this.state.useMobileMenu) {
+	        return <MobileHeaderMenu userToken={this.props.userToken} />;
+	    }
 
-		return <DesktopHeaderMenu 
-			userToken={this.props.userToken} 
-			showLoggedInUser={this.state.displayLoggedInUser}
-		/>;
-    }
+	    return <DesktopHeaderMenu
+	        userToken={this.props.userToken}
+	        showLoggedInUser={this.state.displayLoggedInUser}
+	    />;
+	}
 }
 
 export default MenuRouter;

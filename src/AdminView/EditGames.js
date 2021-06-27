@@ -8,7 +8,7 @@ class EditGames extends Component {
 
         this.state = {
             games: [],
-            errorMessage: "",
+            errorMessage: '',
             needsGameRefresh: true
         };
     }
@@ -24,20 +24,20 @@ class EditGames extends Component {
     }
 
     retrieveGames = () => {
-        fetch("/public/api/games/retrieveAllGames")
-        .then( result => result.json() )
-        .then(
-            (previousGames) => {
-                if (previousGames["errorMsg"]) {
-                    this.setState({errorMessage: previousGames["errorMsg"], needsGameRefresh: false});
-                } else {
-                    this.setState({games: previousGames, needsGameRefresh: false});
+        fetch('/public/api/games/retrieveAllGames')
+            .then( result => result.json() )
+            .then(
+                (previousGames) => {
+                    if (previousGames['errorMsg']) {
+                        this.setState({errorMessage: previousGames['errorMsg'], needsGameRefresh: false});
+                    } else {
+                        this.setState({games: previousGames, needsGameRefresh: false});
+                    }
+                },
+                (error) => {
+                    console.log('Error retrieving games: ' + error);
                 }
-            },
-            (error) => {
-                console.log("Error retrieving games: " + error);
-            }
-        );
+            );
     };
 
     renderGames = () => {
@@ -47,7 +47,7 @@ class EditGames extends Component {
             let game = this.state.games[i];
 
             jsxList.push(
-                <div className="EditGameContainer" key={game["GameId"]}>
+                <div className="EditGameContainer" key={game['GameId']}>
                     <EditGame game={game} />
                     <br />
                 </div>

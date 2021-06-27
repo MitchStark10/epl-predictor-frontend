@@ -16,5 +16,5 @@ app.use('/comments', require('./comments/comments'));
 
 // the catch all route
 app.all('*', (req, res) => {
-	res.status(404).send({ errorMsg: 'not found' });
+    res.status(404).send({ errorMsg: 'not found' });
 });
