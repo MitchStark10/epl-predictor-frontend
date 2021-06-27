@@ -29,7 +29,7 @@ QueryRunner.prototype.runQuery = function (sql_query) {
                 return;
             }
 
-            if (connection == undefined) {
+            if (!connection) {
                 reject('Connection to DB was not created');
                 return;
             }

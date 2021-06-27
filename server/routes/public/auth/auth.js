@@ -15,8 +15,8 @@ const LOGIN_WITH_COOKIE_SQL = `
 SELECT COUNT(*) AS USER_COUNT
 FROM SESSION_COOKIE
 WHERE Username = ?
-    AND SessionCookie = ?
-    AND Device = ?
+AND SessionCookie = ?
+AND Device = ?
 `;
 
 const NEW_USER_SQL = `
@@ -34,13 +34,13 @@ const UPDATE_USERNAME_SQL = `
 UPDATE USER
 SET Username = ?
 WHERE eMail = ?
-    AND IsGoogleUser = 1
+AND IsGoogleUser = 1
 `;
 
 app.post('/login', async (req, res) => {
     try {
         console.log('Logging in with device: ' + JSON.stringify(req.device));
-        if (req.cookies !== undefined) {
+        if (req.cookies) {
             console.log('Attempting to login with cookies: ' + JSON.stringify(req.cookies));
             let cookieParams = [req.cookies['SMLU'], req.cookies['SMLC'], req.device.type.toUpperCase()];
             let loginWithCookieQuery = mysql.format(LOGIN_WITH_COOKIE_SQL, cookieParams);
@@ -110,23 +110,23 @@ app.post('/newUser', async (req, res) => {
 app.post('/updateUsername', async (req, res) => {
 
     const updateUsernameFn = async (req, res) => {
-	    console.log('Requested username update: ' + req.body.newUsername);
-	    const params = [req.body.newUsername, req.body.currentUsername];
-	    const updateUsernameQuery = mysql.format(UPDATE_USERNAME_SQL, params);
-	    try {
-	        await QueryRunner.runQuery(updateUsernameQuery);
+        console.log('Requested username update: ' + req.body.newUsername);
+        const params = [req.body.newUsername, req.body.currentUsername];
+        const updateUsernameQuery = mysql.format(UPDATE_USERNAME_SQL, params);
+        try {
+            await QueryRunner.runQuery(updateUsernameQuery);
             Security.createAndSetSessionCookie(req.body.newUsername, 'GOOGLEPASS', req.device.type.toUpperCase(), res);
-	        res.status(200).json({
-	            success: true
-	        });
-	    } catch (error) {
-	        // TODO: Catch error related to existing username
-	        console.error('Error updating username: ' + error);
-	        res.status(500).json({
-	            success: false,
-	            message: error.toString()
-	        });
-	    }
+            res.status(200).json({
+                success: true
+            });
+        } catch (error) {
+            // TODO: Catch error related to existing username
+            console.error('Error updating username: ' + error);
+            res.status(500).json({
+                success: false,
+                message: error.toString()
+            });
+        }
     };
 
     Security.authorizeCredentialsForUserModification(req, res, req.body['currentUsername'], updateUsernameFn);

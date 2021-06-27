@@ -48,7 +48,7 @@ VALUES (?, ?, ?, ?)
 `;
 
 module.exports.authorizeUserCredentialsViaCookie = async (req, res, next) => {
-    if (req.cookies !== undefined) {
+    if (req.cookies) {
         console.log('Attempting to login with cookies: ' + JSON.stringify(req.cookies));
         let cookieParams = [req.cookies['SMLU'], req.cookies['SMLC'], req.device.type.toUpperCase()];
         let loginWithCookieQuery = mysql.format(LOGIN_WITH_COOKIE_SQL, cookieParams);
@@ -63,7 +63,7 @@ module.exports.authorizeUserCredentialsViaCookie = async (req, res, next) => {
 };
 
 module.exports.authorizeCredentialsForUserModification = async (req, res, username, next) => {
-    if (req.cookies !== undefined) {
+    if (req.cookies) {
         console.log('Attempting to login with cookies: ' + JSON.stringify(req.cookies));
         let cookieParams = [req.cookies['SMLU'], req.cookies['SMLC'], req.device.type.toUpperCase()];
         let loginWithCookieQuery = mysql.format(LOGIN_AND_RETRIEVE_USERNAME_SQL, cookieParams);
@@ -79,7 +79,7 @@ module.exports.authorizeCredentialsForUserModification = async (req, res, userna
 };
 
 module.exports.authorizeAdminForAction = async (req, res, next) => {
-    if (req.cookies !== undefined) {
+    if (req.cookies) {
         console.log('Attempting to login with cookies: ' + JSON.stringify(req.cookies));
         let cookieParams = [req.cookies['SMLU'], req.cookies['SMLC'], req.device.type.toUpperCase()];
         let retrieveUserInfoQuery = mysql.format(LOGIN_AND_RETRIEVE_STATUS_SQL, cookieParams);

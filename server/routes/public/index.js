@@ -1,5 +1,4 @@
 const app = module.exports = require('express')();
-const Security = require('../../service/Security');
 
 app.get('/ping', (req, res) => {
     res.send({ msg: 'Server is up and running' });

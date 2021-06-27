@@ -1,8 +1,6 @@
 const app = module.exports = require('express')();
 const mysql = require('mysql');
 const QueryRunner = require('../../../service/QueryRunner').buildQueryRunner();
-const bcrypt = require('bcrypt-nodejs');
-const PasswordHasher = require('../../../service/PasswordHasher')();
 
 const RETRIEVE_ALL_USERNAMES = `
 SELECT DISTINCT Username
@@ -42,7 +40,7 @@ app.get('/', async (req, res) => {
     res.status(200).json(leaderboardStatsList);
 });
 
-processPredictions = (predictionList, username) => {
+const processPredictions = (predictionList, username) => {
     var correctPredictionsCount = 0;
     let totalPredictionsCount = predictionList.length;
     var streakSymbol = '';
