@@ -37,3 +37,6 @@ scripts/*
 
 # Eslint
 .eslintcache
+
+# Local ENV Variables
+.env
