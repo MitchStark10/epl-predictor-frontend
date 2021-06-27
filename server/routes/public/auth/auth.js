@@ -109,7 +109,7 @@ app.post('/newUser', async (req, res) => {
 
 app.post('/updateUsername', async (req, res) => {
 
-    const updateUsernameFn = async (req, res) => {
+    const updateUsernameFn = async () => {
         console.log('Requested username update: ' + req.body.newUsername);
         const params = [req.body.newUsername, req.body.currentUsername];
         const updateUsernameQuery = mysql.format(UPDATE_USERNAME_SQL, params);

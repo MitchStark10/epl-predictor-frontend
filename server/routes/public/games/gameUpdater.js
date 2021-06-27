@@ -62,7 +62,7 @@ let checkIfPredictionTeamNamesNeedToUpdate = async (req) => {
 };
 
 app.post('/updateGame/:gameId', async (req, res) => {
-    const updateGame = async (req, res) => {
+    const updateGame = async () => {
         try {
             await checkIfPredictionTeamNamesNeedToUpdate(req);
         } catch (error) {

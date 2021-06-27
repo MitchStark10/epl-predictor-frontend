@@ -10,21 +10,21 @@ function QueryRunner() {
     });
 }
 
-QueryRunner.prototype.logQueryResponse = function (query_text, rows) {
-    console.log('For query: ' + query_text);
+QueryRunner.prototype.logQueryResponse = function (queryText, rows) {
+    console.log('For query: ' + queryText);
     console.log(JSON.stringify(rows) + ' row(s) returned');
     console.log('\n\n\n');
 };
 
-QueryRunner.prototype.logError = function (sql_query, error) {
-    console.error('Error performing: ' + sql_query + '\n' + error + '\n\n');
+QueryRunner.prototype.logError = function (sqlQuery, error) {
+    console.error('Error performing: ' + sqlQuery + '\n' + error + '\n\n');
 };
 
-QueryRunner.prototype.runQuery = function (sql_query) {
+QueryRunner.prototype.runQuery = function (sqlQuery) {
     return new Promise((resolve, reject) => {
         this.pool.getConnection( (err, connection) => {
             if (err) {
-                this.logError(sql_query, err);
+                this.logError(sqlQuery, err);
                 reject(err);
                 return;
             }
@@ -34,14 +34,14 @@ QueryRunner.prototype.runQuery = function (sql_query) {
                 return;
             }
 
-            connection.query(sql_query, (query_err, response) => {
-                if (query_err) {
-                    this.logError(sql_query, query_err);
-                    reject(query_err);
+            connection.query(sqlQuery, (queryErr, response) => {
+                if (queryErr) {
+                    this.logError(sqlQuery, queryErr);
+                    reject(queryErr);
                     return;
                 }
 
-                this.logQueryResponse(sql_query, response);
+                this.logQueryResponse(sqlQuery, response);
                 resolve(response);
             });
 

@@ -28,7 +28,7 @@ WHERE PREDICTION.Username = ?
 `;
 
 app.post('/addOrUpdatePrediction', async (req, res) => {
-    const putPrediction = async (req, res) => {
+    const putPrediction = async () => {
         try {
             let upsertParams = [req.body['username'], req.body['gameId'], req.body['winningTeam'], req.body['winningTeam']];
             let upsertPrediction = mysql.format(UPSERT_PREDICION_SQL, upsertParams);
