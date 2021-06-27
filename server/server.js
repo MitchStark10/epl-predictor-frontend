@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const path = require("path");
+require('dotenv').config();
 const publicRoutes = require('./routes/public');
 const device = require('express-device');
 const session = require('express-session');
@@ -35,7 +36,7 @@ passport.deserializeUser(function(user, done) {
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL:  GOOGLE_REDIRECT_URL //TODO: use environment variable for the callback
+    callbackURL:  GOOGLE_REDIRECT_URL
 }, function(accessToken, refreshToken, profile, done) {
     return done(null, profile);
 }));
