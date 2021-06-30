@@ -51,7 +51,7 @@ class MobileHeaderMenu extends Component {
     renderAdminView = () => {
         if (this.state.isAdmin) {
             return (
-                <button className="SmButton" id="/admin" onClick={this.handleButtonClick}>ADMIN</button>
+                <button className="SmButton" id="/admin" onClick={this.handleButtonClick}>Admin</button>
             );
         }
 
@@ -62,10 +62,10 @@ class MobileHeaderMenu extends Component {
         let buttonText, buttonId;
 
         if (this.props.userToken) {
-            buttonText = 'LOGOUT';
+            buttonText = 'Logout';
             buttonId = '/logout';
         } else {
-            buttonText = 'LOGIN';
+            buttonText = 'Login';
             buttonId = '/login';
         }
 
@@ -83,10 +83,10 @@ class MobileHeaderMenu extends Component {
             <div className="MobileHeaderBar">
                 <h1 className="MainMenuHeader">ScoreMaster</h1>
                 <Menu pageWrapId={'page-wrap'} outerContainerId={'App'} isOpen={ this.state.isMenuOpen } onStateChange={(state) => this.handleStateChange(state)} >
-                    <button className="SmButton" id="/predictGames" onClick={this.handleButtonClick}>PREDICT GAMES</button>
-                    <button className="SmButton" id="/results" onClick={this.handleButtonClick}>RESULTS</button>
-                    <button className="SmButton" id="/leaderboard" onClick={this.handleButtonClick}>LEADERBOARDS</button>
-                    <button className="SmButton" id="/about" onClick={this.handleButtonClick}>ABOUT</button>
+                    <button className="SmButton" id="/predictGames" onClick={this.handleButtonClick}>Predict Games</button>
+                    <button className="SmButton" id="/results" onClick={this.handleButtonClick}>Results</button>
+                    <button className="SmButton" id="/leaderboard" onClick={this.handleButtonClick}>Leaderboards</button>
+                    <button className="SmButton" id="/about" onClick={this.handleButtonClick}>About</button>
                     {this.renderAdminView()}
                     {this.renderLoginOrLogoutButton()}
                 </Menu>

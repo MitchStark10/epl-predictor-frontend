@@ -42,7 +42,7 @@ class NewUserForm extends React.Component {
                 <input type="text" id="username" placeholder="Username" value={this.state.username} onChange={this.handleTextChange.bind(this)}/><br />
                 <input type="password" id="password" placeholder="Password" value={this.state.password} onChange={this.handleTextChange.bind(this)}/><br />
                 <input type="password" id="confirmedPassword" placeholder="Confirm Password" value={this.state.confirmedPassword} onChange={this.handleTextChange.bind(this)}/><br />
-                <button className="SmButton" id="createNewUser" onClick={this.createNewUser.bind(this)}>CREATE NEW USER</button>
+                <button className="SmButton" id="createNewUser" onClick={this.createNewUser.bind(this)}>Create New User</button>
                 <p>{this.state.statusMessage}</p>
             </div>
         );

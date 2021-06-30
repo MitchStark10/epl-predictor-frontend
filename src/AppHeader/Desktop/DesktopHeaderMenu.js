@@ -57,7 +57,7 @@ class DesktopHeaderMenu extends Component {
         console.log(this.state.isAdmin);
         if (this.state.isAdmin) {
             return (
-                <button className="SmButton" id="/admin" onClick={this.handleButtonClick}>ADMIN</button>
+                <button className="SmButton" id="/admin" onClick={this.handleButtonClick}>Admin</button>
             );
         }
 
@@ -72,15 +72,14 @@ class DesktopHeaderMenu extends Component {
         return null;
     }
 
-    // TODO: Should make a general class with common methods between desktop and mobile headers
     renderLoginOrLogoutButton = () => {
         let buttonText, buttonId;
 
         if (this.props.userToken) {
-            buttonText = 'LOGOUT';
+            buttonText = 'Logout';
             buttonId = '/logout';
         } else {
-            buttonText = 'LOGIN';
+            buttonText = 'Login';
             buttonId = '/login';
         }
 
@@ -100,13 +99,13 @@ class DesktopHeaderMenu extends Component {
                             id="games"
                             onMouseEnter={this.handleDropDownButtonHover}
                         >
-                            GAMES
+                            Games
                         </button>
                         {this.state.selectedDropDownButton === 'games' ?
                             <div className="DropDownList">
-                                <button className="SmButton DropDownListButton GameDropDownButton" id="/predictGames" onClick={this.handleButtonClick}>PREDICT GAMES</button><br />
-                                <button className="SmButton DropDownListButton GameDropDownButton" id="/results" onClick={this.handleButtonClick}>RESULTS</button><br />
-                                <button className="SmButton DropDownListbutton GameDropDownButton" id="/leaderboard" onClick={this.handleButtonClick}>LEADERBOARDS</button><br />
+                                <button className="SmButton DropDownListButton GameDropDownButton" id="/predictGames" onClick={this.handleButtonClick}>Predict Games</button><br />
+                                <button className="SmButton DropDownListButton GameDropDownButton" id="/results" onClick={this.handleButtonClick}>Results</button><br />
+                                <button className="SmButton DropDownListbutton GameDropDownButton" id="/leaderboard" onClick={this.handleButtonClick}>Leaderboards</button><br />
                                 {this.renderAdminButton()}
                             </div>
                             : null}
@@ -127,7 +126,7 @@ class DesktopHeaderMenu extends Component {
                                 id="about"
                                 onMouseEnter={this.handleDropDownButtonHover}
                             >
-                            ABOUT
+                            About
                             </button>
                         </a>
                     </div>

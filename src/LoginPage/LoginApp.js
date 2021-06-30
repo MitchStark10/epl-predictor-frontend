@@ -10,7 +10,7 @@ class LoginApp extends React.Component {
 
         this.LOGIN_FORM = 'login';
         this.NEW_USER_FORM = 'newUser';
-        this.CREATE_NEW_USER_TEXT = 'NEW USER';
+        this.CREATE_NEW_USER_TEXT = 'New User';
         this.LOGIN_WITH_EXISTING_ACCOUNT_TEXT = 'Login With Existing Account';
 
         this.state = {
